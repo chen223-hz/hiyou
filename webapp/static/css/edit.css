@@ -1,0 +1,17 @@
+/*sidebar*/
+.main-header .sidebar-toggle{
+	padding:15px 8px;
+}
+.fa-edit{
+	line-height: 14px;
+}
+.main-header .navbar-custom-menu{
+	margin-right: 15px;
+}
+.dropdown-menu-edit{
+	width:154px ! important;
+	min-width: 154px !important;
+}
+.fa-down-edit{
+	float: right;
+}

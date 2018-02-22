@@ -1,0 +1,1 @@
+#coding:utf-8from __future__ import absolute_importimport time,datetimefrom celery import shared_task,platformsimport requestsfrom .testapi import *platforms.C_FORCE_ROOT = True@shared_taskdef kick(subscribe,mac,mm):  if subscribe == 0:    a = aus_deauth(mm,[mac])

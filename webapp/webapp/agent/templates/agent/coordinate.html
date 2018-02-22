@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Hi游云平台</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="bookmark" type="image/x-icon" href="/static/favicon.ico/www.ico.ico"/>
+    <link rel="shortcut icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="icon" href="/static/favicon.ico/www.ico.ico">
+    <meta charset="uft-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" type="text/css" href="/static/css/loc.css">
+  
+</head>
+<body>
+<header class="LocMap">
+<div class="top-bar">
+    <div class="back"></div>
+    <div class="title">设备定位</div>
+    <div class="register"></div>
+ </div>
+</header> 
+
+ <div id="allmap" class="MapAll">       
+            <div id="map">    
+            </div> 
+            <div class="form-button">
+                <a id="login-button" href="/mac_location/?lng={{ lng }}&lat={{ lat }}&mac={{ mac }}" class="login">上传位置</a>
+            </div>
+</div>
+
+
+</body>
+
+  <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=F0i6SrLmHquLVNLCqpExxPrj8mWVdFwx"></script>     
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>    
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />      
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>    
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" /> 
+    <script type="text/javascript">    
+  
+    var map = new BMap.Map('map');
+    var poi = new BMap.Point({{ lng }},{{ lat }}); 
+    map.centerAndZoom(poi, 16);    
+    map.enableScrollWheelZoom();      
+    map.addOverlay(new BMap.Marker(poi)) 
+</script>
+</html>
+

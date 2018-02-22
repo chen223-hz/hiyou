@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Hi游云平台</title>
+    <link rel="bookmark" type="image/x-icon" href="/static/favicon.ico/www.ico.ico"/>
+    <link rel="shortcut icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    
+  
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <div class="nav">
+            <div class="logo"></div>
+            <div class="entry">
+                <span class="state">热线电话:400-6866-288</span>
+				
+			</div>
+        </div>
+    </div>
+    <div class="container">
+{% block content %}
+         <div class="content">
+            <div class="wrap"> 
+                <div class="login-box1">
+                    <div class="login-slogan">
+                         <img src="/static/img/solgan.png">
+                    </div>
+                    <div class="login-img ">
+                        <!--<h4>微信登录</h4>-->
+                        <div id="login_container"></div>
+                        <!--<p>扫二维码微信登录HI游后台管理</p>-->
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+        </div>
+        <div class="back">
+ 			<div class="items">
+                <div class="item item1"
+                     style="background-image:url(/static/img/59.jpg)"></div>
+                </div>
+        </div>
+    </div>
+    <div class="footer">
+ 		<div class="ownership">
+{% include "account/copyright.html" %}
+        </div>
+    </div>
+</div>
+{% block script %}
+<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+<script>
+var obj = new WxLogin({
+                              id:"login_container", 
+                              appid: "wx43bb4143fa8c5b83", 
+                              scope: "snsapi_login", 
+                              redirect_uri: "http%3a%2f%2fhiyoutest.doublecom.net",
+							  style:"white",
+							  href:""
+                            });
+</script>
+{% endblock %}
+</body>
+</html>
+

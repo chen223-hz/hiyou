@@ -1,0 +1,35 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset=utf-8" />  
+<title>网页设备判断</title>  
+<script>  
+/*判断打开设备*/  
+var system ={    
+    win : false,    
+    mac : false,    
+    xll : false   
+};    
+//检测平台     
+var p = navigator.platform;    
+system.win = p.indexOf("Win") == 0;    
+system.mac = p.indexOf("Mac") == 0;    
+system.x11 = (p == "X11") || (p.indexOf("Linux") == 0);   
+var local= location.href;  
+//跳转语句     
+if(system.win||system.mac||system.xll){  
+    //此处说明打开该网页设备为pc端  
+    alert("该设备为PC端");  
+    //若用移动端网址路径访问则自动跳转到对应pc端路径  
+        window.location.href="#";    
+}else{  
+    //此处说明打开该网页设备为移动端  
+    alert("该设备为移动端");  
+        window.location.href="#";  
+}  
+  
+</script>  
+</head>  
+<body>  
+</body>  
+</html> 

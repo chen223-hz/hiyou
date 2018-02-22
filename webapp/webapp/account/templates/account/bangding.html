@@ -1,0 +1,173 @@
+{% extends "account/login.html" %}
+
+{% block content %}
+         <div class="content">
+            <div class="wrap">
+                <div class="login-box">
+                    <div class="login-title text-center">
+                         <h4><small>手机验证</small></h4>
+                    </div>
+                    <div class="login-content ">
+                        <div class="form">
+                            
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div class="input-group  num-middle num-middle1">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                                            <input type="text" id="username" name="username" class="form-control telp" placeholder="手机号码" maxlength="11"onkeyup="(this.v	=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                        </div>
+                                         <div class="form-group-warning">
+                                         <p id="tishi">必须使用在云平台已经注册过的手机号</p></div>
+                                    </div>
+                                </div>
+								{% csrf_token %}
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div class="input-group  num-middle">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                            <input type="text" id="password" name="password" class="form-control num-captcha code" placeholder="验证码" maxlength="4" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();">
+                                            <input type="button" class="btn  btn-info btn-right" id="yzm" value="获取验证码"disabled="disabled" >
+                                        </div>
+										
+                                    </div>
+                                </div>
+                                <div class="form-group form-actions">
+                                    <div class="col-xs-12  return">
+                                        <input type="submit" class="btn btn-sm btn-info tijiao" value="确认"disabled="disabled" ><span class="glyphicon "></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <p><a href="/" class="hover-red">返回首页</a></p>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/jquery-2.2.3.min.js"></script>
+<script>
+  $(".tijiao").click(function(){
+      var phone = $(".telp").val();
+	  var code = $(".code").val();
+	  $.ajax({
+		url:"/phoneAuth/",
+		data:{'phone':phone,
+			  'code':code},
+		type:'GET',
+		cache:false,
+		success:function(d,s,x){
+		if(d=="1"){
+		window.location.href="/headquar/"
+		}
+		else if(d=="2"){
+		window.location.href="/agent/"
+		}
+		else if(d=="3"){
+		window.location.href="/scenic/"
+		}
+		else if(d=="error"){
+		alert("请联系上级管理者开通账户")
+		}
+		else if(d=="error2"){
+		alert("请与上级管理者沟通解决")
+		}
+		else if(d=="no"){
+		alert("请输入正确的验证码")
+		}
+  },
+		error:function(x,s,e){
+		alert(e)
+	}
+            })
+  })
+</script>
+<script>
+var wait=30;
+function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");            
+            o.value="重发验证码";
+            wait = 30;
+			$(".telp").attr("disabled",false);
+        } else {
+			$(".telp").attr("disabled",true);
+            o.setAttribute("disabled", true);
+            o.value=  wait + "秒";
+            wait--;
+            setTimeout(function() {
+                time(o)
+            },
+            1000)
+        }}
+$(function(){
+        $('#yzm').on('click',function(){time(document.getElementById("yzm"))});
+        $('#yzm').on('click',function(){
+  time(document.getElementById("yzm"))
+  },
+  function(){
+      var phone = $(".telp").val();
+	  $.ajax({
+		url:"/sms/",
+		data:{'phone':phone},
+		type:'GET',
+		cache:false,
+		success:function(d,s,x){
+		if(d=="nophone"){
+		wait = 0;
+		alert("手机号还未在云平台注册，请联系上级渠道商开通")
+		
+		}
+		else if(d=="ok"){
+		}else if(d=="noone"){
+		wait = 0; 
+		alert("此手机号已经被其他微信绑定，请联系上级管理员进行处理");
+		
+		}
+  },
+		error:function(x,s,e){
+		alert(e)
+	}
+            })
+  });
+    });		
+
+</script>
+<script>
+$(".telp").bind('input propertychange', function() { 
+  var code = $(".code").val().length;
+  var telnum = $(".telp").val().length;
+  if(telnum != 11&&telnum != 0){
+	$("#tishi").text("手机号格式不正确");
+	$("#tishi").css("cssText","color:red !important");
+	$("#yzm").attr("disabled", true);
+	$('.tijiao').attr("disabled",true);
+  }else if(telnum == 11){
+	$("#tishi").text("必须使用在云平台已经注册过的手机号");
+	$("#tishi").css("cssText","color:#666 !important");
+	$("#yzm").attr("disabled", false);
+  }else{
+	$("#tishi").text("必须使用在云平台已经注册过的手机号");
+	$("#tishi").css("cssText","color:#666 !important");
+	$("#yzm").attr("disabled", true);
+	$('.tijiao').attr("disabled",true);
+  }
+});
+
+</script>
+<script>
+ $(".code,.telp").bind('input propertychange', function() {
+    var telnum = $(".telp").val().length;
+	var code = $(".code").val().length;
+	if(code == 4&&telnum == 11){
+	$('.tijiao').attr("disabled",false);
+	}
+	else{
+	$('.tijiao').attr("disabled",true);
+	}
+})
+</script>
+{% endblock %}

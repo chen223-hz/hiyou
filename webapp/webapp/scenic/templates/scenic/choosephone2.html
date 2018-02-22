@@ -1,0 +1,111 @@
+
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="expires" content="-1">
+	<link rel="stylesheet" type="text/css" href="http://hiyou.doublecom.net/static/css/style_portal.css">
+
+<script type="text/javascript" src="http://hiyou.doublecom.net/static/js/md5.js"></script>
+<script type="text/javascript" src="https://wifi.weixin.qq.com/resources/js/wechatticket/pcauth.js" ></script>
+<script type="text/javascript">
+    /**
+     * 微信连Wi-Fi协议3.1供运营商portal呼起微信浏览器使用
+     */
+    var loadIframe = null;
+    var noResponse = null;
+    var callUpTimestamp = 0;
+     
+    function putNoResponse(ev){
+       clearTimeout(noResponse);
+    } 
+    
+     function errorJump()
+     {
+       var now = new Date().getTime();
+       if((now - callUpTimestamp) > 4*1000){
+         return;
+       }
+       alert('该浏览器不支持自动跳转微信请手动打开微信\n如果已跳转请忽略此提示');
+     }
+     
+     myHandler = function(error) {
+       errorJump();
+     };
+     
+     function createIframe(){
+       var iframe = document.createElement("iframe");
+         iframe.style.cssText = "display:none;width:0px;height:0px;";
+         document.body.appendChild(iframe);
+         loadIframe = iframe;
+     }
+    //注册回调函数
+    function jsonpCallback(result){  
+      if(result && result.success){
+          //alert('WeChat will call up : ' + result.success + '  data:' + result.data);         
+          var ua=navigator.userAgent;              
+        if (ua.indexOf("iPhone") != -1 ||ua.indexOf("iPod")!=-1||ua.indexOf("iPad") != -1) {   //iPhone             
+          document.location = result.data;
+        }else{
+          
+          if('false'=='true'){
+            alert('[强制]该浏览器不支持自动跳转微信请手动打开微信\n如果已跳转请忽略此提示');
+            return;
+          }
+          
+            createIframe();
+            callUpTimestamp = new Date().getTime();
+            loadIframe.src=result.data;
+          noResponse = setTimeout(function(){
+            errorJump();
+              },3000);
+        }         
+      }else if(result && !result.success){
+        alert(result.data);
+      }
+    }
+    function Wechat_GotoRedirect(appId, extend, timestamp, sign, shopId, authUrl, mac, ssid, bssid){
+        url = "https://wifi.weixin.qq.com/operator/callWechat.xhtml?appId=" + appId 
+                                        + "&extend=" + extend 
+                                        + "&timestamp=" + timestamp 
+                                        + "&sign=" + sign
+                                        + "&shopId=" + shopId
+                                        + "&authUrl=" + encodeURIComponent(authUrl)
+                                        + "&mac=" + mac
+                                        + "&ssid=" + ssid
+                                        + "&bssid=" + bssid;
+      //通过dom操作创建script节点实现异步请求  
+      var script = document.createElement('script');  
+      script.setAttribute('src', url);  
+      document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    var timestamp      = new Date().getTime();　　　　//时间戳(毫秒)
+    var authUrl        = "http://hiyoutest.doublecom.net/wxwifirz/?httpCode=200&fbl="+fbl;//认证服务端URL
+    var bssid          = "ff:ff:ff:ff:ff:ff";       //AP设备mac地址，非必须
+
+    function callWechatBrowser(){
+      var sign = hex_md5("{{obj.authorizer_appid}}" + "$(mac){{obj.authorizer_appid}}{{mac}}$(ip)" + timestamp + "{{obj.shop_id}}" + authUrl + "$(mac)" + "{{obj.ssid}}" + bssid + "{{obj.secretkey}}");
+      Wechat_GotoRedirect("{{obj.authorizer_appid}}", "$(mac){{obj.authorizer_appid}}{{mac}}$(ip)", timestamp, sign, "{{obj.shop_id}}", authUrl, "$(mac)", "{{obj.ssid}}", bssid);
+    }
+</script>
+</head>
+<body onload="callWechatBrowser()">
+<div class="ApproveAll">
+<table width="100%" height="100%">
+<tr>
+	<td align="center" valign="middle" style="color:#fff;">
+	<div style="background:rgba(195,195,195,0.2);overflow:hidden;">
+	<h3>正在进入微信</h3>
+  <p>关注公众号可免费上网</p>
+  <p>不关注可临时试用网络3分钟</p>
+	</div><br><br>
+	</td>
+</tr>
+</table>
+</div>
+
+</body>
+</html>

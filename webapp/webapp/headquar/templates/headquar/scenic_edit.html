@@ -1,0 +1,90 @@
+{% extends "headquar/index.html" %}
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<section class="content-header AllTitle TopTitle">
+  <h1>
+    <span><a href="/headquar/scenic/">景点类型管理</a>><a href="javascript:location.reload();">类型修改</a></span>
+  </h1>        
+</section>
+<section class="content">
+  <div class="row"  style="background:#fff;padding:20px;margin:20px;">
+    <div class="col-lg-6 col-md-12">
+      <div class="box box-info" style="border-top:0px;">
+          <form class="form-horizontal" action="/headquar/{{obj.pk}}/scenic_edit/" method="POST" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+              <section>
+                <h3 style="font-size:15px; border-left:4px solid #0073b7; margin-top: 0px;padding-left: 2px;color:#777;"></h3>
+              </section>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_username">景点类型:</label></div>
+                  <div class="col-sm-9" ><input style="width:50%;" class="form-control" id="id_username" name="type" type="text" value="{{obj.name}}"> </div>
+                </div>
+				        <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">所属分类:</label></div>
+                  <div class="col-sm-9">
+                    <select id="cartogram" class="field" name="leixing" style="width:50%; border-color: #d2d6de;">
+					              {% for obj in obj2%}
+                      <option value="{% if obj %}{{obj.pk}}{% else %}0{% endif %}">{% if obj %}{{obj.name}}{% endif %}</option>
+					              {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_username">地图显示图标:</label></div>
+                  <div class="col-sm-9" ><img id="pic1"style="margin:20px;height:50px;width:50px;"src="{% if obj.map_icon %}/uploads/{{obj.map_icon}}{% else %}/static/images/timg.jpg{% endif %}" class="img-circle" alt="User Image"><a href="javascript:0"class="btn btn-info btn-default" data-dismiss="modal" style=" border:#dd4b39;color:#fff;position: relative;">上传图片<input type="file" value="{% if obj.map_icon %}/uploads/{{obj.map_icon}}{% endif %}" name="map_icon" id="pic2" style="right: 0;width: 75px;opacity: 0;
+    top: 0;position: absolute;" onchange="b()"accept="image/jpeg,image/png"></a><span id="picclear1"class="btn btn-info btn-default" data-dismiss="modal" style="margin:20px;background-color:#dd4b39; border:#dd4b39;color:#fff;"onclick="clear1()">清除图片</span><br/><span style="margin-left: 20px; color:#999;">注:图片尺寸为200*200，支持PNG和JPG，大小不超过50K</span></div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_username">列表显示图标:</label></div>
+                  <div class="col-sm-9" ><img id="pic3"style="margin:20px;height:50px;width:50px;"src="{% if obj.list_icon %}/uploads/{{obj.list_icon}}{% else %}/static/images/timg.jpg{% endif %}" class="img-circle" alt="User Image"><a href="javascript:0"class="btn btn-info btn-default" data-dismiss="modal" style=" border:#dd4b39;color:#fff;position: relative;">上传图片<input type="file" value="{% if obj.list_icon %}/uploads/{{obj.list_icon}}{% endif %}" name="list_icon" id="pic4" style="right: 0;width: 75px;opacity: 0;
+    top: 0;position: absolute;" onchange="c()"accept="image/jpeg,image/png"></a><span id="picclear2"class="btn btn-info btn-default" data-dismiss="modal" style="margin:20px;background-color:#dd4b39; border:#dd4b39;color:#fff;"onclick="clear2()">清除图片</span><br/><span style="margin-left: 20px; color:#999;">注:图片尺寸为200*200，支持PNG和JPG，大小不超过50K</span></div>
+                </div>
+              </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <a href="/headquar/scenic/"class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </a>            
+                </div>
+            </div>
+          </form>
+        </div><!-- /.box -->
+        <!-- general form elements disabled -->
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block script %}
+<script>
+	function b () {
+		var r= new FileReader();
+		f=document.getElementById('pic2').files[0];
+		r.readAsDataURL(f);
+		r.onload=function  (e) {
+			document.getElementById('pic1').src=this.result;
+		};
+	}
+	function c () {
+		var r= new FileReader();
+		f=document.getElementById('pic4').files[0];
+		r.readAsDataURL(f);
+		r.onload=function  (e) {
+			document.getElementById('pic3').src=this.result;
+		};
+	}
+	function clear1(){
+		document.getElementById('pic2').value='';
+		document.getElementById('pic1').src='/static/images/timg.jpg';
+	}
+	function clear2(){
+		document.getElementById('pic4').value='';
+		document.getElementById('pic3').src='/static/images/timg.jpg';
+	}
+</script>
+{% endblock %}

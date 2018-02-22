@@ -1,0 +1,11 @@
+.DS_Store
+*.pyc
+*.log
+*.csv
+*.db
+*.sw*
+*.sv*
+*.gz
+*.sqlite3
+webapp/uploads/*
+logs/*

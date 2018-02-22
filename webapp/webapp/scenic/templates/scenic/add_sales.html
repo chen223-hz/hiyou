@@ -1,0 +1,397 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+<link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/datatables/dataTables.bootstrap.css">
+<style type="text/css">
+   
+    .EquList .box{
+      border-top:0px solid #fff;
+    }
+    .EquList .tab-pane section{
+       border-bottom:1px solid #d2d6de ;
+    }
+    .EquList .tab-pane section h3{
+      font-size:15px; 
+      border-left:4px solid #0073b7; 
+      margin-top: 0px;
+      padding-left: 2px;
+      color:#777;
+    }
+    .btn.btn-outline.red.active{
+        border-color: #e7505a;
+        color: #fff;
+        background-color: #e7505a;
+    }
+    
+    .steps{
+      margin:20px 0;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content-header AllTitle FormBlock">
+  <h1>
+    <span><a href="javascript:location.reload();">添加商品</a></span>
+  </h1>        
+</section>
+
+<section class="content">
+  <div class="row EquList">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+            <div class="tab-content add-content">    
+                <div role="tabpanel" class="tab-pane active" id="myFormWizard">
+                      <div class="portlet-body form">
+                        <div class="form-horizontal">
+                          <div class="form-wizard">
+                            <div class="form-body">
+                              <ul class="nav nav-pills nav-justified steps">
+                                <li>
+                                  <a href="#tab1" data-toggle="tab" class="step">
+                                    <span class="number"> 1 </span>
+                                    <span class="desc"><i class="fa fa-check"></i> 商品种类 </span>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#tab2" data-toggle="tab" class="step">
+                                    <span class="number"> 2 </span>
+                                    <span class="desc"><i class="fa fa-check"></i> 基本设置 </span>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#tab3" data-toggle="tab" class="step active">
+                                    <span class="number"> 3 </span>
+                                    <span class="desc"><i class="fa fa-check"></i> 商品详情 </span>
+                                  </a>
+                                </li>
+                              </ul>
+                              <div id="bar" class="progress progress-striped" role="progressbar">
+                                <div class="progress-bar progress-bar-success"> </div>
+                              </div>
+                              <div class="tab-content">
+                                <div class="tab-pane active" id="tab1">
+                                  <!-- <h3 class="block">商品种类</h3> -->
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">
+                                      <span class="required">  </span>
+                                    </label>
+                                    <div class="col-md-9">
+                                      <div class="btn-group btn-group-devided form-control-static" data-toggle="buttons">
+                                        <label class="btn btn-transparent red btn-outline btn-circle btn-lg active">
+                                          <input type="radio" name="modeSelectAll" class="toggle" id="routerMode" checked="true">
+                                          <i class="iconfont icon-menpiao" style="margin-right: 10px;font-size: 15px;"></i>
+                                          景区门票
+                                        </label>
+                                      </div>
+                                      <span class="help-block" id="modeExplain"> 商品种类一旦保存后将无法修改，请谨慎选择！ </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                  <!-- <h3 class="block">基本设置</h3> -->
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">商品分组
+                                      <!-- <span class="required"> * </span> -->
+                                    </label>
+                                    <div class="col-md-4">
+                                      <select id="goodsGroups" multiple="multiple">
+                                      </select>
+                                      <span class="help-block"> 未选择则添加到默认分组 </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">商品名称
+                                      <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" name="name" />
+                                      <span class="help-block"> 30个汉字以内 </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">销售价
+                                      <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" name="price" />
+                                      <span class="help-block"> 精确到小数点后两位 </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">原价
+                                    </label>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" name="price_old" />
+                                      <span class="help-block"> 选填 </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">商品库存
+                                      <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" name="stock" value="0" />
+                                      <span class="help-block"> 正整数，0为不限库存 </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="tab-pane" id="tab3">
+                                  <!-- <h3 class="block">Provide your billing and credit card details</h3> -->
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">上架设置
+                                      <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-6">
+                                      <select class="selectpicker">
+                                        <option value="0">暂不上架</option>
+                                        <option value="1">立即上架</option>                                   
+                                      </select>
+                                      <span class="help-block font-red"> 上架后商品类目、商品属性及商品名称将无法再修改，请确认已填写无误! </span>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">商品主图
+                                      <span class="required"> * </span>
+                                    </label>
+                                    <div class="col-md-9">
+                                      <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                          <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail file-image" style="max-width: 200px; max-height: 150px;"> </div>
+                                        <div>
+                                          <span class="btn default btn-file">
+                                            <span class="fileinput-new"> 选择图片 </span>
+                                          <span class="fileinput-exists"> 更换图片 </span>
+                                          <input type="file">
+                                          </span>
+                                          <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> 删除图片 </a>
+                                        </div>
+                                      </div>
+                                      <div class="clearfix margin-top-10">
+                                        <span class="label label-danger">注意!</span> 建议尺寸为640像素*640像素，大小不超过500kb</div>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <label class="control-label col-md-3">商品详情
+                                      <!-- <span class="required"> * </span> -->
+                                    </label>
+                                    <div class="col-md-9">
+                                      <div id="summernote_1"> </div>
+                                      <span class="help-block"> 选填</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-actions" style="padding:0 20px;">
+                              <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                  <a href="javascript:;" class="btn default button-previous" style="margin-right: 20px;">
+                                                                      <i class="fa fa-angle-left"></i> 上一步 </a>
+                                  <a href="javascript:;" class="btn btn-outline blue button-next" style="margin-right: 20px;"> 下一步
+                                                                      <i class="fa fa-angle-right"></i>
+                                                                  </a>
+                                  <button href="javascript:;" class="btn blue button-submit" id="saveGoods"> 立即保存
+                                                                      <i class="fa fa-check"></i>
+                                                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+								      </div>
+                </div>   
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>  
+</section>
+{% endblock %}
+{% block script %}
+  <script>
+    $(document).ready(function() {
+		$('#myFormWizard').bootstrapWizard({
+			'nextSelector': '.button-next',
+			'previousSelector': '.button-previous',
+			onTabClick: function(tab, navigation, index, clickedIndex) {
+				return false;
+			},
+			onTabShow: function(tab, navigation, index) {
+				var total = navigation.find('li').length;
+				var current = index + 1;
+				var $percent = (current / total) * 100;
+				$('#myFormWizard').find('.progress-bar').css({
+					width: $percent + '%'
+				});
+			},
+			onNext: function(tab, navigation, index) {
+				handleTitle(tab, navigation, index);
+			},
+			onPrevious: function(tab, navigation, index) {
+				handleTitle(tab, navigation, index);
+			},
+		});
+		$('#myFormWizard').find('.button-previous').hide();
+		$('#myFormWizard').find('.button-submit').hide();
+		$('#goodsGroups').multiselect({
+			buttonWidth: "300px",
+			// buttonClass: 'btn blue btn-outline',
+			enableClickableOptGroups: true,
+			enableCollapsibleOptGroups: true,
+			// disableIfEmpty: true,
+			nonSelectedText: '请选择分组',
+			numberDisplayed: 2,
+		});
+    var multiData = []
+    if({{tx}} == 0){
+        var url = "/scenic/commodity/add_sales/ajax/{{pk}}/"
+      }else{
+        var url = "/scenic/commodity/edit_sales/ajax/{{pk}}/{{tx}}/"
+      }
+      $.ajax({
+      url:url,
+      data:{},
+      type:'GET',
+      cache:false,
+      dataType:'JSON',
+      success:function(d,s,x){
+        if({{tx}} == 0){
+          for(var i=0;i<d.length;i++){
+            var mul = {}
+            mul['label'] = d[i]['name']
+            mul['value'] = d[i]['pk']
+            mul['selected'] = false
+            multiData.push(mul)
+          }
+          $('#goodsGroups').multiselect('dataprovider', multiData);
+          $("label.checkbox").css("padding-left", "25px");
+        }else{
+          console.log(d.lis)
+          for(var i=0;i<d.lis.length;i++){
+            var mul = {}
+            mul['label'] = d.lis[i]['name']
+            mul['value'] = d.lis[i]['pk']
+            mul['selected'] = null
+            for(var q=0;q<JSON.parse(d.group).length;q++){
+              if(JSON.parse(d.group)[q] == d.lis[i]['pk']){
+                mul['selected'] = true
+              }
+            }
+            multiData.push(mul)
+          }
+          $('#goodsGroups').multiselect('dataprovider', multiData);
+          $("label.checkbox").css("padding-left", "25px");
+          $("input[name='name']").val(d.name)
+          $("input[name='price']").val(d.price)
+          $("input[name='price_old']").val(d.price_old)
+          $("input[name='stock']").val(d.stock)
+          if(d.grounding==true){
+            $(".selectpicker").find("option[value=1]").attr("selected",true);
+          }else{
+            $(".selectpicker").find("option[value=0]").attr("selected",true);
+          }
+          $('.fileinput-new').find('img').attr('src',d.image)
+          $('#summernote_1').summernote('code',d.content)
+        }
+        
+      },
+      error:function(x,s,e){
+        //alert(e)
+      }
+    })
+
+		// 商品详情框
+		var note = $('#summernote_1').summernote({
+			height: 200,
+
+		});
+
+		// 立即保存
+		$("#saveGoods").click(function(e) {
+      var name = $("input[name='name']").val()
+      var price = $("input[name='price']").val()
+      var price_old = $("input[name='price_old']").val()
+      var stock = $("input[name='stock']").val()
+      var grounding = $(".selectpicker  option:selected").val()
+      if({{tx}} == 0){
+        var image = $('.file-image').find('img').attr('src')
+      }else{
+        var image = $('.fileinput-new').find('img').attr('src')
+      }
+      var content = $('#summernote_1').summernote('code')
+      var group = []
+      $("li.active").each(function(){
+        if(typeof($(this).find('input').val())!='undefined'){
+         group.push($(this).find('input').val())
+        }
+      });
+      if(group&&name&&price&&stock&&grounding&&image!=null){
+      $.ajax({
+      url:url,
+      data:{'group':JSON.stringify(group),
+            'name':name,
+            'price':price,
+            'price_old':price_old,
+            'stock':stock,
+            'grounding':grounding,
+            'image':image,
+            'content':content,},
+      type:'POST',
+      cache:false, 
+      success:function(d,s,x){
+        if(d == 'success'){
+          window.location.href="/scenic/commodity"
+        }
+      },
+      error:function(x,s,e){
+        //alert(e)
+      }
+    })
+    }else{
+      swal({
+            title: "提交失败",
+            text: "请先完成表格内容",
+            type: "error",
+            showConfirmButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "确认",
+            showCancelButton: false,
+            closeOnConfirm: true
+        })
+    }
+
+		})
+	})
+
+	function handleTitle(tab, navigation, index) {
+		var total = navigation.find('li').length;
+		var current = index + 1;
+		// set wizard title
+		$('.step-title', $('#myFormWizard')).text('Step ' + (index + 1) + ' of ' + total);
+		// set done steps
+		jQuery('li', $('#myFormWizard')).removeClass("done");
+		var li_list = navigation.find('li');
+		for (var i = 0; i < index; i++) {
+			jQuery(li_list[i]).addClass("done");
+		}
+
+		if (current == 1) {
+			$('#myFormWizard').find('.button-previous').hide();
+		} else {
+			$('#myFormWizard').find('.button-previous').show();
+		}
+
+		if (current >= total) {
+			$('#myFormWizard').find('.button-next').hide();
+			$('#myFormWizard').find('.button-submit').show();
+		} else {
+			$('#myFormWizard').find('.button-next').show();
+			$('#myFormWizard').find('.button-submit').hide();
+		}
+		App.scrollTo($('.page-title'));
+	}
+  </script>
+{% endblock %}

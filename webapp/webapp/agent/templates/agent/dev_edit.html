@@ -1,0 +1,116 @@
+{% extends "agent/index.html" %}
+{% block header %}
+<style>
+
+  .helptext{text-size:10px;font-style:italic;color:#999}
+.form-horizontal .control-label {
+    padding-top: 23px;
+    margin-bottom: 0;
+    text-align: right;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="content-header AllTitle TopTitle">
+  <h1>
+    <span><a href="/agent/dev/">设备管理</a>><a href="javascript:location.reload();">编辑设备</a></span>
+  </h1>        
+</section>
+<section class="content DevAdd">
+  <div class="row" style="background:#fff;padding:20px;margin:20px;">  
+    <div class="col-md-12 col-lg-6">
+      <div class="box"  style="border-top:0;">
+          <form class="form-horizontal" method="POST"> {% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_username">设备MAC:</label></div>
+                   <div class="col-sm-9" style="margin-top: 20px;left: 20px;"><spam  >{{ o.macaddr }}</span></div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_username">设备备注:</label></div>
+                  <div class="col-sm-9" ><input style="width:50%; margin:20px 0 0 0 ; border-color:#d2d6de;" class="form-control" {% if o.remarks %}value="{{ o.remarks }}" {% endif %} name="remarks" placeholder="备注" type="text"></div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">设备类型:</label></div>
+                  <div class="col-sm-9">
+                    <select id="id_group" name="type" style="margin:20px 0 0 0 ; border-color:#d2d6de;">
+                      <option value="0" {% if o.dev_type == '0' %}selected="selected"{% endif %}>AP</option>
+                      <option value="1" {% if o.dev_type == '1' %}selected="selected"{% endif %}>探针</option>
+                      <option value="2" {% if o.dev_type == '2' %}selected="selected"{% endif %}>认证服务器</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">所属景区:</label></div>
+                  <div class="col-sm-9">
+                    <select id="cartogram" class="field" name="scenic" style="margin:20px 0 0 0 ; border-color:#d2d6de;">
+                      <option value="0">无</option>
+                      {% for obj in obj.scenic_set.all %}
+                      <option value="{{obj.pk}}" {% if obj.pk == o.scenic_dev.pk %} selected="selected"{% endif %} >{{obj.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">所属区域:</label></div>
+                  <div class="col-sm-9">
+                    <select id="region" name="region" style="margin:20px 0 0 0 ; border-color:#d2d6de;">
+                      <option value="0">无</option>
+                      {% if objs %}
+                        {% for ob in objs%}
+                          <option value="{{ob.pk}}"{% if ob.pk == o.region_dev.pk %} selected="selected"{% endif %} >{{ob.name}}</option>
+                        {% endfor %}
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <a  href="/agent/dev/"class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </a>            
+                </div>
+            </div>
+          </form>
+        </div><!-- /.box -->
+        <!-- general form elements disabled -->
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(".field").change(function(){
+    var obj=document.getElementById("cartogram");    
+    var index=obj.selectedIndex;   
+    var pk=obj.options[index].getAttribute("value");  
+
+    $.ajax({
+      url:'/agent/{{ pk }}/'+pk+'/dev_add/',
+      data:{},
+      type:'post',
+      dataType:'JSON',
+      async:false,
+      success:function(d,s,x){
+        var data = d.data
+        var op = $('#region').empty()
+        var th = '<option value="0">无</option>'
+        for (var i = 0; i < data.length; i++) {
+          th += '<option value="'+data[i].pk+'">'+data[i].name+'</option>'
+        };
+      op.append(th)
+      },
+      error:function(x,s,e){
+          alert(e)
+        }
+      }) 
+  });
+
+</script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "agent/index.html" %}
+
+{% block content %}
+<section class="content-header AllTitle TopTitle">
+  <h1 >
+    <span><a href="/agent/dev/">设备管理</a>><a href="javascript:location.reload();">导入</a></span> 
+  </h1>        
+</section>
+<section class="content">
+<div class="row" style="background:#fff;padding:20px;margin:20px;">
+  <div class="col-lg-7">
+    <div class="box" style="border-top:0px;">
+      <div class="box-body">
+        <div class="form-group">
+            <div class="col-sm-2 control-label" style="line-height: 30px; padding-left: 0px;"><label for="id_name">CSV文件:</label></div>
+            <div class="col-sm-9">
+              <input id="upfile" name="map_file" type="file">
+            </div>
+            <button type="submit" id="import" class="btn btn-info pull-right" >导入</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="box" style="border-top:0px;">
+      <div class="box-header">
+        执行结果
+      </div>
+      <div class="box-body">
+        <div id="output" style="border:1px solid #eee;height:300px;overflow:auto;" contenteditable="true">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  
+
+$("#import").click(function(){
+
+  var formData = new FormData();
+  var name = $("input").val();
+  if(name==''){
+    $("#output").empty()
+    $("#output").append("<span style='color:red'>没有选择文件!</span>"); 
+    return }
+  formData.append("file",$("#upfile")[0].files[0]);
+  formData.append("name",name);
+  $.ajax({ 
+  url : "/agent/{{ pk }}/import/", 
+  type : 'POST', 
+  data : formData, 
+  processData : false, 
+  contentType : false,
+  beforeSend:function(){
+    $("#output").empty()
+    $("#output").append("<span style='color:red'>导入中.....</span><br>");
+  },
+  success : function(d) { 
+    $("#output").empty()
+    if(d=='no'){
+      $("#output").append("<span style='color:red'>导入失败，错误原因如下:</span><br><span style='color:red'>文件格式不符合要求，必须是CSV文件!</span>");
+    }else if(d=='100'){
+       $("#output").append("<span style='color:red'>导入失败，错误原因如下:</span><br><span style='color:red'>设备数超出限制，一次最多不超过1000台!</span>");
+    }else if(d.indexOf(':')>=0){
+      $("#output").append("<span style='color:red'>导入失败，错误原因如下:</span><br><span style='color:red'>MAC为"+d+"的设备已存在或者导入的文件中有MAC相同!</span>");
+    }else if(d=='ok'){
+      $("#output").append("<span style='color:green'>导入成功,<br>5秒后返回!</span>");   
+      setInterval(function(){
+        window.location.assign("/agent/dev/")
+      },5000)
+     
+    }else{
+      $("#output").append("<span style='color:red'>导入失败，错误原因如下:</span><br><span style='color:red'>第"+d+"行缺失数据,或格式不对!</span>");
+    }
+
+  }, 
+  error : function(responseStr) { 
+  console.log("error");
+  } 
+  });      
+
+});
+ 
+</script>
+{% endblock %}

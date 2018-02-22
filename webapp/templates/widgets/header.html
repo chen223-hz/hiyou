@@ -1,0 +1,37 @@
+ <header class="main-header">
+        <a href="" class="logo" style="text-align:left;">
+          <span class="logo-lg"  style="font-size: 13px;"><img src="/static/img/word-hot-ballon.png" style="width:60%;padding-bottom: 6px;"><label style="height:30px;font-weight: 200;"></label></span>
+        </a>
+        <nav class="navbar navbar-static-top" role="navigation">
+          
+          <div class="navbar-custom-menu" >
+            <ul class="nav navbar-nav">
+              <li class="dropdown user user-menu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <img src="{{ user.headimgurl }}" class="user-image" style="border-radius: 50%!important;"alt="User Image">
+                  <span class="hidden-xs">{{ user.nickname}}</span>
+                  <i class="fa  fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu" style="width:150px;min-width: 150px; background:#ecf0f5;box-shadow: 0px 1px 2px rgba(0,0,0,0.17)">  
+                  <li class="DropOut">
+                    <a href="/" style="color:#777; padding:5px 20px 6px 20px;"><i class="fa fa-power-off" style="padding-right:5px; letter-spacing: 5px;"></i>退出登录</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+<style type="text/css">
+  .skin-blue-light .main-header .navbar .nav>li>a:hover,
+  .skin-blue-light .main-header .navbar .nav .open>a:focus{
+    background-color:#ee7a47!important;
+  }
+  .skin-blue-light .main-header .navbar .nav>li>a{
+    color:#33618f;
+  }
+  .skin-blue-light .sidebar a{
+    color:#33618f;
+  }
+</style>

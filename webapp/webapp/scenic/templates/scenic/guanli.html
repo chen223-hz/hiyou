@@ -1,0 +1,214 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+{% endblock %}
+{% block content %}
+
+<section class="content-header AllTitle FormBlock">
+  <h1>
+    <span><a href="#">微信认证管理</a></span>
+  </h1>        
+</section>
+<section class="content HomePage" style="background:#fff;padding:20px;margin:20px 0 0 20px;">
+    <div class="row">
+
+      <div class="col-xs-12">
+        	<div class="box">
+  	        <div class="box-body" >
+  	          	<section class="HomeUp">
+  	            		<div class="row">
+  	            			<div class="col-lg-3 col-md-3 WeChatImg">
+  	            				<img class="profile-user-img img-responsive img-circle" src="{{head_img}}">
+  	            			</div>
+  	            			<div class="col-lg-2 col-md-3 HomeName">
+  	            				<ul>
+  	            					<li><b>{{nick_name}}</b></li>
+                        <li><b>{{mendian_name}}</b></li>
+  	            				</ul>
+  	            			</div>
+  	            			<div class="col-lg-4 col-md-6 HomeButton">
+  	            		<label class="input-group margin">
+  	                      <button type="button" class="btn btn-block btn-primary add" id= "xiayibu">配置主页</button>
+  	                    </label>
+						<label class="input-group margin">
+  	                      <button type="button" class="btn btn-block btn-primary add" id= "huanying">配置欢迎消息</button>
+  	                    </label>
+  	                    <label class="input-group margin">
+  	                      <a href="http://read.html5.qq.com/image?src=forum&q=5&r=0&imgflag=7&imageUrl={{user.group.scenic_set.first.qrcode_url}}" ><button type="button" class="btn btn-block btn-primary">二维码下载</button></a>
+  	                    </label>
+  	                    <label class="input-group margin">
+  	                     <a href="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wx75ce45938d615884&pre_auth_code={{ var_pre_auth_code }}&redirect_uri=http://hiyou.doublecom.net/wechat/success/">
+  	                        <button type="button" class="btn btn-block btn-primary">重新授权</button>
+  	                     </a>
+  	                    </label>
+  	           				</div>
+  	          			</div>
+  	          	</section>
+  	        </div><!-- /.col --> 
+        	</div>
+      </div>
+
+    </div>
+</section>
+<section class="content HomePage HomeDown" style="background:#fff;padding:20px;margin:0px 0 0 20px;">
+    <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+           <div class="row">
+           		<div class="col-md-6 col-sm-6">
+           			<section class="LeftRed">
+
+           				<ul class="RedSum">
+           					<li class="RedFirst" style="font-size:20px">WIFI关注总人数（近一个月）</li>
+           					<li class="RedSecond">
+           						<h3>{{people}}</h3>
+           					</li>
+           				</ul>
+           			</section>
+           		</div>
+           		<div class="col-md-6 col-sm-6">
+           			<section class="RightBlue">
+
+           				
+           				<ul class="BlueSum">
+           					<li class="BlueFirst" style="font-size:20px">WIFI新增关注人数</li>
+           					<li class="BlueSecond">
+           						<h3>{{people2}}</h3>
+           					</li>
+           				</ul>
+           			</section>
+           		</div>
+           </div>
+          </div>
+        </div>
+      </div> 
+    </div><!-- /.col --> 
+    </div>
+	
+	
+	
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            配置主页
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" id="modify" method="POST" action="/scenic/shop_index/">{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+              <div class="form-group">
+                <div class="col-sm-3 control-label" ><label for="id_name">主页地址:</label></div>
+                <div class="col-sm-9"><input class="form-control" id="id_name" name="name" placeholder="请输入完整地址如:http://www.doublecom.net" type="text" style="width:65%"></div>
+              </div>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " id="index"style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+	
+	
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            配置欢迎消息
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" id="modify" method="POST" action="/scenic/tembind/">{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+              <div class="form-group">
+				<div class="col-sm-3 control-label" style="padding-top:22px"><label for="id_name">消息模板:</label></div>
+				<div class="col-sm-9">
+                    <select id="id_group" name="type" style="width:50%">
+
+                    </select>
+                 </div>
+				 <div class="col-sm-3 control-label"><label for="id_name">备注:</label></div>
+                <div class="col-sm-9"><input class="form-control" id="id_name2" name="name" placeholder="请输入完整地址如:http://www.doublecom.net" type="text" style="width:65%"></div>
+              </div>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " id="bindex2" style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+	
+	
+	
+</section>
+{% endblock %}
+{% block script %}
+
+<script>
+$(function(){
+$("#xiayibu").click(function(){
+    $('#myModal').modal(
+    {
+      keyboard: true
+    })
+  })
+$("#huanying").click(function(){
+    $('#myModal2').modal(
+    {
+      keyboard: true
+    })
+	$.ajax({
+		url:"/scenic/temlist/",
+		data:{},
+		type:'POST',
+		cache:false,
+		dataType:'JSON',
+		success:function(d,s,x){
+			th = ''
+			table = $('#id_group').empty()
+			for(i=0;i<d.length;i++){
+				th = th + '<option value="'+d[i].template_id+'">'+d[i].title+'</option>'
+			
+			}
+		table.append(th)
+  },
+		error:function(x,s,e){
+		//alert(e)
+	}
+            })
+  })
+  })
+</script>
+{% endblock %}
+

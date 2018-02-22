@@ -1,0 +1,256 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/datepicker/datepicker3.css">
+<style type="text/css">
+    .ui-paging-container{color:#666;font-size: 16px;}
+    .ui-paging-container ul{overflow: hidden;text-align: center;}
+    .ui-paging-container ul,.ui-paging-container li{list-style: none;}
+    .ui-paging-container li{display: inline-block;padding:5px 10px;margin-left: 5px;color:#666;}
+    .ui-paging-container li.ui-pager{cursor: pointer; border:1px solid #ddd;border-radius: 2px;}
+    .ui-paging-container li.ui-pager:hover,.ui-paging-container li.focus{background-color: #288df0;color:#FFFFFF;}
+    .ui-paging-container li.ui-paging-ellipse{border:none;}
+    .ui-paging-container li.ui-paging-toolbar{padding:0;}
+    .ui-paging-container li.ui-paging-toolbar select{height:22px;border:1px solid #ddd;color: #666;}
+    .ui-paging-container li.ui-paging-toolbar input{line-height: 20px; height:20px;padding:0;border:1px solid #ddd;text-align: center;width: 30px;margin:0 0 0 5px;vertical-align: middle;}
+    .ui-paging-container li.ui-paging-toolbar a{vertical-align: middle; text-decoration: none;display: inline-block;height:20px;border:1px solid #ddd;vertical-align: top;border-radius: 2px;line-height: 20px;padding:0 3px;cursor: pointer;margin-left: 5px;color: #666;}
+    .ui-paging-container li.ui-pager-disabled,.ui-paging-container li.ui-pager-disabled:hover{background-color: #f6f6f6;;cursor: default;border:none;color:#ddd;}
+
+    .EquList .box{
+      border-top:0px solid #fff;
+    }
+    .EquList #example1_wrapper section{
+       border-bottom:1px solid #d2d6de ;
+    }
+     .EquList #example1_wrapper section h3{
+      font-size:15px; 
+      border-left:4px solid #0073b7; 
+      margin-top: 0px;
+      padding-left: 2px;
+      color:#777;
+    }
+     .EquList  #example1_filter{
+      margin:20px 0 20px 0px;
+     }
+     .EquList button{
+      margin-left:5px;
+     }
+     .EquList .MacSearch .SetLogOut{
+      float:right;
+     }
+     .EquList .SetLogOut div{
+      margin-left:10px;
+     }
+     .MiddlePage{
+      text-align: center;
+     }
+     .column li {
+      display: inline-block;
+      list-style: none;
+      width: 70px;
+    }
+     .box-body select {
+      line-height: 30px;
+      margin:20px;
+      width: 20%;
+      font-size: 15px;
+      border-radius: 6px;   
+    }
+    div.dataTables_filter {
+      text-align: start;
+      margin: 20px;
+    }
+    label {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: 5px;
+      font-weight: inherit;
+    }
+    .SetLogOut{
+      font-size:15px; 
+      border-left:4px solid #0073b7; 
+      margin-top: 0px;
+      padding-left: 2px;
+      color:#777;
+    }
+    .breadcrumb {
+      padding: 0px 15px;
+      margin-bottom: auto;
+      list-style: none;
+      background:#fff;
+    }
+    ol, ul {
+      margin-top: 0;
+      margin-bottom: 0px;
+    }
+    .Setspan{
+      padding: 0px 15px;
+    }
+    a {
+      color: #484141;
+      text-decoration: none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content-header AllTitle">
+  <h1>
+    <span><a href="javascript:location.reload();">探针数据</a></span>
+  </h1>        
+</section>
+<section>
+  <ol class="breadcrumb">
+    <span><a href="/scenic/probe/"> 实时查询 </a></span>
+    <span class='Setspan'><a href="/scenic/tanzclient/" style="color:#337ab7;"> 统计日表 </a></span>
+  </ol>
+</section>
+<section class="content">
+  <div class="row EquList">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <section style="background:#fff;">
+                <div class="row " >
+                  <div class="col-sm-12">
+                    <label class="">
+                        <a href="/scenic/tanzclient/" style="color:#337ab7;">按终端</a>
+                    </label>
+                    <label class="Setspan">
+                      <a href="/scenic/tanz/" class='' > 按探针</a>
+                    </label>
+                </div>
+              </div>
+              </section>
+                <div class="row MacSearch" style="background:#fff; margin:20px 0 0 20px;">
+                <div class="col-sm-12">
+                  <div id="example1_filter" class="dataTables_filter">
+                    <label class="SetMac">终端MAC:
+                      <input type="search" class="form-control input-sm" placeholder="" id="mac"  aria-controls="example1">
+                    </label>
+                    <label class="SetMac Setspan">设备类型:
+                      <input type="search" class="form-control input-sm" placeholder="" id="type" aria-controls="example1">
+                    </label>
+                    <label class="SetMac Setspan">日期:
+                      <div class="input-group date">
+                        <input type="text" class="form-control input-sm" id="datepicker">
+                      </div>
+                    </label>
+                    <label class="SetSearch ButtonSearch">
+                    <a  title="搜索" class='search'>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button></a>
+                    </label>
+
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="background:#fff;margin:20px 0 0 20px; padding:20px;">
+                <div class="col-sm-12">
+                  <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info" style="text-align: center;">
+                    <thead>
+                    <tr role="row">
+                      <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width:12%; text-align: center;">设备MAC</th>
+                      <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width:12%; text-align: center;">终端MAC</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width:12%; text-align: center;">终端类型</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width:12%; text-align: center;">首次探测时间</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width:12%; text-align: center;">末次探测时间</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width:12%; text-align: center;">被探测探针数</th>
+                    </tr>
+                    </thead>
+                    <tbody class = 'oddd'> 
+<!--                     {% for obj1 in obj %}
+                    {% for ob in obj1.client_set.all %}         
+                    <tr role="row" class="odd">
+                      <td class="sorting_1">{{ ob.mac }}</td>
+                      <td>{{ob.typee}}</td>
+                      <td>{{ ob.statrtime }}</td>
+                      <td>{{ ob.endtime }}</td>
+                      <td>{{ob.num}}</td>             
+                    </tr>
+                    {% endfor %}
+                    {% endfor %} -->
+                    </tbody>
+                  </table>
+                </div>
+                <div id="pageTool"></div>
+              </div>
+          </div>
+        </div>
+      </div> 
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</section>
+{% endblock %}
+{% block script %}
+<!--     
+<script src="http://cdn.doublecom.net/adminlte2/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="http://cdn.doublecom.net/adminlte2/plugins/datatables/dataTables.bootstrap.min.js"></script> -->
+<script src="http://cdn.doublecom.net/adminlte2/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="http://cdn.doublecom.net/adminlte2/plugins/fastclick/fastclick.js"></script>
+<script src="http://cdn.doublecom.net/adminlte2/dist/js/demo.js"></script>
+<script src="http://cdn.doublecom.net/adminlte2/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="/static/js/query.js"></script>
+<script src="/static/js/paging.js"></script>
+<script type="text/javascript">
+  var count = 0
+
+  var mac = null
+  var type = null
+  var date = null
+  post_dev(1,'')
+  function post_dev(page){
+    $.ajax({
+      url:'/scenic/tanzclient/',
+      data:{'page':page,'mac':mac,'type':type,'date':date},
+      type:'post',
+      async:false,
+      dataType:'JSON',
+      success:function(d,s,x){
+          var data=d.data
+          var len=data.length
+          
+          var tr=$('tbody.oddd').empty();
+          for(var i=0;i<len;i++){
+            var ti_h='<tr role="row" class="odd" data-ipaddr="" ><td>'+data[i].tanzmac+'</td><td>'+data[i].mac+'</td><td>'+data[i].type +
+              '</td><td>'+data[i].statrtime+'</td><td>'+data[i].endtime+'</td><td>'+data[i].num+'</td></tr>'
+            tr.append(ti_h);
+          }
+          if(count != d.count){
+            $('#pageTool').empty();
+            $('#pageTool').Paging({pagesize:10,count:d.count,callback:function(pag,size,count){
+              post_dev(pag)
+            }});
+          }
+          count = d.count
+      },
+      error:function(x,s,e){
+        //alert(e)
+      }
+    })
+  } 
+
+
+
+$(function(){
+    $(".search").click(function(){
+      mac = $('#mac').val()
+      type = $('#type').val()
+      dat = $('#datepicker').val()
+      if(dat){
+        dat = dat.split('/')
+        date = dat[2] + '-' + dat[0] + '-' + dat[1]
+      }
+      post_dev(1,'srarch')
+    });
+});
+
+  $(function () {
+
+    //Date picker
+    $('#datepicker').datepicker({
+      autoclose: true
+    });
+
+  });
+</script>
+{% endblock %}

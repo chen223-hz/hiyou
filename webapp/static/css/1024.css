@@ -1,0 +1,599 @@
+  /*index*/
+  
+  /*index end*/
+   /*wechat common*/
+   .ui-step {
+        padding: 0 40px;
+        margin: 0 auto;
+        font-size: 14px;
+        list-style: none;
+        zoom: 1;
+        position: relative;
+        color: #b7b7b7;
+      
+    }
+    .ui-step:after {
+        clear: both;
+        content: " ";
+        display: block;
+        font-size: 0;
+        height: 0;
+        visibility: hidden;
+    }
+    .ui-step li {
+        float: left;
+        height: 54px;
+        margin: 0;
+        width: 50%;
+        position: relative;
+    }
+    .ui-step li .ui-step-icon {
+        height: 50px;
+        position: absolute;
+        top: 0;
+        width: 150px;
+        text-align: center;
+        left: -25px;
+        font-family: tahoma;    
+    }
+    .ui-step-icon .iconfontw {
+        background: #fff;
+        width:35px;
+        height:35px;
+        border-radius: 50px;
+        position: absolute;
+        top:-2px;
+        left:7px;
+        text-shadow: 1px 1px 2px #fff, 0 0 0 #ccc, 1px 1px 2px #fff;
+    }
+
+    .ui-step-icon .ui-step-number {
+        line-height:14px;
+        font-style:normal;
+        position: absolute;
+        top: 7px;
+        left: 0;
+        padding: 0 20px;
+        font-weight: bold;
+        color: #fff;
+
+    }
+
+    .ui-step .ui-step-active i.ui-step-number {
+        color:#FFF;
+    }
+
+    .ui-step-end .ui-step-number {
+        background: transparent;
+        font-size: 12px;
+        font-style: normal;
+        left:20px;
+        line-height: 12px;
+        padding: 0;
+        text-shadow: none;
+        top: 9px;
+    }
+
+    .ui-step-icon .ui-step-text {
+        height: 20px;
+        line-height: 20px;
+        position: relative;
+        text-shadow: 0 1px 0 white;
+        top: 34px;
+        left: -50px;
+    }
+
+    .ui-step li .ui-step-line {
+        height: 3px;
+        background: #b9b9b9;
+        display: block;
+        margin-top: 14px;
+        line-height: 1;
+        overflow: hidden;
+    }
+    .ui-step li .iconfontw{
+        background:#9b9b9b;
+    }
+    .ui-step li.ui-step-end {
+        position: absolute;
+        top: 0;
+        right:0px;
+        width:2%;
+        zoom: 1;
+        _clear: both;   /* 修复ie6下最后一步莫名其妙显示不出来的问题 */
+    }
+
+    .ui-step li.ui-step-end .ui-step-icon{
+      width:60px;
+    }
+    .ui-step li.ui-step-end .ui-step-icon .ui-step-text{
+      left:-10px;
+    } 
+    .ui-step li.ui-step-end .ui-step-line {
+        display: none;
+    }
+
+    /* 步骤长度 */
+
+    .ui-step-2 li {
+        width: 100%;
+    }
+
+    .ui-step-3 li {
+        width: 50%;
+    }
+
+    .ui-step-4 li {
+        width: 33%;
+    }
+
+    .ui-step-5 li {
+        width: 25%;
+    }
+
+    /* 修改颜色 */
+
+    .ui-step-active .iconfontw{
+        background:#0073b7!important;
+    }
+    .ui-step-active .ui-step-text{
+        color:#0073b7;
+    }
+    .ui-step-done  .ui-step-line{
+        background:#00a65a  !important;
+    }
+    .ui-step-done .iconfontw{
+        background:#00a65a !important;
+    } 
+    .ui-step-done .ui-step-text{
+        color:#00a65a !important;
+    }
+    .WeChatStep{
+        margin:2% 0;
+    }
+    @media screen and (max-width: 1024px) {
+       .WeChatStep{
+        margin:1% 0;
+     }
+     .ui-step-icon .iconfontw {
+        width:30px;
+        height:30px;
+        top:-0px;
+        left:9px;
+     }
+     .ui-step-icon .ui-step-text{
+        font-size: 13px;
+     }
+    }
+    /*wechat common end*/
+    /*xinjian*/
+    .NewStore .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .NewStore .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .NewStore .StoreTitle h3{
+        font-size:15px; border-left:4px solid #0073b7; margin-top: 0px;padding-left: 2px;color:#777;
+    }
+    .NewStore .StoreAdd{
+        text-align: center;
+    }
+    .NewStore .StoreAdd .StoreSearch span b{
+        font-size:16px;
+    }
+    .NewStore .StoreAdd .StoreSearch .input-group{
+        margin-bottom:2px;
+    }
+    .NewStore .StoreAdd .StoreSearch p{
+        margin:auto;color:#b9b9b9; 
+        padding-top: 0px;
+    }
+    .NewStore .StoreAdd .StoreName{
+        margin:15px;
+    }
+    .NewStore .StoreAdd .StoreName #container{
+        width:603px;
+        height:400px; 
+        margin:15px auto;
+    }
+     .NewStore .StoreAdd .StoreName .spanA{
+        padding-top:12px;height:50px;font-size:25px;
+     }
+      .NewStore .StoreAdd .StoreName #mendian{
+        color:#0073b7; font-size:25px;
+     }
+     .CityInput{
+        width:10%;
+        margin-top: 20px;
+      }
+      .ADDInput{
+        width:30%;  
+        margin-top: 20px;
+      }
+      .SearBtn{
+        height:34px;
+        margin-top: 20px;
+      }
+      .SearBtn button{
+        padding:7px 13px;
+      }
+    @media screen and (max-width: 1024px){
+      .NewStore{
+        padding-top: 9px;
+        padding:0px 15px 0 15px;
+     }
+     .NewStore .row .col-xs-12 .box{
+        margin-bottom: 0px;
+     }
+     .NewStore .StoreTitle h3{
+        font-size: 13px;
+        margin-bottom: 4px;
+     }
+     .NewStore .StoreAdd .StoreSearch span b{
+        font-size: 12px;
+     }
+     .NewStore .StoreAdd .StoreSearch .input-group button{
+        padding:5px 12px;
+        font-size: 10px
+     }
+     .NewStore .StoreAdd .StoreSearch .input-group input{
+        height:29px;
+        padding:4px 12px;
+        font-size: 12px;
+     }
+      .NewStore .StoreAdd .StoreSearch .input-group{
+        margin-top: 4px !important;
+      }
+      .NewStore .StoreAdd .StoreName #container{
+        height:300px;
+      }
+      .NewStore .StoreAdd .StoreName{
+        margin:0px;
+      }
+      .NewStore .StoreAdd .StoreName #container{
+        margin-bottom:7px;
+      }
+      .NewStore .StoreAdd .StoreName .spanA{
+        font-size: 15px;
+      }
+      .NewStore .StoreAdd .StoreName #mendian{
+        font-size: 20px;
+      }
+      .NewStore .StoreAdd .StoreButton .input-group{
+        margin:5px 10px 5px 0;
+      }
+      .NewStore .StoreAdd .StoreButton .input-group button{
+        padding:3px 10px;
+        font-size: 10px;
+      }
+      .CityInput{
+        width:10%;margin-right: 5px;
+      }
+      .ADDInput{
+        width:35%; margin-left: 0px;margin-right: 0px;
+      }
+      .SearBtn{
+        margin-left:0px;
+
+      }
+      .SearBtn{
+        padding:5px 9px;
+      }
+
+  }
+  /*xinjian end*/
+  /*kaitong*/
+       .ContentWifi .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .ContentWifi .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .ContentWifi .StoreTitle h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+    }
+    .ContentWifi .WifiImg{
+        padding-top: 3%;
+        padding-bottom: 3%;
+    }
+    .ContentWifi .WifiImg .box-profile{
+        float: right;
+    }
+    .ContentWifi .WifiImg img{
+        height:100px;
+        width:100px;
+    }
+     .ContentWifi .WifiImg p{
+        text-align: center; 
+        padding-top: 2%;
+    }
+    .ContentWifi .WifiOpen{
+        height:120px;line-height:180px;padding-left:3%;
+    }
+    .ContentWifi .WifiOpen button{
+        padding:8px 30px;
+        background-color:#0073b7;
+        color:#fff;
+        letter-spacing:8px; 
+        font-size:15px;
+    }
+    /*kaitong end*/
+    /*kaitong*/
+     .ContentWifi .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .ContentWifi .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .ContentWifi .StoreTitle h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+    }
+    .ContentWifi .WifiImg{
+        padding-top: 3%;
+        padding-bottom: 3%;
+    }
+    .ContentWifi .WifiImg .box-profile{
+        float: right;
+    }
+    .ContentWifi .WifiImg img{
+        height:100px;
+        width:100px;
+    }
+     .ContentWifi .WifiImg p{
+        text-align: center; 
+        padding-top: 2%;
+    }
+    .ContentWifi .WifiOpen{
+        height:120px;line-height:180px;padding-left:3%;
+    }
+    .ContentWifi .WifiOpen button{
+        padding:8px 30px;
+        background-color:#0073b7;
+        color:#fff;
+        letter-spacing:8px; 
+        font-size:15px;
+    }
+    /*kaitong end*/
+    /*wechatspt*/
+
+    .AuthBinding .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .AuthBinding .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .AuthBinding .StoreTitle h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+    }
+    .AuthBinding .WifiOpen button{
+        padding:8px 30px;
+        background-color:#0073b7;
+        color:#fff;
+        letter-spacing:8px; 
+        font-size:15px;
+    }
+    .AuthBinding .WifiOpen{
+        height:120px;line-height:250px;padding-left:3%;
+    }
+    .AuthBinding .WifiImg{
+        padding-top: 3%;
+        padding-bottom: 3%;
+    }
+    .AuthBinding .WifiImg img{
+        height:150px;
+        width:150px;
+        float: right;
+    }
+  
+    @media screen and (max-width: 1024px){
+     
+     .AuthBinding .WifiOpen{
+        line-height:180px;
+    }
+    }
+    /*wechat3pt*/
+    /*set success*/
+       .StoreConfi .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .StoreConfi .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .StoreConfi .StoreTitle h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;color:#777;
+    }
+    
+     .StoreConfi .StoreSelect .Select1 span{
+        float: right;
+        line-height:111px;
+     }
+     .StoreConfi .StoreSelect .Select1 select{
+        width:30%; 
+        margin:40px 0; 
+        font-size:15px; 
+        padding:5px 0;
+     }
+     .StoreConfi .StoreSelect .Select2 span{
+        float:right; 
+        line-height:36px;
+        margin:0 0 40px 0;
+     }
+     .StoreConfi .StoreSelect .Select2 input{
+        width:30%; 
+        margin:0 0 40px 0;
+        border:1px solid #a9a9a9;
+     }
+    @media screen and (max-width: 1024px){
+     
+     .StoreConfi{
+        padding-top: 9px;
+        padding:15px 15px 0 15px;
+     }
+     .StoreConfi .row .col-xs-12 .box{
+        margin-bottom: 0px;
+     }
+     .StoreConfi .StoreTitle h3{
+        font-size: 13px;
+        margin-bottom: 4px;
+     }
+     .StoreConfi .StoreSelect .Select2 input{
+        width:50%;
+        border:1px solid #a9a9a9;
+      }
+      .StoreConfi .StoreSelect .Select1 select{
+        width:50%;
+      }
+    }
+
+    /*set success end*/
+    /*guanli*/
+    
+     .HomePage .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+     }
+     .HomePage .HomeUp .row{
+        margin:40px 0;
+     }
+     .HomePage .HomeUp .img-circle{
+        width:150px;height:150px; float:right;
+     }
+     .HomePage .HomeUp .HomeName ul{
+        list-style-type: none; 
+        line-height:60px; 
+        text-align: center; 
+        padding-left: 0px;
+        margin-left: 0px;
+        font-size: 15px;
+     }
+     .HomePage .HomeUp .HomeButton{
+      margin:20px 0;
+     }
+     .HomePage .HomeUp .HomeButton label{
+      float: left;
+     }
+     .HomePage .LeftRed{
+        width:35%; 
+        float:right; 
+        margin-right:15%; 
+        margin-top: 4%;
+        margin-bottom: 4%;
+     }
+
+     .HomePage .RightBlue{
+        width:35%; 
+        margin-left:5%; 
+        margin-top: 4%;
+        margin-bottom: 4%;
+     }
+     .HomePage .LeftRed label i,.HomePage .RightBlue label i{
+        float: left;
+     }
+     .HomePage .LeftRed label ul,.HomePage .RightBlue label ul{
+        list-style-type: none; 
+        padding-left:10px; 
+        float: left;
+     }
+     .HomePage .LeftRed .RedSum,.HomePage .RightBlue .BlueSum{
+        list-style-type: none; 
+        border:1px solid #000;
+        padding-left: 0px; 
+        margin-left: 0px;
+     }
+      .HomePage .LeftRed .RedSum .RedFirst{
+        background:#dd4b39; 
+        padding:15px 0; 
+        color:#fff; 
+        text-align: center; 
+        font-size:30px;
+     }
+      .HomePage .RightBlue .BlueSum .BlueFirst{
+        background:#0073b7; 
+        padding:15px 0; 
+        color:#fff; 
+        text-align: center; 
+        font-size:30px;
+     }
+      .HomePage .LeftRed .RedSum .RedSecond,.HomePage .RightBlue .BlueSum .BlueSecond{
+        text-align: center; margin:15% 0;
+      }
+    @media screen and (max-width: 1024px){
+   
+     .HomePage{
+        min-height: 200px;
+        padding-bottom: 0px;
+     }
+     .HomePage .box-body{
+        padding:0px;
+     }
+     .HomePage .HomeUp .row{
+        margin:20px 0;
+     }
+     
+     .HomePage .HomeUp .img-circle{
+        width:120px;
+        height:120px;
+      }
+      .HomeDown{
+        padding-top: 0px;
+      }
+      .HomePage .LeftRed label ul,.HomePage .RightBlue label ul{
+        font-size: 12px;
+      }
+      .HomePage .LeftRed{
+        width:50%;
+      }
+      .HomePage .RightBlue{
+        width:50%;
+      }
+      .HomePage .LeftRed .RedSum .RedFirst{
+        padding:5px 0;
+        font-size: 26px;
+      }
+      .HomePage .RightBlue .BlueSum .BlueFirst{
+        padding:5px 0;
+        font-size: 26px;
+      }
+   }
+    /*guanli end*/
+    /*setting*/
+     .SetSuccess .row .col-xs-12 .box{
+        border-top:0px solid #fff;
+    }
+    .SetSuccess .StoreTitle{
+         border-bottom:1px solid #d2d6de ;
+    }
+    .SetSuccess .StoreTitle h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+    }
+    
+     .SetSuccess .SetWI .row{
+        margin:40px 0;
+     }
+     .SetSuccess .SetWI .row img{
+        float: right;
+     }
+     .SetSuccess .SetWI .row .con{
+        margin:20px 0;
+     }
+
+    /*setting end*/

@@ -1,0 +1,88 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+{% endblock %}
+{% block content %}
+<section class="content-header AllTitle FormBlock">
+  <h1>
+    <span><a href="#">微信认证</a></span> 
+  </h1>        
+</section>
+<section class="WeChatStep" style="background:#fff;padding:20px;margin:20px 0 0 20px;">
+<ol class="ui-step ui-step-5">
+    <li class="ui-step-start ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw" ></i>
+            <i class="ui-step-number">1</i>
+            <span class="ui-step-text">微信授权</span>
+        </div>
+    </li>
+    <li class="ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">2</i>
+            <span class="ui-step-text">插件开通</span>
+        </div>
+    </li>
+    <li class="ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">3</i>
+            <span class="ui-step-text">新建门店</span>
+        </div>
+    </li>
+    <li class="ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">4</i>
+            <span class="ui-step-text">门店配置</span>
+        </div>
+    </li>
+    <li class="ui-step-end ui-step-active">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">5</i>
+            <span class="ui-step-text">设置完成</span>
+        </div>
+    </li>
+</ol>
+</section>
+<section class="content SetSuccess" style="background:#fff;padding:20px;margin:0px 0 0 20px;">
+    <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <section class="SetWI">
+            	<div class="row">
+            		<div class="col-md-5 col-sm-5">
+                        <img src="/static/img/setting-success.png">
+                    </div>
+            		<div class="col-md-7 col-sm-7 con">恭喜你，微信连WIFI已配置成功</div>
+            	</div>
+            </section>
+            <section >
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group margin" style="float:right;">
+                            <a href="/wechat/">
+                                <button type="button" class="btn btn-block btn-primary btn-sm">查看数据</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+          </div>
+        </div> 
+       </div><!-- /.col --> 
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "scenic/base.html" %}
+
+{% block header %}
+<style>
+  ul.name{float:right;display:inline-block;list-style:none;margin:0;margin-left:20px;padding:0;font-size:80%;color:red}
+  ul.usernamename{float:right;display:inline-block;list-style:none;margin:0;margin-left:20px;padding:0;font-size:80%;color:red}
+  .helptext{text-size:10px;font-style:italic;color:#999}
+  .pdrow{padding:10px 30px}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="content-header">
+  <h1> 设置人数<small>add num</small> </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box box-info">
+        <div class="box-header with-border"><h3 class="box-title">人数</h3></div><!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" method="POST"> {% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+              {{ form }}
+              </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+              <button type="submit" class="btn btn-info pull-right">保存</button>
+            </div><!-- /.box-footer -->
+          </form>
+        </div><!-- /.box -->
+        <!-- general form elements disabled -->
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

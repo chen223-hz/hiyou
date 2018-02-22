@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hi游云平台</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="bookmark" type="image/x-icon" href="/static/favicon.ico/www.ico.ico"/>
+    <link rel="shortcut icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/bootstrap/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/bootstrap/css/ionicons.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/css/skins/skin-blue-light.min.css">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/toastr/toastr.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css">
+    <link rel="stylesheet" href="/static/css/plugins.min.css">
+    <link rel="stylesheet" href="/static/css/components.min.css/">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.min.css/">
+    <link rel="stylesheet" href="/static/css/bootstrap-fileinput.css/">
+    <link rel="stylesheet" href="/static/css/daterangepicker.min.css">
+    <link rel="stylesheet" href="/static/css/skin-one.css">
+    <style type="text/css">
+        body,a{
+          color:#33618f;
+        }
+        .box-body input {
+          line-height: 30px;
+          /*width: 50%;*/
+          border-radius: 6px;   
+
+        }
+      .box-body select {
+          line-height: 30px;
+          /*margin:20px;*/
+          width: 20%;
+          font-size: 20px;
+          border-radius: 6px;   
+        }
+        .SetMan .inner .icon img{
+          width:20%;
+          float: right;
+          margin:35px 20px 0 20px;
+        }
+        .SetMan .inner .label{
+          padding:0;
+        }
+       
+         @media screen and (max-width: 1024px){
+          .SetMan .inner .icon img{
+            
+            margin:35px 0 0 20px;
+          }
+         }
+         .EquMan .inner .icon img{
+          width:20%;
+          float: right;
+          margin:35px 20px 0 20px;
+        }
+        .EquMan .inner .label{
+          padding:0;
+        }
+        .row{
+          margin-right: 0px; 
+        }
+  
+   @media screen and (max-width: 1024px){
+    .EquMan .inner .icon img{
+      width:35%;
+      margin:47px 0 0 20px;
+    }
+   }
+        .MiddlePage{
+          text-align: center;
+        }
+      .DevAdd .box-body select{
+        width:50%;
+        font-size: 15px;
+        padding:7px;
+        color:#000;
+      }
+      .DevAdd .helptext{font-size:10px;font-style:italic;color:#999}
+      .DevAdd .form-horizontal .control-label {
+        padding-top: 23px;
+        margin-bottom: 0;
+        text-align: right;
+      }
+     
+      /*beard nav*/
+      .AllTitle{
+        padding:0!important; 
+     }
+     .AllTitle h1{
+        height:45px; 
+        line-height:40px;
+     }
+     .AllTitle h1 a{
+       font-weight: 500;
+     }
+      @media screen and (max-width: 1024px){
+         .AllTitle h1{
+            height:35px; 
+         }
+         .AllTitle h1 small i{
+            font-size:11px;
+         } 
+         .AllTitle h1 small span a{
+            font-size: 12px
+         }
+         .AllTitle h1 small{
+            padding-top: 8px;
+         }
+   }
+   /*bread nav end*/
+
+    </style>
+    {% block header %}{% endblock %}
+  </head>
+  <body class="hold-transition skin-blue-light sidebar-mini">
+    <div class="wrapper" style="overflow: auto;">
+      {% include "widgets/header.html" %}
+      <aside class="main-sidebar" style="position: fixed;">
+          <section class="sidebar">
+            {% block sidebar %}
+              {% include "widgets/sidebar.html" %}
+            {% endblock %}
+          </section>
+      </aside>    
+      <div class="content-wrapper">
+       {% block content %}{% endblock %}
+      </div>
+    </div>
+    <script src="http://cdn.doublecom.net/adminlte2/bootstrap/js/jquery.min.js"></script>
+    <script src="http://cdn.doublecom.net/adminlte2/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/app.min.js"></script>
+    <script src="http://cdn.doublecom.net/adminlte2/plugins/toastr/toastr.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.wizard.min.js"></script>
+    <script src="/static/js/bootstrap-multiselect.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+    <script src="/static/js/bootstrap-table.min.js"></script>
+    <script src="/static/js/moment.min.js"></script>
+    <script src="/static/js/daterangepicker.min.js"></script>
+    <script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/static/js/bootstrap-fileinput.js"></script>
+    <script type="text/javascript">
+       $(function(){
+          {% if messages %}
+            {% for message in messages %}
+              {% if message.tags == 'success' %}
+              toastr["success"]("{{ message }}", "success");
+              {% else %}
+              toastr["error"]("{{ message }}", "error");
+              {% endif %}
+            {% endfor %}
+          {% endif %} 
+         });
+    </script>
+    {% block script %} {% endblock %}
+  </body>
+</html>

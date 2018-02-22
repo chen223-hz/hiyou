@@ -1,0 +1,92 @@
+<style type="text/css">
+  .sidebar-menu>li.active>a{
+      background:#e8e8e8 !important;
+  }
+  .secondmenu a {
+            font-size:0.7vw;
+            color: #4A515B;
+            padding:0.5vw 1.5vw!important;
+  }
+  .secondmenu a i {
+    padding-right:0.2vw;
+  }
+</style>
+<aside class="main-sidebar">
+  <section class="sidebar">
+    <ul class="sidebar-menu" >
+      <li {% if request.get_full_path == '/scenic/' %} class="active" {% endif %}>
+        <a {% if request.user.group.role == 0 %} href="/headquar/" {% else %} href="/scenic/"{% endif %}>
+        <i class="glyphicon glyphicon-home"></i>
+        <span>管理首页</span>
+        </a>
+      </li>
+      <li {% if request.get_full_path|slice:":12" == '/scenic/dev/' %} class="active" {% endif %} {% if request.get_full_path == '/scenic/off/dev/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-9:"  == '/details/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-13:"  == '/dev_latiude/' %} class="active" {% endif %} >
+        <a {% if request.user.group.role == 0 %} href="/headquar/dev/" {% else %} href="/scenic/dev/"{% endif %}>
+        <i class="fa  fa-cubes"></i>
+        <span>设备管理</span>
+        </a>
+      </li>
+	  {% if request.user.group.role == 0%}
+	  <li {% if request.get_full_path|slice:":16" == '/headquar/agent/' %} class="active" {% endif %} {% if request.get_full_path == '/headquar/new/agent/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-6:"  == '/user/' %} class="active" {% endif %}>
+          <a href="/headquar/agent/">
+          <i class="fa fa-home" style="font-size: 15px;"></i>
+          <span>代理商管理</span></a>
+        </li>
+	  {% endif %}
+      <li {% if request.get_full_path == '/wechat/' %} class="active" {% endif %}>
+        <a href="/wechat/">
+        <i class="fa fa-weixin"></i>
+        <span>微信认证</span>
+        </a>
+      </li>
+	  {% if request.user.group.role == 0%}
+	  <li {% if request.get_full_path|slice:":16" == '/headquar/agent/' %} class="active" {% endif %} {% if request.get_full_path == '/headquar/new/agent/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-6:"  == '/user/' %} class="active" {% endif %}>
+          <a href="/headquar/scenic/">
+          <i class="fa fa-cog" style="font-size: 15px;"></i>
+          <span>景点类型管理</span></a>
+        </li>
+	  {% endif %}
+    {% if request.user.group.role != 0%}
+	  <li {% if request.get_full_path == '/scenic/text/' %} class="active" {% endif %}>
+        <a href="/scenic/text/">
+        <i class="fa fa-pencil"></i>
+        <span>内容发布</span>
+        </a>
+      </li>
+      <li {% if request.get_full_path == '/scenic/probe/' %} class="active" {% endif %} {% if request.get_full_path == '/scenic/tanzclient/' %} class="active" {% endif %} {% if request.get_full_path == '/scenic/tanz/' %} class="active" {% endif %}>
+        <a {% if request.user.group.role == 0 %} href="/headquar/" {% else %} href="/scenic/probe/"{% endif %}>
+        <i class="fa fa-bullseye"></i>
+        <span>探针数据</span>
+        </a>
+      </li>
+      <li >
+          <a href="#systemSetting" class="nav-header collapsed active" data-toggle="collapse">
+            <i class="glyphicon glyphicon-cog"></i>
+            线上商城
+            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+          </a>
+          <ul id="systemSetting" class="nav nav-list collapse secondmenu" style="height: 0px">
+            <li><a  href="/scenic/commodity/"><i class="glyphicon glyphicon-user"></i>商品管理</a></li>
+            <li><a href="/scenic/order/"><i class="glyphicon glyphicon-th-list"></i>订单管理</a></li>
+          </ul>
+      </li>
+      {% endif %}
+      {% if request.user.group.role == 0 %}
+       <li style=" transition:border-left-color 0.3s ease; -webkit-transition:border-left-color 0.3s ease; position:absolute; bottom:20px;position:fixed;">
+              <a href="#" style="padding-left: 16px; color:#ccc; width:100%;">
+               <img src="/static/img/logo-headquar.png" style="padding-right:7px;">
+             <span>总部端</span>
+              </a>
+    </li>
+	  {% else %}
+	<li  style=" transition:border-left-color 0.3s ease; -webkit-transition:border-left-color 0.3s ease; position:absolute; bottom:20px;">
+        <a href="javascript:" style="padding-left: 16px; color:#ccc; width:100%;">
+         <img src="/static/img/logo-scenic.png" style="padding-right:7px;">
+       <span>景区端</span>
+        </a>
+      </li>
+	  {% endif %}
+    </ul>
+     
+  </section>
+</aside>    

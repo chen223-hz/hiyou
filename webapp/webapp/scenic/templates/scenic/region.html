@@ -1,0 +1,294 @@
+{% extends "agent/index.html" %}
+
+{% block header %}
+<style type="text/css">     
+  #allmap {width: 100%; height:760px; overflow: hidden;}    
+  #result {width:100%;font-size:12px;}    
+  dl,dt,dd,ul,li{    
+      margin:0;    
+      padding:0;    
+      list-style:none;    
+  }    
+  p{font-size:12px;}    
+  dt{    
+      font-size:14px;    
+      font-family:"微软雅黑";    
+      font-weight:bold;    
+      border-bottom:1px dotted #000;    
+      padding:5px 0 5px 5px;    
+      margin:5px 0;    
+  }    
+  dd{    
+      padding:5px 0 0 5px;    
+  }    
+   #navmap .open>a, .nav .open>a:focus, .nav .open>a:hover{
+   
+    border-radius: 5px;
+   }
+   .nav-pills>li{
+    background-color: #eee;
+   }
+  .nav-pills>li>a{
+    border-top:0px;
+  }
+  #navmap>li>a{
+    padding:3px 15px;
+  }
+  #navmap>li>a:hover{
+    color:#337ab7;
+  }
+  label {
+    /* display: inline-block; */
+     max-width: none; 
+    margin-bottom: none; 
+    /* font-weight: 700; */
+}
+
+</style> 
+{% endblock %}
+
+{% block content %}
+<section class="content-header AllTitle">
+  <h1>
+    <small>
+      <i class="fa fa-tree"></i><span><a href="/agent/agent/">景区管理</a>><a href="javascript:location.reload();">区域管理</a></span>
+    </small> 
+  </h1>        
+</section>
+
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box" style="border-top:none;">
+        <div class="box-header">
+          <section style=" border-bottom:1px solid #d2d6de ;">
+               <h3 class="box-title" style="font-size:15px; border-left:4px solid #0073b7; margin-top: 0px;padding-left: 2px;color:#777;">{{ obj.name }}-全部区域</h3> 
+          </section>
+        </div>
+        <div class="box-body">
+          <div id="allmap" style="overflow:hidden;zoom:1;position:relative;">       
+            <div id="map" style="height:200%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;">    
+            </div>    
+          </div>         
+        </div>
+      </div>
+    </div>
+  </div>            
+</section>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=F0i6SrLmHquLVNLCqpExxPrj8mWVdFwx"></script>     
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>    
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />      
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script> 
+  <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+<script type="text/javascript">    
+var dv = ''
+var lis = ''
+var a = []
+var b = []
+var c 
+var blist = [];
+var lngg = []
+var latt = []
+pos('/agent/{{ obj.pk }}/region/',1)
+function pos(tx,nmu){ 
+  $.ajax({
+    url:tx,
+    data:{'lis':lis},
+    type:'post',
+    dataType:'JSON',
+    async:false,
+    success:function(d,s,x){
+      var data = d.data
+      bb = d.latitude
+      if(nmu==1){
+        var pointArray = [];
+        for(var j=0;j<d.lat.length;j++){
+          var b = []
+          var la=''
+          var tt = []
+          for(var k=0;k<d.lat[j].length;k++){
+            la = la+ d.lat[j][k].lng+','+d.lat[j][k].lat+';'
+            lngg.push(d.lat[j][k].lng)
+            latt.push(d.lat[j][k].lat)
+          }
+          tt['points']=la
+          tt['name'] = d.dat[j].name
+          blist.push(tt)
+
+        }
+        var poi = bb[0]; 
+      }
+      for(var i=0;i<data.length;i++){ 
+        var ul = '/agent/{{ obj.pk }}/'+data[i].pk+'/agent_map/'
+        dv  = dv+"<li><a href=" + ul + ">"+data[i].name+'</a></li>'
+      }
+      for(var h=0;h<bb.length;h++){ 
+        lngg.push(d.latitude[h].lng)
+        latt.push(d.latitude[h].lat)
+        a.push(new BMap.Point(d.latitude[h].lng,d.latitude[h].lat))
+      }
+    },
+    error:function(x,s,e){
+      alert(e)
+    }
+  }) 
+}
+var map = new BMap.Map("allmap"); // 创建地图实例，禁止点击地图底图
+    // 百度地图API功能 
+    function addDistrict() {
+    //使用计数器来控制加载过程
+   // districtLoading++;
+   drawBoundary();
+  
+}   
+var pArray = [];
+function click(evt) {
+  for(var i=0;i<pArray.length;i++){
+    pArray[i].setFillOpacity(0.1)
+  }
+  evt.target.setFillOpacity(0.5)
+  var opts = {
+    title: "", //标题
+    width: 50, //宽度
+    height: 40, //高度
+    panel : "panel", //检索结果面板
+    enableAutoPan : true, //自动平移
+    searchTypes :[
+    ]
+   
+  }
+  var infoWindow = new BMap.InfoWindow(evt.target.name, opts);  // 创建信息窗口对象          
+    map.openInfoWindow(infoWindow,evt.point); //开启信息窗口
+}
+
+function mouseover(evt) {
+    evt.target.label.setZIndex(99);
+    evt.target.label.setPosition(evt.point);
+    evt.target.label.show();
+}
+
+function mousemove(evt) {
+    evt.target.label.setPosition(evt.point);
+}
+
+function mouseout(evt) {
+    evt.target.label.hide();
+}
+         var styleOptions = {    
+        strokeColor:"red",    //边线颜色。    
+        fillColor:"#ffffff",      //填充颜色。当参数为空时，圆形将没有填充效果。    
+        strokeWeight: 3,       //边线的宽度，以像素为单位。    
+        strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。    
+        fillOpacity: 0.1,      //填充的透明度，取值范围0 - 1。    
+        strokeStyle: 'dashed' //边线的样式，solid或dashed。    
+    }
+   var polygo = new BMap.Polygon(a, styleOptions);  //创建多边形    
+      map.addOverlay(polygo);
+function drawBoundary() {
+    //包含所有区域的点数组
+    var pointArray = [];
+    //循环添加各闭合区域
+    for (var i = 0; i < blist.length; i++) {
+          var styleOptions = {    
+        strokeColor:"red",    //边线颜色。    
+        fillColor:"#ffffff",      //填充颜色。当参数为空时，圆形将没有填充效果。    
+        strokeWeight: 3,       //边线的宽度，以像素为单位。    
+        strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。    
+        fillOpacity: 0.1,      //填充的透明度，取值范围0 - 1。    
+        strokeStyle: 'solid' //边线的样式，solid或dashed。    
+    }
+        //添加显示用标签层
+        var label = new BMap.Label(blist[i].name, { offset: new BMap.Size(20, -10) });
+        label.hide();
+        map.addOverlay(label);
+
+        //添加多边形层并显示
+        var ply = new BMap.Polygon(blist[i].points, styleOptions); //建立多边形覆盖物
+        ply.name = blist[i].name;
+        ply.label = label;
+        pArray.push(ply)
+        ply.addEventListener("click", click);
+        map.addOverlay(ply);
+
+     var path = ply.getPath();
+        pointArray = pointArray.concat(path);
+    }
+
+}
+addDistrict();
+if(bb.length==0 && lngg.length==0){
+  var poi = new BMap.Point(121.370518,31.113398);
+}else{
+  var lg = (Math.max.apply(Math,lngg)+Math.min.apply(Math,lngg))/2;
+  var lt =  (Math.max.apply(Math,latt)+Math.min.apply(Math,latt))/2;
+  var maxLng = Math.max.apply(Math,lngg) 
+  var minLng = Math.min.apply(Math,lngg) 
+  var maxLat = Math.max.apply(Math,latt)  
+  var minLat = Math.min.apply(Math,latt)      
+  var zoom = getZoom(maxLng, minLng, maxLat, minLat);  
+  map.centerAndZoom(new BMap.Point(lg,lt), zoom+1); 
+ // var poi =new BMap.Point(lg,lt);
+
+} 
+function getZoom (maxLng, minLng, maxLat, minLat) {  
+    var zoom = ["50","100","200","500","1000","2000","5000","10000","20000","25000","50000","100000","200000","500000","1000000","2000000"]//级别18到3。  
+    var pointA = new BMap.Point(maxLng,maxLat);  // 创建点坐标A  
+    var pointB = new BMap.Point(minLng,minLat);  // 创建点坐标B  
+    var distance = map.getDistance(pointA,pointB).toFixed(1);  //获取两点距离,保留小数点后两位  
+    for (var i = 0,zoomLen = zoom.length; i < zoomLen; i++) {  
+        if(zoom[i] - distance > 0){  
+            return 18-i+3;//之所以会多3，是因为地图范围常常是比例尺距离的10倍以上。所以级别会增加3。  
+        }  
+    };  
+}  
+function setZoom(points){  
+    if(points.length>0){  
+   
+    }else{  
+        //没有坐标，显示全中国  
+        map.centerAndZoom(new BMap.Point(103.388611,35.563611), 5);    
+    }   
+}  
+map.centerAndZoom(poi, 16);    
+map.enableScrollWheelZoom();  
+      
+  function ZoomControl(){
+// 默认停靠位置和偏移量
+  this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+  this.defaultOffset = new BMap.Size(10, 10);
+}
+
+// 通过JavaScript的prototype属性继承于BMap.Control
+ZoomControl.prototype = new BMap.Control();
+
+// 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+// 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+ZoomControl.prototype.initialize = function(map){
+// 创建一个DOM元素
+var div = document.createElement("div");
+// 添加文字说明
+//'<ul ><li class="dropdown user user-menu"><a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="label label-primary">全部区域</span></a><ul class="dropdown-menu"><li style="padding:0 0 0 15px;">区域列表</li><li><a href="/agent/{{ obj.pk }}/add_map/"><i class="fa fa-plus"> </i></a></li>'+dv+'</ul></li></ul>''
+div.innerHTML ='<ul class="nav nav-pills" id="navmap"> <li class="dropdown all-camera-dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#"> 全部区域 <b class="caret"></b> </a> <ul class="dropdown-menu"><li data-filter-camera-type="all"><a data-toggle="tab" href="#">区域列表</a></li><li data-filter-camera-type="Alpha"><a href="/agent/{{ obj.pk }}/add_map/"><i class="fa fa-plus"> </i></a></li>'+dv+'</ul></li></ul>' 
+// 设置样式
+div.style.cursor = "pointer";
+
+
+// 添加DOM元素到地图中
+map.getContainer().appendChild(div);
+// 将DOM元素返回
+return div;
+}
+// 创建控件
+var myZoomCtrl = new ZoomControl();
+// 添加到地图当中
+map.addControl(myZoomCtrl);
+
+
+ 
+
+</script>    
+ {% endblock %}

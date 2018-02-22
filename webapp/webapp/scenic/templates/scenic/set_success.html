@@ -1,0 +1,135 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+{% endblock %}
+{% block content %}
+<section class="content-header AllTitle FormBlock">
+  <h1>
+    <span><a href="#">微信认证</a></span>
+  </h1>        
+</section>
+<section class="WeChatStep" style="background:#fff;padding:20px;margin:20px 0 0 20px;">
+<ol class="ui-step ui-step-5">
+    <li class="ui-step-start ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw" ></i>
+            <i class="ui-step-number">1</i>
+            <span class="ui-step-text">微信授权</span>
+        </div>
+    </li>
+    <li class="ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">2</i>
+            <span class="ui-step-text">插件开通</span>
+        </div>
+    </li>
+    <li class="ui-step-done">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">3</i>
+            <span class="ui-step-text">新建门店</span>
+        </div>
+    </li>
+    <li class="ui-step-active">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">4</i>
+            <span class="ui-step-text">门店配置</span>
+        </div>
+    </li>
+    <li class="ui-step-end">
+        <div class="ui-step-line">-</div>
+        <div class="ui-step-icon">
+            <i class="iconfontw"></i>
+            <i class="ui-step-number">5</i>
+            <span class="ui-step-text">设置完成</span>
+        </div>
+    </li>
+</ol>
+</section>
+<section class="content StoreConfi" style="background:#fff;padding:20px;margin:0px 0 0 20px;">
+    <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <section class="StoreSelect">
+            	<div class="row Select1">
+            		<div class="col-md-5 col-sm-4" >
+                        <span><b>选择门店:</b></span>
+                    </div>
+            		<div class="col-md-7 col-sm-8" >
+
+            			<select name="select"  id= "chose">
+						{% for obj in shop_name %}
+                           <option value="{{obj.shop_id}}" class="choose">{{obj.shop_name}}</option>
+                            {% endfor %}							
+						</select>
+            		</div>
+            	</div>
+                <div class="row Select2">
+                    <div class="col-md-5 col-sm-4">
+                        <span><b>设置网络名（SSID）:</b></span>
+                    </div>
+                    <div class="col-md-7 col-sm-8">
+
+                        <input type="text" name="" id="ssid">
+
+                    </div>
+                </div>
+            </section>
+            <section >
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group margin" style="float:right;">
+
+                                <button type="button" class="btn btn-block btn-primary btn-sm"id = "xiayibu">下一步</button>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+          </div>
+        </div> 
+       </div><!-- /.col --> 
+    </div>
+</section>
+{% endblock %}
+{% block script %}
+<script charset="utf-8" src="/static/js/jquery-1.9.1.min.js"></script>
+<script>
+$(function(){
+  $("#xiayibu").click(function(){
+	  var id = $("#chose option:selected").val();
+	  var ssid = $("#ssid").val();
+	  var name = $("#chose option:selected").text();
+	  $.ajax({
+		url:"/scenic/setting/",
+		data:{'id':id,
+		      'ssid':ssid,
+			  'name':name},
+		type:'POST',
+		cache:false,
+		success:function(d,s,x){
+		if(d!='no'){
+		//alert(d)
+			window.location.assign('/scenic/setting/?d='+d)
+		}else{
+		alert('绑定失败')
+		}
+  },
+		error:function(x,s,e){
+		//alert(e)
+	}
+            })
+  })
+ })
+</script>
+
+{% endblock %}

@@ -1,0 +1,1035 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+<link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/datatables/dataTables.bootstrap.css">
+<style type="text/css">
+    .EquList .box{
+      border-top:0px solid #fff;
+    }
+    .EquList .tab-pane section{
+       border-bottom:1px solid #d2d6de ;
+    }
+    div.dataTables_filter {
+      text-align: start;
+      margin: 20px 0;
+    }
+    .SetMac{
+        margin-bottom: 0px;
+    }
+    
+</style>
+{% endblock %}
+{% block content %}
+<section class="TopTitle">
+	<section class="content-header AllTitle">
+		<h1>
+			<span><a href="javascript:location.reload();">商品管理</a></span>
+		</h1>
+	</section>
+	<section class="CommodityTab">
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">已上架商品</a></li>
+			<li role="presentation"><a href="#profile" role="tab" data-toggle="tab">未上架商品</a></li>
+			<li role="presentation"><a href="#messages" role="tab" data-toggle="tab">商品分组</a></li>
+		</ul>
+	</section>
+	
+</section>
+<section class="content">
+  <div class="row EquList">
+    <div class="col-xs-12" style="padding-right:0px;">
+      <div class="box">
+        <div class="box-body" >
+            <div class="tab-content">    
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <section class="FormBlock">
+						<form class="form-inline" role="form">
+							<div class="btn-group">
+								<a type="button" class="dropdown-toggle" data-toggle="dropdown" id="saleName" name='1'>
+									商品名称 <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li value="商品名称"><a href="javascript:;" onclick="choose('商品名称','1')" >商品名称</a></li>
+									<li value="商品分组"><a href="javascript:;" onclick="choose('商品分组','2')" >商品分组</a></li>
+								</ul>
+							</div>
+							<div class="form-group input-group-sm" >
+								<label class="sr-only" for="devNameSearch">devNameSearch</label>
+								<input type="text" class="form-control" placeholder="请输入信息" aria-describedby="sizing-addon2" id="insearch">
+							</div>
+							<div class="form-group ButtonSearch">
+								<button type="button" class="btn btn-sm" id="searchBegin">
+									<i class="fa fa-search" ></i>查询 
+								</button>
+							</div>
+							<div class="btn-group ButtonSelect">
+								<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									商品管理 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="/scenic/commodity/add_sales/{{pk}}/">添加商品</a></li>
+									<li><a href="javascript:;" id="rebootBtn">批量下架</a></li>
+								</ul>
+							</div>
+						</form>
+					</section>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="portlet-body">
+                                <table id="mytable3"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="MiddlePage"></div> 
+                </div>    
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <section class="FormBlock">
+						<form class="form-inline" role="form">
+							<div class="btn-group">
+								<a type="button" class="dropdown-toggle" data-toggle="dropdown" id="saleName2" name='3'>
+									商品名称 <span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="javascript:;" onclick="choose('商品名称','3')">商品名称</a></li>
+									<li><a href="javascript:;" onclick="choose('商品分组','4')">商品分组</a></li>
+								</ul>
+							</div>
+							<div class="form-group input-group-sm" >
+								<label class="sr-only" for="devNameSearch">devNameSearch</label>
+								<input type="text" class="form-control" placeholder="请输入信息" aria-describedby="sizing-addon2" id="insearch2">
+							</div>
+							<div class="form-group ButtonSearch">
+								<button type="button" class="btn btn-sm" id="searchBegin2">
+									<i class="fa fa-search" ></i>查询 
+								</button>
+							</div>
+							<div class="btn-group ButtonSelect">
+								<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									商品管理 <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a href="javascript:;" id="upGoods">批量上架</a></li>
+									<li><a href="javascript:;" id="deleteGoods">批量删除</a></li>
+								</ul>
+							</div>
+						</form>
+					</section>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div>
+                                <div class="portlet-body">
+                                   <table id="mytable4"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="MiddlePage"></div>     
+                </div>    
+                <div role="tabpanel" class="tab-pane" id="messages">
+                   <section class="FormBlock">
+						<form class="form-inline" role="form">
+							<div class="form-group input-group-sm" >
+								<label class="sr-only" for="devNameSearch">devNameSearch</label>
+								<input type="text" class="form-control" placeholder="请输入信息" aria-describedby="sizing-addon2" id="insearch3">
+							</div>
+							<div class="form-group ButtonSearch">
+								<button type="button" class="btn btn-sm" id="searchBegin3">
+									<i class="fa fa-search" ></i>查询 
+								</button>
+							</div>
+							<div class="btn-group ButtonSelect">
+								<button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="addGroup">
+									增加分组
+								</button>
+								
+							</div>
+						</form>
+					</section>
+				   <div class="row">
+                        <div class="col-sm-12">
+                                <div class="portlet-body">
+                                    <table id="mytable5"></table>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="MiddlePage"></div>     
+                </div>    
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>  
+</section>
+	<div class="modal fade in" id="previewDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">商品详情预览（手机二维码）</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" style="margin-left: 0px;">
+						<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516162030103&di=196e1584908dbf1109f3ba87450290bb&imgtype=0&src=http%3A%2F%2Fimg18.house365.com%2Fnewcms%2F2015%2F08%2F04%2F143867106455c060d8da017.png" alt="" style="width: 100%">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="rebootDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">商品下架</h4>
+				</div>
+				<div class="modal-body">
+					确认要下架已选中的商品吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn red btn-outline" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn green" data-dismiss="modal" id="btnDownList">立即下架
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="upDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">商品上架</h4>
+				</div>
+				<div class="modal-body">
+					确认要上架这件商品吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn red btn-outline" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn green" data-dismiss="modal" id="btnUpList">立即上架
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="delDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="delDlgTitle">删除商品</h4>
+				</div>
+				<div class="modal-body" id="delDlgContent">
+					确认要删除这件商品吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn green btn-outline" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn red" data-dismiss="modal" id="Delete">立即删除
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="delGroupDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">删除分组</h4>
+				</div>
+				<div class="modal-body">
+					确认要删除分组吗？
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn green btn-outline" data-dismiss="modal">取消
+					</button>
+					<button type="button" class="btn red" data-dismiss="modal" id="setDevParamOk">立即删除
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="addGroupDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="group-title">新增分组</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form class="form-horizontal form-row-seperated">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="control-label col-md-3">分组名称</label>
+										<div class="col-md-6">
+											<input type="text" id="devNameInput" class="form-control" value="">
+											<span class="help-block"> 必填 </span>
+										</div>
+									</div>
+							</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn red btn-outline" data-dismiss="modal">取消
+						</button>
+						<button type="button" class="btn green" data-dismiss="modal" onclick="addGroup()">立即保存
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade in" id="editGroupDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title" id="group-title">编辑分组</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form class="form-horizontal form-row-seperated">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="control-label col-md-3">分组名称</label>
+										<div class="col-md-6">
+											<input type="text" id="editNameInput" class="form-control" value="">
+											<span class="help-block"> 必填 </span>
+										</div>
+									</div>
+							</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn red btn-outline" data-dismiss="modal">取消
+						</button>
+						<button type="button" class="btn green" data-dismiss="modal" onclick="editGroup()" id="setEditGroup">立即保存
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+	$(document).ready(function() {
+		// 初始化已上架商品列表
+		$('#mytable3').bootstrapTable({
+			pagination: true,
+            pageSize: 10,
+			reorderableRows: true,
+			striped: true,
+			showColumns: false,
+			columns: [{
+				field: 'state',
+				align: 'center',
+				valign: 'middle',
+				checkbox: true,
+			},{
+				field: 'id',
+				title: 'ID',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: false,
+			},{
+				field: 'name',
+				title: '商品名称',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				width: '150px',
+				visible: true,
+			}, {
+				field: 'group',
+				title: '商品分组',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'price',
+				title: '商品价格',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					return ("￥" + returnFloat(value));
+				},
+			}, {
+				field: 'stock',
+				title: '库存',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'allSales',
+				title: '总销量',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'upTime',
+				title: '上架时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'operate',
+				title: '操作',
+				align: 'center',
+				valign: 'middle',
+				sortable: false,
+				width: '250px',
+				formatter: function(value, row, index) {
+					var preview = '<a class="preview btn" style="margin-right: 10px; color:#53a3f7!important;" href="javascript:void(0)" >' + '<i class="fa fa-eye" style="margin-right: 5px;"></i>' + '预览' + '</a>';
+					var down = '<a class="down btn" style="color:#53a3f7!important;" onclick="xiajia('+value+')" >' + '<i class="fa  fa-arrow-down" style="margin-right: 5px"></i>' + '下架' + '</a>';
+					return (preview + down);
+				},
+				events: 'operateEvents'
+			}],
+		});
+
+		var data = [];
+		var data2 = [];
+		var data3 = [];
+		
+		$.ajax({
+			url:"/scenic/commodity/ajax/{{pk}}/",
+			data:{},
+			type:'GET',
+			cache:false,
+			dataType:'JSON',
+			success:function(d,s,x){
+				for (var i = 0; i < d.length; i++) {
+					if(d[i].grounding == 1){
+		            data.push({
+		                name: d[i].name,
+		                group: d[i].group,
+		                price: d[i].price,
+		                stock: d[i].stock,
+		                allSales: d[i].sales,
+		                upTime: d[i].date,
+		                operate:d[i].operate,
+		                id:d[i].operate
+		            })
+		        }else if(d[i].grounding == 0){
+		        	data2.push({
+		                name: d[i].name,
+		                group: d[i].group,
+		                price: d[i].price,
+		                stock: d[i].stock,
+		                allSales: d[i].sales,
+		                upTime: d[i].date,
+		                operate:d[i].operate,
+		                id:d[i].operate
+		            })
+		        }else{
+		        	data3.push({
+		                name: d[i].name,
+		                group: d[i].gr,
+		                upTime: d[i].date,
+		                operate:d[i].operate
+		            })
+		        }
+		        }
+		        $('#mytable3').bootstrapTable('append', data);
+		        $('#mytable4').bootstrapTable('append', data2);
+		        $('#mytable5').bootstrapTable('append', data3);
+			},
+			error:function(x,s,e){
+				//alert(e)
+			}
+		})
+	        //新增表格数据
+        
+        
+        
+
+        // checkbox居中设置
+        $(".bs-checkbox").css({ 'vertical-align': 'middle' });
+        $('#mytable3').on('all.bs.table', function() {
+            $(".bs-checkbox").css({ 'vertical-align': 'middle' });
+        });
+
+        // 批量上下架
+        $("#rebootBtn").click(function(event) {
+            event.preventDefault();
+            // event.stopPropagation();
+            var rows = $('#mytable3').bootstrapTable('getSelections');
+            if (rows.length == 0) {
+                swal({
+                    title: "下架失败",
+                    text: "请先选择需要下架的商品",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "确认",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                })
+            } else {
+                // $("#rebootDlg").modal();
+                var ww = []
+                for(var i=0;i<rows.length;i++){
+                	ww.push(rows[i].id)
+                }
+                $.ajax({
+			      url:'/scenic/commodity/down_sales/ajax/',
+			      data:{'id':JSON.stringify(ww)},
+			      type:'POST',
+			      cache:false,
+			      success:function(d,s,x){
+			      	if(d == 'success'){
+			      	window.location.href="/scenic/commodity/"
+			      }
+			      },
+			      error:function(x,s,e){
+			        //alert(e)
+			      }
+			    })
+            }
+        })
+        $("#upGoods").click(function(event) {
+            event.preventDefault();
+            // event.stopPropagation();
+            var rows = $('#mytable4').bootstrapTable('getSelections');
+            if (rows.length == 0) {
+                swal({
+                    title: "上架失败",
+                    text: "请先选择需要上架的商品",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "确认",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                })
+            } else {
+                var ee = []
+                for(var i=0;i<rows.length;i++){
+                	ee.push(rows[i].id)
+                }
+                $.ajax({
+			      url:'/scenic/commodity/up_sales/ajax/',
+			      data:{'id':JSON.stringify(ee)},
+			      type:'POST',
+			      cache:false,
+			      success:function(d,s,x){
+			      	if(d == 'success'){
+			      	window.location.href="/scenic/commodity/"
+			      }
+			      },
+			      error:function(x,s,e){
+			        //alert(e)
+			      }
+			    })
+            }
+        })
+        $("#deleteGoods").click(function(event) {
+            event.preventDefault();
+            // event.stopPropagation();
+            var rows = $('#mytable4').bootstrapTable('getSelections');
+            if (rows.length == 0) {
+                swal({
+                    title: "删除失败",
+                    text: "请先选择需要删除的商品",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "确认",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                })
+            } else {
+                var rr = []
+                for(var i=0;i<rows.length;i++){
+                	rr.push(rows[i].id)
+                }
+                $.ajax({
+			      url:'/scenic/commodity/delete_sales/ajax/',
+			      data:{'id':JSON.stringify(rr)},
+			      type:'POST',
+			      cache:false,
+			      success:function(d,s,x){
+			      	if(d == 'success'){
+			      	window.location.href="/scenic/commodity/"
+			      }
+			      },
+			      error:function(x,s,e){
+			        //alert(e)
+			      }
+			    })
+            }
+        })
+		$('#mytable4').bootstrapTable({
+			pagination: true,
+            pageSize: 10,
+			reorderableRows: true,
+			striped: true,
+			showColumns: false,
+			columns: [{
+				field: 'state',
+				align: 'center',
+				valign: 'middle',
+				checkbox: true,
+			},{
+				field: 'id',
+				title: 'ID',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: false,
+			}, {
+				field: 'name',
+				title: '商品名称',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				width: '150px',
+				visible: true,
+			}, {
+				field: 'group',
+				title: '商品分组',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'price',
+				title: '商品价格',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					return ("￥" + returnFloat(value));
+				},
+			}, {
+				field: 'stock',
+				title: '库存',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'allSales',
+				title: '总销量',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'upTime',
+				title: '创建时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'operate',
+				title: '操作',
+				align: 'center',
+				valign: 'middle',
+				sortable: false,
+				width: '350px',
+				formatter: function(value, row, index) {
+					var up = '<a class="up btn " style="margin-right: 10px; color:#53a3f7!important;" onclick="shangjia('+value+')" >' + '<i class="fa fa-arrow-up" style="margin-right: 5px;"></i>' + '上架' + '</a>';
+					var edit = '<a class="edit btn " style="color:#53a3f7!important;"  href="/scenic/commodity/edit_sales/{{pk}}/'+value+'/" style="margin-right: 10px">' + '<i class="fa fa-pencil" style="margin-right: 5px"></i>' + '编辑' + '</a>';
+					var del = '<a class="del btn" style="color:#53a3f7!important;"  onclick="shanchu('+value+')" >' + '<i class="fa fa-trash-o" style="margin-right: 5px"></i>' + '删除' + '</a>';
+					return (up + edit + del);
+				},
+				events: 'operateEvents'
+			}],
+		});
+		$(".bs-checkbox").css({ 'vertical-align': 'middle' });
+		$('#mytable4').on('all.bs.table', function() {
+			$(".bs-checkbox").css({ 'vertical-align': 'middle' });
+		});
+
+		//
+		$('#mytable5').bootstrapTable({
+			pagination: true,
+            pageSize: 10,
+			reorderableRows: true,
+			striped: true,
+			showColumns: false,
+			columns: [{
+				field: 'name',
+				title: '分组名称',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				width: '150px',
+				visible: true,
+			}, {
+				field: 'group',
+				title: '已上架商品数',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'upTime',
+				title: '创建时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'operate',
+				title: '操作',
+				align: 'center',
+				valign: 'middle',
+				sortable: false,
+				width: '350px',
+				formatter: function(value, row, index) {
+					var edit = '<a class="editGroup btn"  href="javascript:void(0)" onclick="bianji('+value+')" style="margin-right: 10px; color:#53a3f7!important;">' + '<i class="fa fa-pencil" style="margin-right: 5px"></i>' + '编辑' + '</a>';
+					var del = '<a class="delGroup btn"  href="javascript:void(0)" onclick="delgroup('+value+')" style="color:#53a3f7!important;">' + '<i class="fa fa-trash-o" style="margin-right: 5px"></i>' + '删除' + '</a>';
+					return (edit + del);
+				},
+				events: 'operateEvents'
+			}],
+		});
+		//
+		$("#addGroup").click(function(e) {
+			$("#group-title").text("新增分组");
+			$("#addGroupDlg").modal();
+		})
+		$("#btnDownList").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var vpk = $("#btnDownList").val()
+			$.ajax({
+		      url:"/scenic/commodity/down_sales/ajax/",
+		      data:{'pk':vpk},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+		})
+		$("#btnUpList").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var qpk = $("#btnUpList").val()
+			$.ajax({
+		      url:"/scenic/commodity/up_sales/ajax/",
+		      data:{'pk':qpk},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+		})
+		$("#Delete").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var wpk = $("#Delete").val()
+			$.ajax({
+		      url:"/scenic/commodity/delete_sales/ajax/",
+		      data:{'pk':wpk},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+		})
+		$("#setDevParamOk").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var epk = $("#setDevParamOk").val()
+			$.ajax({
+		      url:"/scenic/commodity/delete_group/ajax/{{pk}}/",
+		      data:{'pk':epk},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+		})
+	})
+
+    // 配置
+    window.operateEvents = {
+        'click .preview': function(e, value, row, index) {
+            e.preventDefault();
+            $("#previewDlg").modal();
+        },
+        'click .down': function(e, value, row, index) {
+            e.preventDefault();
+            $("#rebootDlg").modal();
+        },
+        'click .up': function(e, value, row, index) {
+            e.preventDefault();
+            $("#upDlg").modal();
+        },
+        'click .edit': function(e, value, row, index) {
+            e.preventDefault();
+            window.location.href = "/scenic/commodity/edit_sales/{{pk}}/"+value+"/";
+        },
+        'click .del': function(e, value, row, index) {
+            e.preventDefault();
+            $("#delDlg").modal();
+        },
+        'click .editGroup': function(e, value, row, index) {
+            e.preventDefault();
+            $("#editGroupDlg").modal();
+        },
+        'click .delGroup': function(e, value, row, index) {
+            e.preventDefault();
+            $("#delGroupDlg").modal();
+        },
+    }
+
+    // 生成范围随机数
+    function RandomNumBoth(Min, Max) {
+        var Range = Max - Min;
+        var Rand = Math.random();
+        var num = Min + Math.round(Rand * Range); //四舍五入
+        return num.toString();
+    }
+    // 生成小数（保留2位）
+    function returnFloat(value) {
+        var value = Math.round(parseFloat(value) * 100) / 100;
+        var xsd = value.toString().split(".");
+        if (xsd.length == 1) {
+            value = value.toString() + ".00";
+            return value;
+        }
+        if (xsd.length > 1) {
+            if (xsd[1].length < 2) {
+                value = value.toString() + "0";
+            }
+            return value;
+        }
+    }
+    function xiajia(value){
+    	$("#btnDownList").val(value)
+    }
+    function shangjia(value){
+    	$("#btnUpList").val(value)
+    }
+    function shanchu(value){
+    	$("#Delete").val(value)
+    }
+    function addGroup(){
+    	if($('#devNameInput').val() == ''){
+    		swal({
+                    title: "添加失败",
+                    text: "请先完善输入信息",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "确认",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                })
+    	}else{
+    		var nin = $('#devNameInput').val()
+    		$.ajax({
+		      url:"/scenic/commodity/add_group/ajax/{{pk}}/",
+		      data:{'data':nin},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+    	}
+    }
+    function bianji(value){
+    	$('#setEditGroup').val(value)
+    }
+    function editGroup(){
+    	var ipk = $('#setEditGroup').val()
+    	if($('#editNameInput').val() == ''){
+    		swal({
+                    title: "修改失败",
+                    text: "请先完善输入信息",
+                    type: "error",
+                    showConfirmButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "确认",
+                    showCancelButton: false,
+                    closeOnConfirm: true
+                })
+    	}else{
+    		var bin = $('#editNameInput').val()
+    		$.ajax({
+		      url:"/scenic/commodity/edit_group/ajax/{{pk}}/",
+		      data:{'data':bin,
+		      		'pk':ipk},
+		      type:'POST',
+		      cache:false,
+		      success:function(d,s,x){
+		      	if(d == 'success'){
+		      	window.location.href="/scenic/commodity/"
+		      }
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+    	}
+    }
+    function delgroup(value){
+    	$('#setDevParamOk').val(value)
+    }
+    function choose(value,choose){
+    	if(choose=='1'||choose=='2'){
+    		$('#saleName').html(value+' <span class="caret"></span>')
+    		$('#saleName').attr("name",choose)
+    	}else{
+    		$('#saleName2').html(value+' <span class="caret"></span>')
+    		$('#saleName2').attr("name",choose)
+    	}
+    }
+    var tpk = {{pk}}
+    var data4 = []
+    var data5 = []
+    var data6 = []
+    $('#searchBegin').click(function(){
+    	if($('#insearch').val()!=''){
+    		var insearch = $('#insearch').val()
+    		var choose = $('#saleName').prop("name")
+    		$.ajax({
+		      url:"/scenic/commodity/",
+		      data:{'pk':tpk,
+		  			'data':insearch,
+		  			'choose':choose},
+		      type:'POST',
+		      cache:false,
+		      dataType:'JSON',
+		      success:function(d,s,x){
+		      	$('#mytable3').bootstrapTable('removeAll')
+		      	for (var i = 0; i < d.length; i++) {
+					if(d[i].grounding == 1){
+		            data4.push({
+		                name: d[i].name,
+		                group: d[i].group,
+		                price: d[i].price,
+		                stock: d[i].stock,
+		                allSales: d[i].sales,
+		                upTime: d[i].date,
+		                operate:d[i].operate,
+		                id:d[i].operate
+		            })
+		        }
+		        }
+		        $('#mytable3').bootstrapTable('load',data4)
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+    	}
+    })
+    $('#searchBegin2').click(function(){
+    	if($('#insearch2').val()!=''){  		
+    		var insearch2 = $('#insearch2').val()
+    		var choose2 = $('#saleName2').prop("name")
+    		$.ajax({
+		      url:"/scenic/commodity/",
+		      data:{'pk':tpk,
+		  			'data':insearch2,
+		  			'choose':choose2},
+		      type:'POST',
+		      cache:false,
+		      dataType:'JSON',
+		      success:function(d,s,x){
+		      	$('#mytable4').bootstrapTable('removeAll')
+		      	for (var i = 0; i < d.length; i++) {
+					if(d[i].grounding == 0){
+		            data5.push({
+		                name: d[i].name,
+		                group: d[i].group,
+		                price: d[i].price,
+		                stock: d[i].stock,
+		                allSales: d[i].sales,
+		                upTime: d[i].date,
+		                operate:d[i].operate,
+		                id:d[i].operate
+		            })
+		        }
+		        }
+		        $('#mytable4').bootstrapTable('load',data5)
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+    	}
+    })
+    $('#searchBegin3').click(function(){
+    	if($('#insearch3').val()!=''){  		
+    		var insearch3 = $('#insearch3').val()
+    		$.ajax({
+		      url:"/scenic/commodity/",
+		      data:{'pk':tpk,
+		  			'data':insearch3},
+		      type:'POST',
+		      cache:false,
+		      dataType:'JSON',
+		      success:function(d,s,x){
+		      	$('#mytable5').bootstrapTable('removeAll')
+		      	for (var i = 0; i < d.length; i++) {
+					data6.push({
+		                name: d[i].name,
+		                group: d[i].gr,
+		                upTime: d[i].date,
+		                operate:d[i].operate
+		            })
+		        }
+		        $('#mytable5').bootstrapTable('load',data6)
+		      },
+		      error:function(x,s,e){
+		        //alert(e)
+		      }
+		    })
+    	}
+    })
+    </script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "headquar/index.html" %}
+{% block header %}
+<style type="text/css">
+   .table>tbody>tr>td{
+      vertical-align: middle;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="TopTitle">
+  <section class="content-header AllTitle">
+    <h1>
+      <span><a href="/headquar/dev/">景点类型管理</a></span>
+    </h1>    
+  </section>
+</section>
+<section class="content">
+    <div class="row Equlist">
+      <div class="col-xs-12">
+          <div class="box-body">
+            <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="background: #fff;margin: 20px 0 0 20px;padding:20px;"> 
+                <div class="row" style="margin-bottom:20px;">
+                  <div class="col-sm-6" style="text-align:left;">
+                    <label><span>景点类型:</span></label>
+                    <label>
+                      <input type="search" class="form-control input-sm" placeholder="" name="search" {% if search %}value='{{ search }}' {% endif %} aria-controls="example1">
+                    </label>
+                    <label><button class="btn btn-sm btn-default new-search" style="margin-left:5px;"><i class="fa fa-search"></i></button></label>
+                  </div>
+                  <div class="col-sm-6" style="text-align:right;">
+                    <a class="add" title="新增图标" href="/headquar/scenic_add/">
+                      <div class="btn btn-sm btn-default new-export" style="margin-left:10px;"><i class="glyphicon glyphicon-plus"></i></div> 
+                    </a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info" style="text-align:center;margin-bottom:0px;">
+                      <thead>
+                        <tr role="row">
+                          <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 121px; text-align: center;">景点类型</th>
+                          <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width: 152px; text-align: center;">地图显示图标</th>
+                          <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width: 133px; text-align: center;">列表显示图标</th>
+                          <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width: 101px; text-align: center;">操作</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for obj in obj %}
+                        <tr role="row" class="odd">
+                          <td class="sorting_1" style="vertical-align:middle;">{{obj.name}}</td>
+                          <td><img id="pic3"style="height:20px;width:20px;"src="{% if obj.map_icon %}/uploads/{{obj.map_icon}}{% else %}/static/images/timg.jpg{% endif %}" class="img-circle" alt="User Image"></td>
+                          <td><img id="pic3"style="height:20px;width:20px;"src="{% if obj.list_icon %}/uploads/{{obj.list_icon}}{% else %}/static/images/timg.jpg{% endif %}" class="img-circle" alt="User Image"></td>
+                          <td>
+                            <a href="/headquar/{{obj.pk}}/scenic_edit/" id=""  style="margin-right: 10px; color:#53a3f7!important;" title="编辑">
+                              <i class="glyphicon glyphicon-edit"></i>
+                              编辑
+                            </a>&nbsp 
+                            <a class="delete" name='{{obj.pk}}' style="margin-right: 10px; color:#53a3f7!important;" title="删除">
+                              <i class="glyphicon glyphicon-remove-sign"></i>
+                              删除
+                            </a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm" style="width:500px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" 
+                data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+              删除景点
+            </h4>
+          </div>
+          <div class="modal-body"> 
+          <form class="form-horizontal" method="POST" >{% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+                <span>确定删除景点</span>
+                </div>
+              </div>
+              <div class="box-footer pdrow">
+                  <div class="" style="width:40%; margin:auto;">
+                    <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                    <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                    </button>            
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  $(function(){
+    $(".delete").click(function(){
+      var id = $(this).attr('name')
+      $('.form-horizontal').attr('action','/headquar/'+id+'/scenic_delete/')
+      $('#myModal').modal(
+      {
+        keyboard: true
+      })
+
+    })
+  })
+</script>
+{% endblock %}

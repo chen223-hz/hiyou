@@ -1,0 +1,33 @@
+<ul class="sidebar-menu" >
+      <li {% if request.get_full_path == '/headquar/' %} class="active" {% endif %}>
+        <a href="/headquar/">
+      <i class="glyphicon glyphicon-home"></i>
+        <span>管理首页</span></a></li>
+        <li {% if request.get_full_path|slice:":14" == '/headquar/dev/' %} class="active" {% endif %} {% if request.get_full_path == '/headquar/off/dev/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-13:"  == '/dev_latiude/' %} class="active" {% endif %}>
+        <a href="/headquar/dev/">
+        <i class="fa  fa-cubes"></i>
+        <span>设备管理</span></a></li>
+        <li {% if request.get_full_path|slice:":16" == '/headquar/agent/' %} class="active" {% endif %} {% if request.get_full_path == '/headquar/new/agent/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-6:"  == '/user/' %} class="active" {% endif %}>
+          <a href="/headquar/agent/">
+          <i class="fa fa-home" style="font-size: 15px;"></i>
+          <span>代理商管理</span></a>
+        </li>
+		<li {% if request.get_full_path == '/wechat/' %} class="active" {% endif %}>
+        <a href="/wechat/">
+        <i class="fa fa-weixin"></i>
+        <span>微信认证</span>
+        </a>
+      </li>
+	  <li {% if request.get_full_path == '/wechat/' %} class="active" {% endif %}>
+        <a href="/headquar/scenic/">
+        <i class="fa fa-cog"></i>
+        <span>景点类型管理</span>
+        </a>
+      </li>
+         <li  style=" transition:border-left-color 0.3s ease; -webkit-transition:border-left-color 0.3s ease; position:absolute; bottom:20px;position:fixed;">
+              <a href="#" style="padding-left: 16px; color:#ccc; width:100%;">
+               <img src="/static/img/logo-headquar.png" style="padding-right:7px;">
+             <span>总部端</span>
+              </a>
+    </li>
+</ul>

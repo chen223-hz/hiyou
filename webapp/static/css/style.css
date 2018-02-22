@@ -1,0 +1,402 @@
+input[disabled]{
+    border: 1px solid rgba(221, 221, 221, 0) !important;
+    background-color: rgb(208, 208, 208) !important;
+    color:#fff !important;
+}
+a.hover-red:hover{color:#666666;}
+/*login*/
+        .login-box1{
+            width: 100%;
+            max-width:600px;
+            position: absolute;
+            top: 50%;
+            /*设置负值，为要定位子盒子的一半高度*/
+            
+            
+        }
+         @media screen and (min-width:400px){
+            .login-box1{
+                left: 50%;
+                /*设置负值，为要定位子盒子的一半宽度*/
+                margin-left: -300px;
+            }
+        }
+        .login-img{
+            background-color: rgba(0, 0, 0,0.5);
+            width:66%;
+            margin:auto; 
+        }
+        .login-img img{
+            width:85%;
+            padding-left:2%;
+            padding-right:2%;
+            
+        }
+        .login-img h4{
+            font-size:23px;
+            color:#fff;
+            padding-top: 5%;
+            padding-bottom:2%;
+        }
+        .login-img p{
+            font-size:15px;
+            color:#fff;
+            padding-bottom: 6%;
+            padding-top: 2%
+        }
+        .login-slogan img{
+            width: 86%;
+        }
+/*login2*/
+        html,body {
+            height: 100%;
+        }
+        .login-box {
+            width: 100%;
+            max-width:600px;
+            position: absolute;
+            top: 50%  ! important;
+            /*设置负值，为要定位子盒子的一半高度*/
+             margin-top: 6%;
+        }
+        
+        @media screen and (min-width:400px){
+            .login-box{
+                left: 50%;
+                /*设置负值，为要定位子盒子的一半宽度*/
+                margin-left: -300px;
+            }
+        }
+        .return{
+            margin-bottom: 15px;
+        }
+        .form {
+            width: 100%;
+            max-width:500px;
+            height: 275px;
+            margin: 24px auto 0px auto;
+        }
+        .login-content {
+            height: 300px;
+            width: 100%;
+            background-color: rgba(0, 0, 0,0.5);
+            float: left;
+        }
+		
+        .input-group {
+            margin:0 auto 30px;
+            margin-bottom: 30px !important;
+        }
+        .form-control,
+        .input-group {
+            height: 49px;
+            width: 80%;
+        }
+        .num-middle1{
+            margin-bottom:0!important
+        }
+        .form-group-warning{
+            padding:0!important;
+            margin:0 !important;
+            
+            letter-spacing: 2px;
+            float:left;
+            
+        }
+        .form-group-warning p{
+            margin-left:90px;
+            padding-top: 1px !important;
+            color:#666!important;/*#f34242警告色*/
+        }
+        .form-group {
+            margin-bottom: 0px !important;
+        }
+        .form-group p{
+            font-size: 13px;
+            padding-top: 4%;
+            color:#b1b1b1;
+        }
+        .login-title {
+            padding: 25px 10px 10px 10px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .login-title small {
+            color:#fff;
+            font-size:27px;
+            letter-spacing: 8px;
+        }
+
+        
+        .btn-sm {
+            padding: 8px 24px !important;
+            font-size: 16px !important;
+            width:80%;
+        }
+       
+        #password{
+            width:63%;
+        }
+        .btn-right{
+            border-radius: 2px;
+            float: right;
+            width: 97px;
+            height: 49px;
+        }
+        .btn-info{
+            background-color:#1F8AFF !important;
+            border-color:rgb(8,127,230)!important;  
+            color:#fff;
+        }
+        .btn-sm {
+            padding: 8px 24px !important;
+            font-size: 16px !important;
+            width:80%;
+            background-color:#087fe6!important;
+            color:#fff;
+			height: 46px;
+        }
+        .btn-info:hover,
+        .btn-info:focus,
+        .btn-info.focus,
+        .btn-info:active,
+        .btn-info.active {
+            color:#fff;
+            background-color:  #266cb9!important;
+            border-color: #269abc;
+        }
+
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-size: 100%;
+        }
+
+        ul, ol, li {
+            list-style: none;
+        }
+
+        em, i {
+            font-style: normal;
+        }
+
+        img {
+            border: none;
+        }
+
+        input, img {
+            vertical-align: middle;
+        }
+
+        body {
+            background: #fff;
+            color: #666;
+            font-size: 14px;
+            font-family: arial;
+        }
+
+        a {
+            color: #666666;
+            text-decoration: none;
+        }
+
+        html, body {
+            background: #f9f9f9;
+            width: 100%;
+            height: 100%;
+            font-family: Helvetica, sans-serif;
+            -webkit-text-size-adjust: none;
+        }
+
+        * {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        body {
+            font: 12px/1.5 "Microsoft YaHei", tahoma, arial, Hiragino Sans GB, \5b8b\4f53;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .header {
+            position: fixed;
+            width: 100%;
+            left: 0px;
+            z-index: 999;
+            background: rgba(0,0,0,0.07);
+        }
+
+        .nav {
+            width: 80%;
+            height: 50px;
+            line-height: 50px;
+            margin: 0 auto;
+        }
+
+
+        .entry {
+            float: right;
+            color: #fff;
+        }
+
+        .entry .state {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .entry a {
+            font-size: 16px;
+            color: #fff;
+            margin: 0 5px;
+        }
+
+        .entry a:hover {
+            color: #00bbee;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .content {
+            width: 1200px;
+            height: 100%;
+            margin: 0 auto;;
+        }
+
+        .wrap {
+            position: absolute;
+            left: 0;
+            top:10%;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+       
+
+        .footer {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            height:50px;
+            background-color:rgba(51,51,51,0.59);
+            z-index: 99;
+        }
+        
+
+        .ownership {
+            text-align: center;
+            height: 20px;
+            line-height:50px;
+            color:#fff;
+        }
+
+        .front, .items, .item {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .back {
+            bottom:50px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .items {
+            overflow: visible;
+        }
+
+        .item {
+            background: #fff none no-repeat center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            
+        }
+        .logo {
+            float: left;
+            display: block;
+            width: 70px;
+            height:50px;
+            background-position:50%;
+            background-repeat: no-repeat;
+            background-size: 70px;
+        }
+        .logo{
+            background-image: url(/static/img/logo-hot-ballon-white40.png);
+        }
+		.impowerBox .status {text-align: center;} 
+    
+    @media screen and (max-width: 1024px){
+        .login-slogan img{
+            width:50%;
+        }
+        .impowerBox .title{
+            text-align: center;
+            font-size: 15px;
+        }
+        .nav{
+            width:75%;
+            height:35px;
+            line-height: 35px;
+            margin:0 auto;
+        }
+        .logo{
+            background-image: url(/static/img/logo-hot-ballon-whitez32.png);
+            height:35px;
+            background-position: 70%;
+        }
+        .entry .state{
+            color:#fff;
+            font-size: 14px;
+        }
+        .entry a{
+            font-size: 14px;
+            color:#fff;
+            margin:0 5px;
+        }
+        .footer{
+            height:40px;
+        }
+        .back{
+            bottom:40px;
+        }
+        .ownership{
+            line-height: 40px;
+        }
+
+     
+    }
+    .secondmenu a {
+            font-size: 10px;
+            color: #4A515B;
+            text-align: center;
+        }
+    

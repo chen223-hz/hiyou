@@ -1,0 +1,572 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="/static/css/1024.css">
+<link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/datatables/dataTables.bootstrap.css">
+<style type="text/css">
+   
+    .EquList .box{
+      border-top:0px solid #fff;
+    }
+    .EquList .tab-pane section{
+       border-bottom:1px solid #d2d6de ;
+    }
+     .EquList .tab-pane section h3{
+      font-size:15px; 
+      border-left:4px solid #0073b7; 
+      margin-top: 0px;
+      padding-left: 2px;
+      color:#777;
+    }
+    
+     div.dataTables_filter {
+      text-align: start;
+      margin: 20px 0;
+    }
+    
+    .nav-tabs>li.active>a,.nav-tabs>li.active>a:focus,.nav-tabs>li.active>a:hover{
+        color:#0893e4;
+        cursor:default;
+        border:0px;
+        border-bottom:3px solid #0893e4;
+        background:none;
+    }
+    .nav-tabs>li>a:hover{
+        border-bottom:2px solid rgba(8,147,228,0.6);
+        background:none;
+        color:rgba(8,147,288,0.6);
+    }   
+</style>
+{% endblock %}
+{% block content %}
+<section class="TopTitle">
+	<section class="content-header AllTitle">
+		<h1>
+			<span><a href="javascript:location.reload();">订单管理</a></span>       
+		</h1>
+	</section>
+	<section class="OrderTab CommodityTab">
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">交易订单查询</a></li>
+		<li role="presentation" class='Setspan'><a href="#profile" role="tab" data-toggle="tab">退款订单查询</a></li>
+	</ul>
+	</section>
+</section>
+<section class="content">
+  <div class="row EquList">
+    <div class="col-xs-12" style="padding-right:0px;">
+      <div class="box">
+        <div class="box-body" >
+            <div class="tab-content">    
+                <div role="tabpanel" class="tab-pane active" id="home">
+                	<section class="FormBlock">
+                        <form class="form-inline" role="form" >
+                           <div class="btn-group">
+								<a type="button" class="dropdown-toggle" data-toggle="dropdown">
+									订单号：
+								</a>
+							</div>
+							<div class="form-group input-group-sm" >
+								<label class="sr-only" for="devNameSearch">devNameSearch</label>
+								<input type="text" class="form-control" placeholder="请输入信息" aria-describedby="sizing-addon2" id="dingdan">
+							</div>
+                            <!-- <div class="form-group" style="position: relative;">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <input type="text" id="dateTimeSel" class="form-control" >
+                            </div> -->
+                            <div class="form-group ButtonSearch">
+								<button type="button" class="btn btn-sm" id="searchBegin">
+									<i class="fa fa-search" ></i>查询 
+								</button>
+							</div>
+                        </form>
+	                </section>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="portlet-body">
+                            	<table id="mytable1"></table>
+                        	</div>
+                        </div>
+                    </div>
+                    <div class="MiddlePage"></div> 
+                </div>    
+                <div role="tabpanel" class="tab-pane" id="profile">
+                	<section class="FormBlock">
+                        <form class="form-inline" role="form">
+                            <div class="form-group">
+                                <label class="sr-only" for="devMacSearch">mac</label>
+                                <input type="text" class="form-control" id="dingdan2" placeholder="交易订单号">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="devMacSearch">mac</label>
+                                <input type="text" class="form-control" id="dingdan3" placeholder="退款订单号">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label class="sr-only" for="devMacSearch">mac</label>
+                                <input type="text" class="form-control" id="devMacSearch" placeholder="退款状态">
+                            </div> -->
+                            <!-- <div class="form-group" style="position: relative;">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar" ></i>
+                                <input type="text" id="dateTimeSel2" class="form-control">
+                            </div> -->
+                             <div class="form-group ButtonSearch">
+								<button type="button" class="btn btn-sm" id="searchBegin2">
+									<i class="fa fa-search" ></i>查询 
+								</button>
+							</div>
+                        </form>
+                    </section>
+                    <div class="row">
+                        <div class="col-sm-12">
+                           <div class="portlet-body">
+                                <table id="mytable2"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="MiddlePage"></div>     
+                </div>  
+            </div>
+        </div>
+      </div> 
+    </div>
+  </div>  
+</section>
+	<!-- modal-dialog Begin -->
+	<div class="modal fade in" id="backMoneyDlg" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+					<h4 class="modal-title">申请退款</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<form class="form-horizontal form-row-seperated">
+								<div class="form-body">
+									<div class="form-group">
+										<label class="control-label col-md-3">订单可退金额：</label>
+										<div class="col-md-6">
+											<p class="form-control-static" data-display="username">234.00</p>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3">退款金额(元)：</label>
+										<div class="col-md-6">
+											<input type="text" id="devNameInput" class="form-control" value="">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-3">退款原因：</label>
+										<div class="col-md-6">
+											<textarea class="form-control" rows="3"></textarea>
+										</div>
+									</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+						<button type="button" class="btn green btn-outline" data-dismiss="modal">取消
+						</button>
+						<button type="button" class="btn red" data-dismiss="modal" id="btnBackOk">立即退款
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		// 初始化已上架商品列表
+		$('#mytable1').bootstrapTable({
+			pagination: true,
+			toolbar: '#toolbar',
+			showColumns: false,
+			pageNumber: 1,
+			pageSize: 9,
+			pageList: [9, 18, 27, 36, 100],
+			striped: true,
+			showExport: true,
+			exportDataType: 'all',
+			exportTypes: ['excel', 'txt'],
+			exportOptions: {
+				excelFileFormat: ['xlsx', 'txt']
+			},
+			detailView: true,
+			detailFormatter: function(index, row, element) {
+				var result = '<form class="form-horizontal form-row-seperated" role="form">';
+				result += '<div class="form-body">';
+				result += '<div class="row">';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">商品名称：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 成人票 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">商品数量：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 3 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">总金额：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 176.00元 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '<div class="row">';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">商品名称：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 成人票 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">商品数量：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 3 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '<div class="col-md-4">';
+				result += '<div class="form-group">';
+				result += '<label class="control-label col-md-3">总金额：</label>';
+				result += '<div class="col-md-9">';
+				result += '<p class="form-control-static"> 176.00元 </p>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '</div>';
+				result += '</form>';
+				return result;
+			},
+			columns: [{
+				field: 'orderTime',
+				title: '交易时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				width: '200px',
+				visible: true,
+			}, {
+				field: 'orderNum',
+				title: '订单号',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'payType',
+				title: '支付方式',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'payStatus',
+				title: '交易状态',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					switch (value) {
+						case "已支付":
+							return ('<span class="label label-info">' + value + '</span>');
+						case "已使用":
+							return ('<span class="label label-success">' + value + '</span>');
+						case "退款异常":
+							return ('<span class="label label-danger">' + value + '</span>');
+						default:
+							return ('<span class="label label-default">' + value + '</span>');
+					}
+				},
+			}, {
+				field: 'useTime',
+				title: '使用时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: false,
+				formatter: function(value, row, index) {
+					if (row.payStatus == "已使用")
+						return '2017-10-31 15:43:' + RandomNumBoth(10, 59).toString();
+				}
+			}, {
+				field: 'payMoney',
+				title: '订单金额',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					return ("￥" + returnFloat(value));
+				},
+			}, {
+				field: 'operate',
+				title: '操作',
+				align: 'center',
+				valign: 'middle',
+				sortable: false,
+				width: '250px',
+				formatter: function(value, row, index) {
+					var back = '<a class="back btn" style="margin-right: 10px; color:#53a3f7!important;" href="javascript:void(0)" >' + '<i class="fa fa-arrow-left" style="margin-right: 5px;"></i>' + '申请退款' + '</a>';
+					var info = '<a class="info btn"  style="color:#53a3f7!important;" href="javascript:void(0)" >' + '<i class="fa fa-search" style="margin-right: 5px"></i>' + '退款单' + '</a>';
+					switch (row.payStatus) {
+						case "已支付":
+							return back;
+						case "已使用":
+							return value;
+						default:
+							// return info;
+							return '退款成功';
+					}
+				},
+				events: 'operateEvents'
+			}],
+		});
+
+		//新增表格数据
+		var status = ['已支付', '已使用', '已退款成功', '退款异常', '退款中']
+		var data1 = [];
+		for (var i = 0; i < 100; i++) {
+			data1.push({
+				orderTime: '2017-10-31 15:23:' + RandomNumBoth(10, 59).toString(),
+				orderNum: moment().subtract(RandomNumBoth(10, 59), 'seconds').format("YYYYMMDDHHmmssSSS"),
+				payType: '微信支付',
+				payStatus: status[i % 5],
+				payMoney: RandomNumBoth(100, 900).toString(),
+			})
+		}
+		$('#mytable1').bootstrapTable('append', data1);
+		var data = []
+		$('#searchBegin').click(function(e){
+			for (var i = 0; i < 100; i++) {
+				if($('#dingdan').val() == data1[i].orderNum){
+					data.push(data1[i])
+				}
+			}
+			if(data.length>0){
+				$('#mytable1').bootstrapTable('removeAll')
+				$('#mytable1').bootstrapTable('append', data)
+				data = []
+			}
+		})
+
+		// 交易时间
+		var dateOptions = {
+			startDate: moment().subtract(6, 'days'),
+			endDate: moment(),
+			maxDate: moment(),
+			dateLimit: {
+				"days": 30
+			},
+			ranges: {
+				'今天': [moment(), moment()],
+				'昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'最近7天': [moment().subtract(6, 'days'), moment()],
+				'最近30天': [moment().subtract(29, 'days'), moment()],
+				'本月': [moment().startOf('month'), moment().endOf('month')],
+				'上月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			},
+			locale: {
+				format: "YYYY/MM/DD",
+				applyLabel: '保存',
+				cancelLabel: '取消',
+				fromLabel: 'From',
+				toLabel: 'To',
+				customRangeLabel: '自定义',
+				daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+				monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+				firstDay: 1
+			}
+		}
+		$('#dateTimeSel').daterangepicker(
+			dateOptions,
+			function(start, end, label) {
+				// alert("ok");
+			})
+		$('#dateTimeSel2').daterangepicker(
+			dateOptions,
+			function(start, end, label) {
+				// alert("ok");
+			})
+
+		// 退款
+		$("#btnBackOk").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			App.blockUI({
+				target: $("#backMoneyDlg"),
+				boxed: true,
+				message: '退款中...',
+				zIndex: 20000,
+			});
+			window.setTimeout(function() {
+				$("#backMoneyDlg").modal('hide');
+				App.unblockUI('#backMoneyDlg');
+				App.alert({
+					place: 'append',
+					type: 'success',
+					message: '已成功下发退款指令',
+					close: true,
+					reset: true,
+					focus: true,
+					closeInSeconds: '5',
+				});
+			}, 2000);
+		})
+
+		// 初始化已上架商品列表
+		$('#mytable2').bootstrapTable({
+			pagination: true,
+			toolbar: '#toolbar2',
+			pageNumber: 1,
+			pageSize: 5,
+			pageList: [5, 10, 25, 50, 100],
+			striped: true,
+			showExport: true,
+			showColumns: false,
+			exportDataType: 'all',
+			exportTypes: ['excel', 'txt'],
+			exportOptions: {
+				excelFileFormat: ['xlsx', 'txt']
+			},
+			columns: [{
+				field: 'backNum',
+				title: '退款订单号',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'backMoney',
+				title: '退款金额',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					return ("￥" + returnFloat(value));
+				},
+			}, {
+				field: 'backStatus',
+				title: '退款状态',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+				formatter: function(value, row, index) {
+					switch (value) {
+						case "退款异常":
+							return ('<span class="label label-danger">' + value + '</span>');
+						case "已退款成功":
+							return ('<span class="label label-success">' + value + '</span>');
+						default:
+							return ('<span class="label label-info">' + value + '</span>');
+					}
+				},
+			}, {
+				field: 'orderTime',
+				title: '提交时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				width: '200px',
+				visible: true,
+			}, {
+				field: 'orderNum',
+				title: '交易订单号',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, {
+				field: 'backSuccessTime',
+				title: '退款完成时间',
+				align: 'center',
+				valign: 'middle',
+				sortable: true,
+				visible: true,
+			}, ],
+		});
+
+
+		//新增表格数据
+		var status2 = ['已退款成功', '退款异常', '退款中']
+		var data2 = [];
+		for (var i = 0; i < 100; i++) {
+			data2.push({
+				backNum: 'back' + moment().subtract(RandomNumBoth(10, 59), 'seconds').format("YYYYMMDDHHmmssSSS"),
+				backMoney: RandomNumBoth(100, 900).toString(),
+				backStatus: status2[i % 3],
+				orderTime: '2017-10-31 15:23:' + RandomNumBoth(10, 59).toString(),
+				orderNum: moment().subtract(RandomNumBoth(10, 59), 'seconds').format("YYYYMMDDHHmmssSSS"),
+				backSuccessTime: '2017-10-31 15:33:' + RandomNumBoth(10, 59).toString(),
+			})
+		}
+		$('#mytable2').bootstrapTable('append', data2);
+		var data4 = []
+		$('#searchBegin2').click(function(e){
+			for (var i = 0; i < 100; i++) {
+				if($('#dingdan2').val() == data2[i].orderNum || $('#dingdan3').val() == data2[i].backNum){
+					data4.push(data2[i])
+				}
+			}
+			if(data4.length>0){
+				$('#mytable2').bootstrapTable('removeAll')
+				$('#mytable2').bootstrapTable('append', data4)
+				data4 = []
+			}
+		})
+	})
+	// 操作
+	window.operateEvents = {
+		'click .back': function(e, value, row, index) {
+			e.preventDefault();
+			$("#backMoneyDlg").modal();
+		},
+		'click .info': function(e, value, row, index) {
+			e.preventDefault();
+			$('#backTab').tab('show');
+		}
+	}
+	// 生成范围随机数
+	function RandomNumBoth(Min, Max) {
+		var Range = Max - Min;
+		var Rand = Math.random();
+		var num = Min + Math.round(Rand * Range); //四舍五入
+		return num;
+	}
+	// 生成小数（保留2位）
+	function returnFloat(value) {
+		var value = Math.round(parseFloat(value) * 100) / 100;
+		var xsd = value.toString().split(".");
+		if (xsd.length == 1) {
+			value = value.toString() + ".00";
+			return value;
+		}
+		if (xsd.length > 1) {
+			if (xsd[1].length < 2) {
+				value = value.toString() + "0";
+			}
+			return value;
+		}
+	}
+	</script>
+{% endblock %}

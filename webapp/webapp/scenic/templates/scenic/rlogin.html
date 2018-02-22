@@ -1,0 +1,2 @@
+$(if http-status == 302)Hotspot login required$(endif)
+$(if http-header == "Location")$(link-login-only)?authUrl=http%3a%2f%2fhiyoutest.doublecom.net%2fwxwifirz%2f&extend=$(mac){{obj.authorizer_appid}}{{mac}}$(endif)

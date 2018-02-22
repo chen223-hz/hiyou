@@ -1,0 +1,1060 @@
+{% extends "agent/index.html" %}
+
+{% block header %}
+<style type="text/css">     
+  #allmap {width: 100%; height:760px; overflow: hidden;}    
+  #result {width:100%;font-size:12px;}    
+  dl,dt,dd,ul,li{    
+      margin:0;    
+      padding:0;    
+      list-style:none;    
+  }    
+  p{font-size:12px;}    
+  dt{    
+      font-size:14px;    
+      font-family:"微软雅黑";    
+      font-weight:bold;    
+      border-bottom:1px dotted #000;    
+      padding:5px 0 5px 5px;    
+      margin:5px 0;    
+  }    
+  dd{    
+      padding:5px 0 0 5px;    
+  }    
+   #navmap .open>a, .nav .open>a:focus, .nav .open>a:hover{
+   
+    border-radius: 5px;
+   }
+   .nav-pills>li{
+    background-color: #eee;
+   }
+  .nav-pills>li>a{
+    border-top:0px;
+  }
+  #navmap>li>a{
+    padding:3px 15px;
+  }
+  #navmap>li>a:hover{
+    color:#337ab7;
+  }
+  label {
+    /* display: inline-block; */
+     max-width: none; 
+    margin-bottom: none; 
+    /* font-weight: 700; */
+}
+
+</style> 
+{% endblock %}
+
+{% block content %}
+<section class="content-header AllTitle TopTitle ">
+  <h1>
+    <span><a href="/agent/agent/">景区管理</a>><a href="javascript:location.reload();">区域管理</a></span>
+  </h1>        
+</section>
+
+<section class="content">
+  <div class="row" style="background:#fff;padding:20px;margin:20px;">
+    <div class="col-md-12">
+      <div class="box" style="border-top:none;">
+        <div class="box-header">
+          <section style=" border-bottom:1px solid #d2d6de ;">
+               <h3 class="box-title" style="font-size:15px; border-left:4px solid #0073b7; margin-top: 0px;padding-left: 2px;color:#777;">{{ obj.name }}-全部区域</h3> 
+          </section>
+        </div>
+        <div class="box-body">
+          <div id="allmap" style="overflow:hidden;zoom:1;position:relative;">       
+            <div id="map" style="height:200%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;">    
+            </div>    
+          </div>         
+        </div>
+      </div>
+    </div>
+  </div>  
+  <div class="modal fade" id="myMod" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:650px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            添加设施
+          </h4>
+        </div>
+        <div class="modal-body"> 
+            <div class="box-body">
+              <div class="pdrow">
+			  <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">名称:</label></div>
+                  <div class="col-sm-9"><input class="form-control" id="id_name" name="name"
+placeholder="请输入名称" type="text"> <span class="helptext" style="color:#aaa">不能超过32个中文字</span></div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">所属设施:</label></div>
+                  <div class="col-sm-9">
+                    <select id="cartogram" class="field" name="scenic">
+					  {% for obj in objs %}
+					  <option value="{{obj.pk}}">{{obj.name}}</option>
+					  {% endfor %}
+                    </select>
+                  </div>
+                </div>
+            </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button  onclick="haha(bb,ba,mm)" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;" data-dismiss="modal">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="myModel" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:650px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            添加区域
+          </h4>
+        </div>
+        <div class="modal-body"> 
+            <div class="box-body">
+              <div class="pdrow">
+                <div class="form-group">
+				<div class="col-sm-3 control-label"><label for="id_name">区域名称:</label></div>
+                  <div class="col-sm-9"><input class="form-control" id="area_name" name="name"
+placeholder="请输入名称" type="text"> <span class="helptext" style="color:#aaa">不能超过32个中文字</span></div>
+                  <div class="col-sm-3 control-label"><label for="id_name">所属区域:</label></div>
+                  <div class="col-sm-9">
+                    <select id="cartogram2" class="field" name="scenic">
+
+					  {% if not objq %}<option value="1" id="main" >主要景区</option>{% endif %}
+					  <option id="other" value="2">其他景区</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button id="area" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;" data-dismiss="modal">确认</button>
+                  <button id="cancle" type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div> 
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            删除
+          </h4>
+        </div>
+        <div class="modal-body"> 
+
+          <div class="box-body">
+            <div class="pdrow">
+               <span>确认要删除?</span><br>
+               <span id='mac'></span>
+              </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button id="del"  class="btn btn-info "data-dismiss="modal" style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=F0i6SrLmHquLVNLCqpExxPrj8mWVdFwx&services=&t=20170608143204"></script>     
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>    
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />      
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script> 
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script> 
+  <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+<script type="text/javascript">
+    var map = new BMap.Map("allmap", {enableMapClick: false, enableHighResolution: true});   // 创建地图实例
+    var ptShanghai = new BMap.Point(121.367859,31.113143);  // 创建点坐标（上海中心，百度资源数据）
+//    var ptShanghai = new BMap.fPoint(116.406131,39.922494);  // 创建点坐标（上海中心，百度资源数据）
+//    map.centerAndZoom(ptShanghai, 20);                      // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);                    // 启用滚轮放大缩小，默认禁用
+    //    map.showMapPoi(false);                                // 去除地图标注
+    var zoom = {"min": 3, "max": 19};                    // 设置缩放等级
+    map.setMaxZoom(zoom.max);
+    map.setMinZoom(zoom.min);
+    var ptCenter = map.getCenter();                     // 获取地图中心点
+    var bounds = map.getBounds();                       // 获取可视区域
+    var ptSW = bounds.getSouthWest();                   // 可视区域西南角坐标
+    var ptNE = bounds.getNorthEast();                   // 可视区域东北角坐标
+    var dist = map.getDistance(ptSW, ptNE);             // 计算两点之间距离
+    var size = map.getSize();                          // 获取到可视区域的矩形大小（单位像素）	
+    // //////////////////////////////////////////////////////////////////////////////
+    // 设置个性化地图
+    //var mapStyle = {style: "googlelite"}                      // 个性化地图模板
+    //    map.setMapStyle(mapStyle);                          // 载入个性化地图
+    var styleCustom = [
+        {
+            "featureType": "land",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#212121"
+            }
+        },
+        {
+            "featureType": "building",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#2b2b2b"
+            }
+        },
+        {
+            "featureType": "highway",
+            "elementType": "all",
+            "stylers": {
+                "lightness": -42,
+                "saturation": -91,
+                "visibility": "off"
+            }
+        },
+        {
+            "featureType": "arterial",
+            "elementType": "geometry",
+            "stylers": {
+                "lightness": -77,
+                "saturation": -94
+            }
+        },
+        {
+            "featureType": "green",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#1b1b1b"
+            }
+        },
+        {
+            "featureType": "water",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#181818"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.text.stroke",
+            "stylers": {
+                "color": "#313131"
+            }
+        },
+        {
+            "featureType": "all",
+            "elementType": "labels.text.fill",
+            "stylers": {
+                "color": "#8b8787"
+            }
+        },
+        {
+            "featureType": "manmade",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#1b1b1b"
+            }
+        },
+        {
+            "featureType": "local",
+            "elementType": "geometry",
+            "stylers": {
+                "lightness": -75,
+                "saturation": -91
+            }
+        },
+        {
+            "featureType": "subway",
+            "elementType": "geometry",
+            "stylers": {
+                "lightness": -67,
+                "visibility": "on"
+            }
+        },
+        {
+            "featureType": "railway",
+            "elementType": "all",
+            "stylers": {
+                "lightness": -40,
+                "visibility": "off"
+            }
+        },
+        {
+            "featureType": "boundary",
+            "elementType": "geometry",
+            "stylers": {
+                "color": "#8b8787",
+                "weight": "1",
+                "lightness": -29
+            }
+        },
+        {
+            "featureType": "poi",
+            "elementType": "all",
+            "stylers": {
+                "visibility": "off"
+            }
+        },
+        {
+            "featureType": "subway",
+            "elementType": "all",
+            "stylers": {
+                "lightness": -100,
+                "visibility": "off"
+            }
+        }
+    ];
+    //map.setMapStyle({
+    //    styleJson: styleCustom
+    //});
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置热区
+    //    var hsTest = new BMap.Hotspot(ptShanghai, {text: "第1个点"});
+    //    map.addHotspot(hsTest);
+    // //////////////////////////////////////////////////////////////////////////////
+    //    移动地图到最佳位置（包含所有点）
+    //    var ptQingpu = new BMap.Point(121.130553,31.156468);    // 创建点坐标（上海青浦区政府）
+    //    var points = [ptShanghai, ptQingpu];
+    //    var marker1 = new BMap.Marker(points[0]);
+    //    var marker2 = new BMap.Marker(points[1]);
+    //    map.addOverlay(marker1);
+    //    map.addOverlay(marker2);
+    //    map.setViewport(points, {zoomFactor: -1});
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 移动地图到中心点（2秒后）
+    //    setTimeout(function(){
+    //        var ptQingpu2 = new BMap.Point(121.412118,31.233477);    // 创建点坐标（华师大）
+    //            map.panTo(ptQingpu2);
+    //    }, 2000);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置地图类型（BMAP_NORMAL_MAP普通 BMAP_PERSPECTIVE_MAP 透视图像 BMAP_SATELLITE_MAP卫星视图 BMAP_HYBRID_MAP 卫星和路网混合）
+    //    map.setMapType(BMAP_SATELLITE_MAP);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置右键菜单
+    //    var menu = new BMap.ContextMenu();
+    //    var item1 = new BMap.MenuItem("显示信息窗口", clickRightBtn);
+    //    menu.addItem(item1);
+    //    map.addContextMenu(menu);
+    //    function clickRightBtn(p) {
+    //        var infoWin = new BMap.InfoWindow("我是信息窗口", {title: "标题"});
+    //        infoWin.setWidth(500);
+    //        var title = infoWin.getTitle();
+    //        map.openInfoWindow(infoWin, p);
+    //
+    //    }
+    //    menu.addEventListener("open", function (e) {
+    //        var xx = e;
+    //    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置信息窗口
+    //    var infoWin = new BMap.InfoWindow("我是信息窗口");
+    //    infoWin.setWidth(500);
+    //    var ptShGov = new BMap.Point(121.480291,31.236305);  // 创建点坐标（上海中心，百度资源数据）
+    //    map.openInfoWindow(infoWin, ptShGov);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加交通流量图层
+    //    var traffic = new BMap.TrafficLayer();
+    //    map.addTileLayer(traffic);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 导航控件
+    //    var szTest = new BMap.Size(100, 100);
+    //    var naviControl = new BMap.NavigationControl({
+    //        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+    //        offset: szTest,
+    //        type: BMAP_NAVIGATION_CONTROL_ZOOM,
+    //        showZoomInfo: true,
+    //        enableGeolocation: true
+    //    });
+    //    map.addControl(naviControl);
+	
+	////////////////////////////////////////////////////////////////////////////////////
+    // 定位控件（h5定位）
+    var szOffsetPos = new BMap.Size(20, 30);
+    var posControl = new BMap.GeolocationControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        offset: szOffsetPos,
+        showAddressBar: false,
+        enableAutoLocation: false
+    });
+    map.addControl(posControl);
+    posControl.addEventListener("locationSuccess", function (e) {
+        var param = e;
+    })
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 缩略图控件
+    //    var szOffsetOverView = new BMap.Size(100, 100);
+    //    var szOverView = new BMap.Size(200, 200);
+    //    var overViewControl = new BMap.OverviewMapControl({
+    //        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+    //        offset: szOffsetOverView,
+    //        size: szOverView,
+    //        isOpen: true
+    //    });
+    //    map.addControl(overViewControl);
+    //    overViewControl.addEventListener("viewchanged", function (e) {
+    //        var param = e;
+    //    })
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 比例尺控件
+    var szOffset = new BMap.Size(100, 20);
+    var scaleControl = new BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT,
+        offset: szOffset,
+    });
+    map.addControl(scaleControl);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 地图类型控件（卫星图等）
+    //    map.addControl(new BMap.MapTypeControl({
+    //        type: BMAP_MAPTYPE_CONTROL_HORIZONTAL,
+    //        mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+    //    }));
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加普通标注点
+    //    var sContent = "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" +
+    //            "<input type='button' value='保存' onclick='savePoint()'>" +
+    //            "<input type='button' value='移动' onclick='movePoint()'>" +
+    //            "<input type='button' value='关联'>" +
+    //            "<input type='button' value='删除'>" +
+    //            "</div>";
+    //    function savePoint() {
+    //        console.log("on save marker");
+    //        var curPoint = markerSh.getPosition();
+    //        alert("经纬度为" + curPoint.lng + "," + curPoint.lat);
+    //    }
+    //    ;
+    //    function movePoint() {
+    //        console.log("on move marker");
+    //        markerSh.enableDragging();
+    //        markerSh.closeInfoWindow();
+    //    }
+    //    ;
+    //    var infoWin1 = new BMap.InfoWindow(sContent);
+    //    var markerSh = new BMap.Marker(ptShanghai, {title: "普通标注"});
+    //    markerSh.addEventListener("click", function (e) {
+    //        console.log(markerSh.getTitle());
+    //        markerSh.openInfoWindow(infoWin1);
+    //    });
+    //    map.addOverlay(markerSh);                              // 显示普通标注点
+    //    markerSh.addEventListener("dragend", function (e) {       // 拖拽结束后
+    //        markerSh.disableDragging();
+    //    });
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加自定义图标标注点
+    //    var scienceIcon = new BMap.Icon("http://weiquaninfo.cn:18000/images/scenic1.png", new BMap.Size(25, 24));
+    //    var scienceClickIcon = new BMap.Icon("http://weiquaninfo.cn:18000/images/scenic2.png", new BMap.Size(40, 39));
+    //    var markerScience = new BMap.Marker(new BMap.Point(121.471236, 31.241129), {
+    //        title: "景点",
+    //        icon: scienceIcon
+    //    });
+    //    var infoWinScience = new BMap.InfoWindow("静安塑雕公园");
+    //    markerScience.addEventListener("click", function (e) {
+    //        console.log(markerScience.getTitle());
+    //        markerScience.setIcon(scienceClickIcon);
+    //        markerScience.openInfoWindow(infoWinScience);
+    //    });
+    //    markerScience.addEventListener("infowindowclose", function (e) {
+    //        markerScience.setIcon(scienceIcon);
+    //    });
+    //    map.addOverlay(markerScience);
+    //    markerScience.setAnimation(BMAP_ANIMATION_BOUNCE);      // 开启动画效果（跳跃/坠落）BMAP_ANIMATION_BOUNCE/BMAP_ANIMATION_DROP
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加文本Label
+    //    var labelScience = new BMap.Label("测试Label");
+    //    markerScience.setLabel(labelScience);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置折线（绘制线路）/多边形/圆/矩形
+    //    var myPolyline = new BMap.Polyline([new BMap.Point(121.471236, 31.241129), new BMap.Point(121.487899, 31.249162)]);
+    //    map.addOverlay(myPolyline);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 设置地面叠加层
+    //    var boundG = new BMap.Bounds(new BMap.Point(121.471236, 31.241129), new BMap.Point(121.487899, 31.249162));
+    //    var myGOverlay = new BMap.GroundOverlay(boundG, {
+    //        opacity: 1
+    //    });
+    //    myGOverlay.setImageURL('http://weiquaninfo.cn:18000/images/aaa.jpg');
+    //    map.addOverlay(myGOverlay);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加城市列表选择控件
+    map.addControl(new BMap.CityListControl({
+                anchor: BMAP_ANCHOR_TOP_LEFT,
+                offset: new BMap.Size(10, 20),
+                // 切换城市之间事件
+                onChangeBefore: function () {
+                },
+                // 切换城市之后事件
+                onChangeAfter: function () {
+//                    alert("经纬度为" + map.getCenter().lng + "," + map.getCenter().lat);
+                }
+            })
+    )
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 添加本地关键字搜索
+    //    var searchMarker = [];
+    //    var local = new BMap.LocalSearch(map, {
+    //        renderOptions: {map: map},
+    //        onMarkersSet: function (pois) {
+    //            for (var i = 0; i < pois.length; i++) {
+    //                var curPoi = pois[i];
+    //                searchMarker[i] = pois[i].marker;
+    //                searchMarker[i].setTitle(i);
+    //            }
+    //        }
+    //    });
+    //    local.search("莘东置业大厦");
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 自定义控件类1（输入框）
+    function ZoomControl() {
+        // 默认停靠位置和偏移量
+        this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new BMap.Size(90, 20);
+    }
+
+    // 通过JavaScript的prototype属性继承于BMap.Control
+    ZoomControl.prototype = new BMap.Control();
+
+    // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+    // 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+    ZoomControl.prototype.initialize = function (map) {
+        // 创建一个DOM元素
+        var div = document.createElement("div");
+        // 添加输入框
+        var inputBox = document.createElement("input");
+        inputBox.setAttribute("type", "text");
+        inputBox.setAttribute("id", "inputbox1");
+		inputBox.setAttribute("style","line-height:10px","!important");
+		inputBox.style.width="60%"
+        div.appendChild(inputBox);
+
+        // 添加DOM元素到地图中
+        map.getContainer().appendChild(div);
+        // 将DOM元素返回
+        return div;
+    }
+    // 创建控件
+    var myZoomCtrl = new ZoomControl();
+    // 添加到地图当中
+    map.addControl(myZoomCtrl);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 自定义控件类2（搜索）
+    var searchMarker = [];
+    function ClickControl() {
+        // 默认停靠位置和偏移量
+        this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new BMap.Size(210, 20);
+    }
+
+    // 通过JavaScript的prototype属性继承于BMap.Control
+    ClickControl.prototype = new BMap.Control();
+
+    // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+    // 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+    ClickControl.prototype.initialize = function (map) {
+        // 创建一个DOM元素
+        var div = document.createElement("div");
+        // 添加文字说明
+        div.appendChild(document.createTextNode("搜索"));
+        // 设置样式
+        div.style.cursor = "pointer";
+        div.style.border = "1px solid gray";
+        div.style.backgroundColor = "white";
+        // 绑定事件,点击一次
+        div.onclick = function (e) {
+            var sContent = document.getElementById("inputbox1").value;
+            var local = new BMap.LocalSearch(map, {
+                renderOptions: {map: map},
+                onMarkersSet: function (pois) {
+                    for (var i = 0; i < pois.length; i++) {
+                        var curPoi = pois[i];
+                        searchMarker[i] = pois[i].marker;
+                        searchMarker[i].setTitle(i);
+                    }
+                }
+            });
+            local.search(sContent);
+        }
+        // 添加DOM元素到地图中
+        map.getContainer().appendChild(div);
+        // 将DOM元素返回
+        return div;
+    }
+    // 创建控件
+    var myClickCtrl = new ClickControl();
+    // 添加到地图当中
+    map.addControl(myClickCtrl);
+
+    ////////////////////////////////////////////////////////////////////////////////////
+    // 自定义控件类3（清除）
+    function ClearControl() {
+        // 默认停靠位置和偏移量
+        this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new BMap.Size(250, 20);
+    }
+
+    // 通过JavaScript的prototype属性继承于BMap.Control
+    ClearControl.prototype = new BMap.Control();
+
+    // 自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+    // 在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+    ClearControl.prototype.initialize = function (map) {
+        // 创建一个DOM元素
+        var div = document.createElement("div");
+        // 添加文字说明
+        div.appendChild(document.createTextNode("清除"));
+        // 设置样式
+        div.style.cursor = "pointer";
+        div.style.border = "1px solid gray";
+        div.style.backgroundColor = "white";
+        // 绑定事件,点击一次
+        div.onclick = function (e) {
+            for (var i = 0; i < searchMarker.length; i++) {
+                map.removeOverlay(searchMarker[i]);
+            }
+            searchMarker = [];
+        }
+        // 添加DOM元素到地图中
+        map.getContainer().appendChild(div);
+        // 将DOM元素返回
+        return div;
+    }
+    // 创建控件
+    var myClearCtrl = new ClearControl();
+    // 添加到地图当中
+    map.addControl(myClearCtrl);
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 鼠标绘制工具
+    var styleOptions = {
+        strokeColor: "red",    //边线颜色。
+        fillColor: "white",      //填充颜色。当参数为空时，圆形将没有填充效果。
+        strokeWeight: 2,       //边线的宽度，以像素为单位。
+        strokeOpacity: 0.8,	   //边线透明度，取值范围0 - 1。
+        fillOpacity: 0.1,      //填充的透明度，取值范围0 - 1。
+        strokeStyle: 'dashed' //边线的样式，solid或dashed。
+    }
+    //实例化鼠标绘制工具
+    var drawingManager = new BMapLib.DrawingManager(map, {
+        isOpen: false, //是否开启绘制模式
+        enableDrawingTool: true, //是否显示工具栏
+        drawingToolOptions: {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            offset: new BMap.Size(5, 5), //偏离值
+            drawingModes: [
+                BMAP_DRAWING_MARKER,
+                BMAP_DRAWING_POLYGON
+            ]
+        },
+        enableCalculate: false,          //是否计算线长度或者面积（园、多边形和矩形）
+        polygonOptions: styleOptions, //多边形的样式
+    });
+    // 标记点绘制
+	var bb = [];
+	var mm
+	var ba
+    var saveMarker = function (e, ee, marker) {
+     $('#myMod').modal(
+      {
+        keyboard: true
+      })
+		bb = []
+        mm = marker
+		bb.push(e.lng)
+		bb.push(e.lat)
+		ba = mm.getLabel().content
+		$.ajax({
+		url:"/agent/{{ obj.pk }}/point_name/",
+		data:{'ba':ba},
+		type:'post',
+		dataType:'JSON',
+		success:function(d,s,x){
+		if(d.data[0].pk!='gg'){
+			var name = document.getElementById('id_name')
+			name.value = d.data[0].name
+			$("#cartogram option[value='"+d.data[0].pk+"']").attr("selected", "selected"); 
+			}
+		},
+		error:function(x,s,e){
+		  alert(e)
+		}
+	  })
+    }
+	function haha(bb,ba,mm){
+	var name = document.getElementById('id_name').value
+	$.ajax({
+		url:"/agent/{{ obj.pk }}/region/",
+		data:{'name':name,
+			  'marker':bb,
+			  'type':$("#cartogram option:selected").val(),
+			  'ba':ba},
+		type:'post',
+		success:function(d,s,x){
+			var iconMarker = new BMap.Icon("/uploads/"+d, new BMap.Size(25, 24));
+			mm.setIcon(iconMarker);
+			var content = "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>"+name+"</h4>"+"<a href='/agent/"+ba+"/point_add/' style='margin:0 0 5px 0;padding:0.2em 0'>查看详情</a>";
+			var infoWinM = new BMap.InfoWindow(content);
+			mm.addEventListener("click", function (e) {
+				mm.openInfoWindow(infoWinM);
+			});
+		},
+		error:function(x,s,e){
+		  alert(e)
+		}
+	  })
+		}
+    var editMarker = function (e, ee, marker) {
+        marker.enableDragging();
+    }
+    var delMarker = function (e, ee, marker) {
+	$('#delModal').modal(
+		  {
+			keyboard: true
+		  })
+		var del = document.getElementById('del')
+	del.onclick = function(){
+		mm = marker
+		ba = mm.getLabel().content
+		$.ajax({
+			url:"/agent/{{ obj.pk }}/dellabel/",
+			data:{'ba':ba},
+			type:'post',
+			success:function(d,s,x){
+			map.removeOverlay(marker);
+			},
+			error:function(x,s,e){
+			  alert(e)
+			}
+		  })
+		 
+		  }
+        
+    }
+
+	
+	var pilng = []
+	var pilat = []
+	{% if not objss%}
+	pilng.push(121.367859)
+	pilat.push(31.113143)
+	{% endif %}
+	{% for obj in objss %}
+	{% if obj.latitude %}
+	var content{{obj.pk}} = "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>{{obj.name}}</h4>"+"<a href='/agent/{{obj.pk}}/point_add/' style='margin:0 0 5px 0;padding:0.2em 0'>查看详情</a>";
+	var infoWinM{{obj.pk}} = new BMap.InfoWindow(content{{obj.pk}});
+	var p = {{obj.latitude}}
+	var lng = p[0]
+	var lat = p[1]
+	pilng.push(lng)
+	pilat.push(lat)
+	var point{{obj.pk}} = new BMap.Point(lng, lat)
+	var mk{{obj.pk}} = new BMap.Marker(point{{obj.pk}})
+	map.addOverlay(mk{{obj.pk}});
+	var iconMarker = new BMap.Icon("/uploads/{{obj.facilities_point.map_icon}}", new BMap.Size(25, 24));
+	mk{{obj.pk}}.setIcon(iconMarker);
+	var label = new BMap.Label({{obj.pk}}, { offset: new BMap.Size(20, 0)});
+	label.setStyle({display:"none"});
+	mk{{obj.pk}}.setLabel(label);
+	var markerMenu=new BMap.ContextMenu();
+	markerMenu.addItem(new BMap.MenuItem('保存',saveMarker.bind(mk{{obj.pk}})));
+	markerMenu.addItem(new BMap.MenuItem("编辑", editMarker.bind(mk{{obj.pk}})));
+    markerMenu.addItem(new BMap.MenuItem("删除", delMarker.bind(mk{{obj.pk}})));
+	mk{{obj.pk}}.addContextMenu(markerMenu);
+	mk{{obj.pk}}.addEventListener("click", function (e) {
+            mk{{obj.pk}}.openInfoWindow(infoWinM{{obj.pk}});
+        });
+        mk{{obj.pk}}.addEventListener("dragend", function (e) {
+            mk{{obj.pk}}.disableDragging();
+        });
+	{% endif %}
+	{% endfor %}
+	var avlng = 0
+	var avlat = 0
+	for(i=0;i<pilng.length;i++){
+		avlng = pilng[i]+avlng
+		avlat = pilat[i]+avlat
+	}
+	var ctpoint = new BMap.Point(avlng/pilng.length,avlat/pilng.length);
+	if(avlng != 0){
+		map.centerAndZoom(ctpoint, 18); 
+	}else{
+		map.centerAndZoom(ptShanghai, 18); 
+	}
+	var label
+    drawingManager.addEventListener("markercomplete", function (e, overlay) {
+        var menuMarker = new BMap.ContextMenu();
+		$.ajax({
+			url:"/agent/{{ obj.pk }}/label/",
+			data:{},
+			type:'post',
+			success:function(d,s,x){
+				label = new BMap.Label(d, { offset: new BMap.Size(20, 0)});
+				label.setStyle({display:"none"});
+				overlay.setLabel(label);
+			},
+			error:function(x,s,e){
+			  alert(e)
+			}
+		  })
+        menuMarker.addItem(new BMap.MenuItem("保存", saveMarker.bind(overlay)));  // 增加右键选项
+        menuMarker.addItem(new BMap.MenuItem("编辑", editMarker.bind(overlay)));  // 增加右键选项
+        menuMarker.addItem(new BMap.MenuItem("删除", delMarker.bind(overlay)));  // 增加右键选项
+        overlay.addContextMenu(menuMarker);
+        overlay.addEventListener("dragend", function (e) {
+            overlay.disableDragging();
+        });
+        drawingManager.close();
+    });
+	
+	var cancle = document.getElementById('cancle')
+    // 多边形绘制
+	var pp
+	var ba
+	var tt
+    var savePolygon = function (e, ee, polygon) {
+	$('#myModel').modal(
+      {
+        keyboard: true
+      })
+		tt = polygon
+	    pp = polygon.ia
+		for(i=0;i<pp.length;i++){
+			pp[i] = pp[i]
+		}
+		ba = (polygon.getStrokeOpacity()).replace('a','')
+		polygon.removeContextMenu()
+		var menuPolygoncde = new BMap.ContextMenu();
+		menuPolygoncde.addItem(new BMap.MenuItem('保存',savePolygon.bind(polygon)));
+		menuPolygoncde.addItem(new BMap.MenuItem("编辑", editPolygon.bind(polygon)));
+		menuPolygoncde.addItem(new BMap.MenuItem("删除", delPolygon.bind(polygon)));
+		polygon.addContextMenu(menuPolygoncde);
+    }
+	  var area = document.getElementById('area')
+	  area.onclick = function(){
+	  $.ajax({
+			url:"/agent/{{ obj.pk }}/area/",
+			data:{'marker':JSON.stringify(pp),
+				  'type':$("#cartogram2 option:selected").val(),
+				  'ba':ba,
+				  'name':document.getElementById('area_name').value},
+			type:'post',
+			success:function(d,s,x){
+				tt.disableEditing();
+				if(d=='error'){
+					toastr["error"]("主要区域只可以存在一个", "温馨提示!");
+					map.removeOverlay(tt);
+				}else if(d=='ok'){
+					window.location.href="/agent/{{obj.pk}}/region/"
+				}
+				tt.setStrokeStyle("solid")
+				tt.getStrokeStyle()
+				pContent = $("#area_name").val()
+				var infoWinP = new BMap.InfoWindow(pContent);
+				var aa = (tt.getBounds()).getCenter()
+				tt.addEventListener("click", function (e) {
+					map.openInfoWindow(infoWinP, aa);
+				});
+			},
+			error:function(x,s,e){
+			  alert(e)
+			}
+		  })
+	  }
+	  cancle.onclick = function(){
+		tt.setStrokeStyle("solid")
+		tt.getStrokeStyle()
+		tt.disableEditing();
+		tt.removeContextMenu()
+		var menuPolygoncde = new BMap.ContextMenu();
+		menuPolygoncde.addItem(new BMap.MenuItem('保存',savePolygon.bind(tt)));
+		menuPolygoncde.addItem(new BMap.MenuItem("编辑", editPolygon.bind(tt)));
+		menuPolygoncde.addItem(new BMap.MenuItem("删除", delPolygon.bind(tt)));
+		tt.addContextMenu(menuPolygoncde);
+	
+	
+	}
+    var editPolygon = function (e, ee, polygon) {
+        polygon.enableEditing();
+		polygon.setStrokeStyle("dashed")
+		polygon.getStrokeStyle()
+		polygon.removeContextMenu();
+		var menuPolygonabc = new BMap.ContextMenu();
+		menuPolygonabc.addItem(new BMap.MenuItem("取消编辑", diseditPolygon.bind(polygon)));  // 增加右键选项
+		menuPolygonabc.addItem(new BMap.MenuItem("保存", savePolygon.bind(polygon)));  // 增加右键选项
+		polygon.addContextMenu(menuPolygonabc);
+    }
+	var diseditPolygon = function (e, ee, polygon) {
+		polygon.disableEditing();
+		polygon.setStrokeStyle("solid")
+		polygon.getStrokeStyle()
+		polygon.removeContextMenu()
+		var menuPolygonbcd = new BMap.ContextMenu();
+		menuPolygonbcd.addItem(new BMap.MenuItem('保存',savePolygon.bind(polygon)));
+		menuPolygonbcd.addItem(new BMap.MenuItem("编辑", editPolygon.bind(polygon)));
+		menuPolygonbcd.addItem(new BMap.MenuItem("删除", delPolygon.bind(polygon)));
+		polygon.addContextMenu(menuPolygonbcd);
+    }
+    var delPolygon = function (e, ee, polygon) {
+		$('#delModal').modal(
+		  {
+			keyboard: true
+		  })
+		var del = document.getElementById('del')
+		del.onclick = function(){
+		tt = polygon
+		ba = (polygon.getStrokeOpacity()).replace('a','')
+		$.ajax({
+			url:"/agent/{{ obj.pk }}/delarea/",
+			data:{'ba':ba},
+			type:'post',
+			success:function(d,s,x){
+			if(d=="0"){
+				window.location.href="/agent/{{obj.pk}}/region/"
+			}
+			},
+			error:function(x,s,e){
+			  alert(e)
+			}
+		  })
+        map.removeOverlay(polygon);
+		}
+    }
+    
+	{% for obj in obja %}
+	{% if obj.latitude %}
+	var poContent{{obj.pk}} = "{{obj.name}}";
+	var infoWinP{{obj.pk}} = new BMap.InfoWindow(poContent{{obj.pk}});
+    infoWinP{{obj.pk}}.setContent(poContent{{obj.pk}});
+	var p = '{{obj.latitude}}'
+	p = p.replace(/&quot;/g,'"')
+	p = eval(p)
+	var ww = []
+	for(var i=0;i<p.length;i++){
+		ww.push(new BMap.Point(p[i].lng,p[i].lat))
+	}
+	var polygon{{obj.pk}} = new BMap.Polygon(ww,{strokeColor:"red", strokeWeight:2,fillOpacity:0.1});
+	map.addOverlay(polygon{{obj.pk}});
+	polygon{{obj.pk}}.setStrokeOpacity("a"+{{obj.pk}});
+	var polygonMenu=new BMap.ContextMenu();
+	polygonMenu.addItem(new BMap.MenuItem('保存',savePolygon.bind(polygon{{obj.pk}})));
+	polygonMenu.addItem(new BMap.MenuItem("编辑", editPolygon.bind(polygon{{obj.pk}})));
+    polygonMenu.addItem(new BMap.MenuItem("删除", delPolygon.bind(polygon{{obj.pk}})));
+	polygon{{obj.pk}}.addContextMenu(polygonMenu);
+	polygon{{obj.pk}}.addEventListener("click", function (e) {
+            map.openInfoWindow(infoWinP{{obj.pk}}, (polygon{{obj.pk}}.getBounds()).getCenter());
+        });
+	{% endif %}
+	{% endfor %}
+	
+	
+
+    drawingManager.addEventListener("polygoncomplete", function (e, overlay) {
+        
+        var menuPolygon = new BMap.ContextMenu();
+		$.ajax({
+			url:"/agent/{{ obj.pk }}/arealabel/",
+			data:{},
+			type:'post',
+			success:function(d,s,x){
+				overlay.setStrokeOpacity("a"+d);
+			},
+			error:function(x,s,e){
+			  alert(e)
+			}
+		  })
+        menuPolygon.addItem(new BMap.MenuItem("保存", savePolygon.bind(overlay)));  // 增加右键选项
+        menuPolygon.addItem(new BMap.MenuItem("编辑", editPolygon.bind(overlay)));  // 增加右键选项
+        menuPolygon.addItem(new BMap.MenuItem("删除", delPolygon.bind(overlay)));  // 增加右键选项
+        overlay.addContextMenu(menuPolygon);
+})
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 全局地图右键菜单
+    var dispAll = function (e) {
+        var overlay = map.getOverlays()
+		for(var i=0;i<overlay.length;i++){
+		overlay[i].show();
+		a.setText('●显示全部')
+		b.setText('只显示点')
+		c.setText('只显示多边形')
+		}
+    }
+	var list
+	var dispPoint = function(){
+		var overlay = map.getOverlays()
+		for(var i=0;i<overlay.length;i++){
+		overlay[i].show();
+		if (overlay[i].ia != undefined){
+			overlay[i].hide();
+			}
+		}
+		a.setText('显示全部')
+		b.setText('●只显示点')
+		c.setText('只显示多边形')
+	}
+	var dispArea = function(){
+		var overlay = map.getOverlays()
+		for(var i=0;i<overlay.length;i++){
+		overlay[i].show();
+		if (overlay[i].ia == undefined){
+			overlay[i].hide();
+			}
+		}
+		a.setText('显示全部')
+		b.setText('只显示点')
+		c.setText('●只显示多边形')
+	}
+    var menuDisp = new BMap.ContextMenu();
+    menuDisp.addItem((a = new BMap.MenuItem("●显示全部", dispAll,{id:"all"})))
+    menuDisp.addItem((b = new BMap.MenuItem("只显示点", dispPoint,{id:"point"})));
+    menuDisp.addItem((c = new BMap.MenuItem("只显示多边形", dispArea,{id:"region",width:110})));
+    map.addContextMenu(menuDisp);	
+</script> 
+ {% endblock %}

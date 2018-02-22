@@ -1,0 +1,303 @@
+{% extends "scenic/index.html" %}
+
+{% block content %}
+<section class="content-header AllTitle FormBlock">
+  <h1>
+    <span><a href="/scenic/dev/">设备管理</a>><a href="javascript:location.reload();">设备详情</a></span>
+  </h1>        
+</section>
+<section class="content">
+  <div class="row" style="background:#fff;padding:20px;margin:20px 0 0 20px;">
+    <div class="col-xs-12">
+      <div class="box" style="border-top:0px;">
+        <div class="box-body">
+        
+            <div class="row">
+              <div class="col-sm-12"><table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                <tbody>           
+                <tr role="row" class="odd">
+                  <td class="sorting_1" id="mav">{{ obj.get_time}}</td>
+                  <td><a {% if obj.dev_type == '0' %} class="label label-primary refresh" {% else %} class="label label-primary refre" {% endif %}>刷新</a></td>
+                  <td>{% if obj.dev_type == '0' %}<a  class="label label-primary reboot">重启</a>{% endif %}</td>
+                </tr>
+                <tr role="row" class="odd">
+                  <td class="sorting_1">设备MAC</td>
+                  <td>{{ obj.macaddr }}</td>
+                  <td></td>
+                </tr>
+                <tr role="row" class="odd">
+                  <td class="sorting_1">设备类型</td>
+                  <td>{{ obj.get_type }}</td>
+                  <td></td>
+                </tr>
+                {% if obj.dev_type != '1' %}
+                <tr role="row" class="odd">
+                  <td class="sorting_1">设备SSID</td>
+                  <td>{% if obj.ssid %}{{ obj.ssid }}{% else %}-{% endif %}</td>
+                  <td><a class="label label-primary create">修改</a></td>
+                </tr>
+                {% endif %}
+                <tr role="row" class="odd">
+                  <td class="sorting_1">设备所在的区域</td>
+                  <td>{% if obj.region_dev %}{{ obj.region_dev.name }}{% else %}-{% endif %}</td>
+                  <td><a  class="label label-primary region">修改</a></td>
+                </tr>
+                <tr role="row" class="odd">
+                  <td class="sorting_1">设备固件版本</td>
+                  <td>{{ obj.version}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+              </table>
+            </div>
+          </div>
+       
+            
+      </div>
+            <!-- /.box-body -->
+    </div> 
+
+  </div><!-- /.col -->
+</div><!-- /.row -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            修改SSID
+          </h4>
+        </div>
+        <div class="modal-body"> 
+          <div class="box-body">
+            <div class="pdrow">
+              <div class="form-group">
+                <div class="col-sm-3 control-label"><label for="id_name">设备SSID:</label></div>
+                <div class="col-sm-9" style="    margin-bottom: 20px;"><input class="form-control" id="ssid" name="ssid" value='{{obj.ssid}}' placeholder="请输入SSID" type="text" ></div>
+              </div>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info set" style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="myMod" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+           重启设备
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" method="POST" >{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+               <span>*您确定要重启设备吗？</span><br>
+              </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info rebot" style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade DevAdd" id="myModa" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:700px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            修改区域
+          </h4>
+        </div>
+        <div class="modal-body">
+         <form class="form-horizontal" method="POST" action="">{% csrf_token %} 
+          <div class="box-body">
+            <div class="pdrow">
+              <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">景区区域:</label></div>
+                  <div class="col-sm-9">
+                    <select id="cartogram" class="field" name="region">
+                      <option value="0">无</option>
+                      {% for obj in objs %}
+                      <option value="{{obj.pk}}">{{obj.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info" style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $(function(){
+    $(".refresh").click(function(){
+      if('{{obj.isonline}}'=='False'){
+        toastr["error"]("设备不在线!", "error");
+      }else{
+        mac('/api/agent_mac/')
+      }
+    })
+  })
+  $(function(){
+    $(".refre").click(function(){
+      if('{{obj.isonline}}'=='False'){
+        toastr["error"]("设备不在线!", "error");
+      }else{
+        if('{{obj.dev_type}}'=='2'){
+          mac('/api/aus_mac/')
+        }else{
+          mac('/api/probe_mac/')
+        }
+      }
+    })
+  })
+  var macc = '{{obj.macaddr}}'
+  function mac(url){
+     $.ajax({
+      url:url,
+      data:{'mac':macc},
+      type:'get',
+      async:false,
+      dataType:'JSON',
+      success:function(d,s,x){
+      if(d.length==0){
+        $('#mav').html('-');
+      }else{
+        $('#mav').html('在线'+' '+d[0]['uptime']);
+        toastr["success"]("刷新成功!", "success");
+      }
+      },
+      error:function(x,s,e){
+        alert(e)
+      }
+    }) 
+  }
+
+  $(function(){
+    $(".reboot").click(function(){
+      if('{{obj.isonline}}'=='False'){
+        toastr["error"]("设备不在线!", "error");
+      }else{
+        $('#myMod').modal(
+        {
+          keyboard: true
+        })
+      }
+     })
+
+    $(".rebot").click(function(){
+      $.ajax({
+        url:'/api/dev_reboot/',
+        data:{'mac':'{{obj.macaddr}}'},
+        type:'get',
+        async:false,
+        success:function(d,s,x){
+          if(d=='ok'){
+            toastr["success"]("重启成功!", "success");
+          }
+        },
+        error:function(x,s,e){
+          alert(e)
+        }
+      }) 
+ 
+    })
+  })
+
+  $(function(){
+    $(".create").click(function(){
+      if('{{obj.isonline}}'=='False'){
+        toastr["error"]("设备不在线!", "error");
+      }else{
+        $('#myModal').modal(
+        {
+          keyboard: true
+        })
+      }
+    })
+  })
+
+  $(function(){
+    $(".set").click(function(){
+      var ssid = $('#ssid').val()
+      if(ssid.length==0){
+        toastr["error"]("ssid不能为空!", "error");
+        return
+      }
+      if('{{obj.dev_type}}'=='2'){
+        url = '/api/{{ pk }}/aus/dev_set/'
+      }else{
+        url = '/api/{{ pk }}/ap/dev_set/'
+      }
+      $.ajax({
+        url:url,
+        data:{'mac':'{{obj.macaddr}}','ssid':$('#ssid').val()},
+        type:'get',
+        async:false,
+        success:function(d,s,x){
+          if(d=='ok'){
+            toastr["success"]("设置成功!", "success");
+            window.location.reload(); 
+          }
+        },
+        error:function(x,s,e){
+          alert(e)
+        }
+      })
+    })
+  })
+
+  $(function(){
+    $(".region").click(function(){
+      $('#myModa').modal(
+      {
+        keyboard: true
+      })
+    })
+  })
+
+</script>
+{% endblock %}

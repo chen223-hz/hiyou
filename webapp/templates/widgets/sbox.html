@@ -1,0 +1,12 @@
+    
+          <div class="small-box bg-{{ obj.bgcolor|default:"green" }}">
+          <a href="{{ obj.link }}">
+            <div class="inner">
+              <div class="icon">
+                <i><img src="{{ obj.img|default:"/static/img/agent-sum.png" }}"></i>
+              </div>
+               <h3 style="color:{{ obj.color|default:"white" }}">{{ obj.title }}</h3>
+              <p><a href="{{ obj.link }}" class="label">{{ obj.label }}</a></p>
+            </div></a>
+          </div>
+    

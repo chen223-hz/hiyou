@@ -1,0 +1,24 @@
+    <ul class="sidebar-menu" >
+      <li {% if request.get_full_path == '/agent/' %} class="active" {% endif %}>
+      <a href="/agent/">
+      <i class="glyphicon glyphicon-home"></i>
+      <span>管理首页</span>
+      </a>
+      </li>
+      <li {% if request.get_full_path|slice:"-5:" == '/dev/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-10:" == '/dev_edit/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-9:" == '/dev_add/' %} class="active" {% endif %} {% if request.get_full_path|slice:":11" == '/agent/dev/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-13:"  == '/dev_latiude/' %} class="active" {% endif %}>
+      <a href="/agent/dev/">
+      <i class="fa  fa-cubes"></i>
+      <span>设备管理</span></a>
+      </li>
+      <li {% if request.get_full_path|slice:":13" == '/agent/agent/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-8:" == 'w/agent/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-8:"  == '/region/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-11:"  == '/agent_map/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-12:"  == '/scenic_map/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-6:"  == '/user/' %} class="active" {% endif %} {% if request.get_full_path|slice:"-9:"  == '/add_map/' %} class="active" {% endif %} >
+      <a href="/agent/agent/">
+      <i class="fa fa-tree"></i>
+      <span>景区管理</span></a>
+      </li>
+       <li  style=" transition:border-left-color 0.3s ease; -webkit-transition:border-left-color 0.3s ease; position:absolute; bottom:20px; position:fixed;">
+              <a href="#" style="padding-left: 16px; color:#ccc; width:100%;">
+               <img src="/static/img/logo-agent.png" style="padding-right:7px;">
+             <span>代理商端</span>
+              </a>
+            </li>
+    </ul>

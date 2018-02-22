@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Hi游云平台</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="bookmark" type="image/x-icon" href="/static/favicon.ico/www.ico.ico"/>
+    <link rel="shortcut icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="icon" href="/static/favicon.ico/www.ico.ico">
+    <link rel="stylesheet" href="http://cdn.doublecom.net/adminlte2/plugins/toastr/toastr.min.css">  
+    <link rel="stylesheet" type="text/css" href="/static/css/loc.css">
+  
+</head>
+<body>
+  <header>
+<div class="top-bar">
+    <div class="back"></div>
+    <div class="title">设备定位</div>
+    <div class="register"></div>
+ </div>
+</header>
+<div id="login-form" class="form">
+  <div class="LocAll">
+    <div class="LocUp">
+      <div class="Locnow">设备Mac</div>
+      <input type="text" name="vcode" id='mac' placeholder="请输入设备Mac">
+    </div>
+  </div>
+</div>
+
+<div class="form-button">
+    <a id="login-button" href="javascript:;" class="login">下一步</a>
+</div>
+<div class="agreement">
+   <div class="Img"></div>
+</div>
+</body>
+    <script src="http://cdn.doublecom.net/adminlte2/bootstrap/js/jquery.min.js"></script>
+    <script src="http://cdn.doublecom.net/adminlte2/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://cdn.doublecom.net/adminlte2/js/app.min.js"></script>
+    <script src="http://cdn.doublecom.net/adminlte2/plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript">
+ $(function(){
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+        toastr["success"]("{{ message }}", "success");
+        {% else %}
+        toastr["error"]("{{ message }}", "error");
+        {% endif %}
+      {% endfor %}
+    {% endif %} 
+  });
+  $(function(){
+    $(".login").click(function(){
+      if($('#mac').val().length==0){
+        toastr["error"]("设备MAC不能为空!", "error");
+        return
+      }
+      $.ajax({
+        url:'/mac/',
+        data:{'mac':$('#mac').val()},
+        type:'post',
+        async:false,
+        success:function(d,s,x){
+          if(d=='ok'){
+            window.location.assign('/location/?mac='+$('#mac').val())
+          }
+          if(d=='no'){
+            toastr["error"]("没有该设备MAC!", "error");
+          }
+        },
+        error:function(x,s,e){
+          alert(e)
+        }
+      }) 
+  })
+})
+</script>
+</html>

@@ -1,0 +1,12 @@
+    <ul class="sidebar-menu" >
+      <li {% if request.get_full_path == '/headquar/' %} class="active" {% endif %}>
+        <a href="">
+            <i class="glyphicon glyphicon-home"></i>
+            <span>管理首页</span></a></li>
+         <li  style=" transition:border-left-color 0.3s ease; -webkit-transition:border-left-color 0.3s ease; position:absolute; bottom:20px;position:fixed;">
+              <a href="#" style="padding-left: 16px; color:#ccc; width:100%;">
+               <img src="/static/img/logo-headquar.png" style="padding-right:7px;">
+             <span>总部端</span>
+              </a>
+            </li>
+    </ul>

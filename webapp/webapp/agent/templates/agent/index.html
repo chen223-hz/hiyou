@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+    {% include "agent/widgets/sidebar.html" %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<section class="content-header AllTitle TopTitle">
+  <h1>
+    <span><a href="javascript:location.reload();">管理首页</a></span>
+  </h1>        
+</section>
+<section class="content">
+  <div class="row EquMan" style="background:#fff;margin:20px;padding-top:20px;">
+        <div class="col-lg-3 col-xs-3">
+          {% with dev as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-3">
+          {% with scenic as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+        <div class="col-lg-3 col-xs-3">
+          {% with account as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+        <div class="col-lg-3 col-xs-3">
+          {% with dev_on as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+      </div>
+   <div style="background:#fff;padding:20px;margin:20px;">
+     <img src="/static/img/background.jpg" style="width:100%;">
+   </div>
+</section>
+
+{% endblock %}
+

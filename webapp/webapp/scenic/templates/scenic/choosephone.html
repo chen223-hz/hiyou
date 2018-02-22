@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<title>Hi游portal</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=uft-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="http://hiyou.doublecom.net/static/css/style_portal.css">
+	
+</head>
+<body>
+	<div class="ApproveAll">
+		<div class="ApproveModel">
+			<img src="http://hiyou.doublecom.net/static/img/word-white.png">
+		</div>
+		<div class="ApproveBtn">
+		<div class="BtnWrap">
+			<form name="login" action="$(link-login-only)?username=T-$(mac-esc)" method="post" id="form">
+				<input name="username" type="hidden" value=""/>
+				<input name="password" type="hidden" value="" />
+				<a class="btn" id="free" onclick="test();">
+					<img src="http://hiyou.doublecom.net/static/img/wifi.png" id="wait"/><label>免费上网</label>
+				</a>
+			</form>
+		</div>
+		</div>
+		<div class="BtnSlogan"><img src="http://hiyou.doublecom.net/static/img/Slogan-white.png" ></div>
+	</div>
+</body>
+<script>
+function test2(){
+document.getElementById('form').submit();
+}
+	function test(){
+	alert(navigator.userAgent);
+		document.getElementById('free').style.background='rgba(179,179,179,0.8)';
+		document.getElementById('free').style.color='#eee';
+		document.getElementById('wait').src='http://hiyou.doublecom.net/static/img/timg.gif'
+		setTimeout(test2,2000)
+		return false;
+	}
+
+</script>
+
+</html>

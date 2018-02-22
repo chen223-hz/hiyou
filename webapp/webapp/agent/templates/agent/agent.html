@@ -1,0 +1,317 @@
+{% extends "agent/index.html" %}
+  
+{% block content %}
+<style type="text/css">
+  .AllTitle{
+        padding:0 0 0 20px; 
+     }
+     .AllTitle h1{
+        height:45px; 
+     }
+     .AllTitle h1 small{
+        padding-top: 13px;
+        color:#999;
+     }
+     .AllTitle h1 small i{
+        font-size:13px;
+        width:15px;
+     }
+     .AllTitle h1 small span a{
+        color:#999;
+     }
+     .AgentTable .odd .IconEdit{
+        padding:6px 12px;
+      }
+   @media screen and (max-width: 1024px){
+      .AgentTable .odd .IconEdit{
+        padding:5px 7px;
+      }
+      .AgentTable .EndTd{
+        line-height: 3;
+      }
+   }
+
+</style>
+<section class="content-header AllTitle TopTitle">
+  <h1>
+    <span><a href="javascript:location.reload();">景区管理</a></span>
+  </h1>        
+</section>
+<section class="content">
+  <div class="row SetMan" style="background:#fff;margin:20px 0 0 20px;">
+        <div class="col-lg-3 col-xs-6">
+          {% with scenic as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          {% with new_scenic as obj %} {% include "widgets/sbox.html" %} {% endwith %}
+        </div>
+  </div>
+  <div class="row EquList" style="background:#fff;padding:20px;margin:20px 0 0 20px;">
+    <div class="col-xs-12" style="padding:0px;">
+      <div class="box" style="border-top:0px solid #fff; margin-bottom:0px;">
+        <div class="box-body">
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+              <div class="col-sm-12">
+                <form action="" method="GET" charset="utf-8">
+                  <div id="example1_filter" class="dataTables_filter" style="margin: 0 0 20px 0;">
+                    <label>景区名称:
+                    <input type="search" class="form-control input-sm" placeholder="" {% if search %} value='{{ search }}' {% endif %} name="search" aria-controls="example1">
+                    </label>
+                    <label>
+                    <button class="btn btn-sm btn-default new-search" style="margin-left:10px;"><i class="fa fa-search"></i></button>
+                    </label>
+                    <label style="float: right;">
+                      <a class='add' title="新增景区">
+                        <div class="btn btn-sm btn-default new-plus" style="margin-left:10px;"><i class="glyphicon glyphicon-plus"></i></div>
+                      </a> 
+                    </label>
+                    <label style="float: right;">
+                      <a href="/agent/{{ pk }}/{{ new }}/scenic_export/?search={{ search }}" title="景区导出">
+                        <div class="btn btn-sm btn-default new-export" style="margin-left:10px;"><i class="glyphicon glyphicon-export"></i></div>
+                      </a> 
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="row AgentTable" style="text-align: center;">
+              <div class="col-sm-12"><table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                <thead>
+                <tr role="row">
+                  <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width:12%; text-align: center;">景区名称</th>
+                  <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="width:12%; text-align: center;">区域数量</th>
+                  <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width:12%; text-align: center;">账号数量</th>
+                  <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending" style="width:12%; text-align: center;">设备数量</th>
+                  <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width:13%; text-align: center;">创建日期</th>
+                  <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width:13%; text-align: center;">操作</th>
+                </tr>
+                </thead>
+                <tbody> 
+                {% load pagination_tags %}
+                {% autopaginate objs 12 %}
+                {% for obj in objs%}        
+                <tr role="row" class="odd">
+                  <td class="sorting_1">{{obj.name}}</td>
+                  <td><a href="/agent/{{ obj.pk }}/region/" >{{obj.area_set.all.count}}</a></td>
+                  <td><a href="/agent/{{obj.pk}}/user/" >{{obj.group.user_set.all.count}}</a></td>
+                  <td>{{obj.dev_set.all.count}}</td>
+                  <td title="{{obj.pub_date|date:'Y-m-d H:i:s'}}">{{obj.pub_date|date:"Y-m-d"}}</td>
+
+                  <td class="EndTd" style="width:25%;">
+                    <a name="{{ obj.name }}" id="{{ obj.pk }}" title="编辑"  style="color:#53a3f7!important;" class="creat"><i class="glyphicon glyphicon-edit" style="margin-right:5px;"></i>编辑</a>
+                    &nbsp <a href="/agent/{{ obj.pk }}/scenic_map/" title="地图"  style="color:#53a3f7!important;"><i class="fa  fa-map-o" style="margin-right:5px;"></i>地图</a> &nbsp 
+                    <a id="{{ obj.pk }}" title="删除"  style="color:#53a3f7!important; background: none" class="create"><i class="glyphicon glyphicon-remove-sign" style="margin-right:5px;"></i>删除</a> &nbsp
+                    <a id="{{ obj.pk }}" title="初始化认证配置"  style="color:#53a3f7!important;" class="setting"><i class="fa fa-gear" style="margin-right:5px;"></i>设置</a> 
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="MiddlePage">
+           {% paginate %}
+          </div>
+        </div>
+            
+      </div>
+            <!-- /.box-body -->
+    </div> 
+
+  </div><!-- /.col -->
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            删除景区
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" method="POST" >{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+               <span>*必须先清空和当景区关联的所有设备后,才能删除!</span><br>
+               <span>*删除后,和景区关联的所有区域和账号将会被删除！</span>
+              </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+   <div class="modal fade" id="myModa" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            修改景区
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" id="modify" method="POST" >{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+              <div class="form-group">
+                <div class="col-sm-3 control-label"><label for="id_name">景区名称:</label></div>
+                <div class="col-sm-9"><input class="form-control" id="id_name" name="name"
+placeholder="请输入代理商名称" type="text" > <span class="helptext" style="color:#aaa">不能超过32个中文字</span></div>
+              </div>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="myMod" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:650px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            添加景区
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" id="add" method="POST" action="/agent/{{pk}}/add/">{% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+                <div class="form-group">
+                  <div class="col-sm-3 control-label"><label for="id_name">景区名称:</label></div>
+                  <div class="col-sm-9"><input class="form-control" id="id_name" name="name"
+placeholder="请输入景区名称" type="text"> <span class="helptext" style="color:#aaa">不能超过32个中文字</span></div>
+                </div>
+              <div class="form-group">
+                <div class="col-sm-3 control-label"><label for="id_username">手机账号:</label></div>
+                <div class="col-sm-9"><input class="form-control" id="id_username" name="cellphone" placeholder="手机账号" type="text"> <span class="helptext" style="color:#aaa">登录账号必须为11位数字</span></div>
+              </div>
+            </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="modal fade" id="myMo" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            默认配置
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" id="setting" method="POST" >{% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+				<span>修改景区配置为默认配置</span>
+            </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+  $(function(){
+    $(".create").click(function(){
+      var id = $(this).attr('id')
+      $('.form-horizontal').attr('action','/agent/'+id+'/del/')
+      $('#myModal').modal(
+      {
+        keyboard: true
+      })
+
+    })
+ $(".creat").click(function(){
+      var id = $(this).attr('id')
+      $('#modify').attr('action','/agent/{{ pk }}/'+id+'/edit/')
+       $('#id_name').attr('value',$(this).attr('name'))
+      $('#myModa').modal(
+      {
+        keyboard: true
+      })
+
+    })
+
+    $(".add").click(function(){
+      $('#myMod').modal(
+      {
+        keyboard: true
+      })
+
+    })
+
+	$(".setting").click(function(){
+	  var id = $(this).attr('id')
+	  $('#setting').attr('action','/agent/'+id+'/setting/')
+      $('#myMo').modal(
+      {
+        keyboard: true
+      })
+
+    })
+	
+	
+	
+  })
+
+</script>
+{% endblock %}

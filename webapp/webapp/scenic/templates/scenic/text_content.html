@@ -1,0 +1,108 @@
+{% extends "scenic/index.html" %}
+{% block header %}
+<style type="text/css">
+   
+    .EquList .box{
+      border-top:0px solid #fff;
+    }
+    .EquList #example1_wrapper section{
+       border-bottom:1px solid #d2d6de ;
+    }
+     .EquList #example1_wrapper section h3{
+      font-size:15px; 
+      border-left:4px solid #0073b7; 
+      margin-top: 0px;
+      padding-left: 2px;
+      color:#777;
+    }
+     .EquList .MacSearch  #example1_filter{
+      margin:20px 0 20px 0px;
+     }
+     .EquList .MacSearch button{
+      margin-left:5px;
+     }
+     .EquList .MacSearch .SetLogOut{
+      float:right;
+     }
+     .EquList .MacSearch.SetLogOut div{
+      margin-left:10px;
+     }
+     .MiddlePage{
+      text-align: center;
+     }
+	 #example1_wrapper section{
+		overflow:hidden;
+		margin-bottom:10px;
+	}
+	#example1_wrapper h3{
+		width:15%;
+		float:left;
+		margin-top:5px!important;
+	}
+	#example1_wrapper .SetLogOut{
+		float:right;
+	}
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content-header AllTitle">
+  <h1>
+    <small><i class="fa  fa-cubes"></i><span><a href="javascript:location.reload();">内容管理</a></span></small> 
+  </h1>        
+</section>
+<section class="content">
+  <div class="row EquList">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-body" >
+          <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+              <section style="">
+                <h3>内容列表</h3>
+				<label class="SetLogOut">
+				 <a href="/scenic/{{obj.pk}}/content_add/" title="添加模块">
+				<div class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i></div></a>
+				</label>
+              </section>
+              <div class="row">
+                <div class="col-sm-12">
+                  <table id="example1" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info" style="text-align: center;">
+                    <thead>
+                    <tr role="row">
+                      <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width:12%; text-align: center;">排序号</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="width:12%; text-align: center;">内容标题</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width:12%; text-align: center;">最后更新时间</th>
+                      <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending" style="width: 12%; text-align: center;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for obj in objs %}         
+                    <tr role="row" class="odd" data-ipaddr="{{ obj.macaddr }}">
+                      <td>{{ obj.num }}</td>
+					  <td>{{obj.title}}</td>
+                      <td title="{{ obj.update_time|date:'Y-m-d H:i:s' }}">{{ obj.update_time|date:"Y-m-d H:i:s" }} </td>                
+                      <td><a href="/scenic/{{obj.pk}}/content_edit/"name="{{ obj.name }}" id="{{ obj.pk }}" class= "label label-warning creat IconEdit edit" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>
+						  &nbsp <a href="/scenic/{{obj.pk}}/content_del/" class="label label-danger create IconEdit" title="删除"><i class="glyphicon glyphicon-remove-sign"></i></a>
+					  </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="MiddlePage">
+              
+              </div> 
+          </div>
+        </div>
+      </div> 
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</section>
+{% endblock %}
+{% block script %}
+<script type="text/javascript"> 
+</script>
+
+{% endblock %}

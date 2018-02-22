@@ -1,0 +1,22 @@
+  data = {
+      "touser":{{openid}},
+      "template_id":{{template_id}},
+      "data":{
+        "first":{
+          "value":"您好，欢迎您成功登录Hi游免费WiFi",
+          "color":"#173177"
+          },
+        "time":{
+          "value":{{a}},
+          "color":"#173177"
+          },
+        "ip":{
+          "value":{{ip}],
+          "color":"#173177"
+          },
+        "reason":{
+          "value":{{data}},
+          "color":"#173177"
+          }
+        }
+      }

@@ -1,0 +1,338 @@
+{% extends "agent/index.html" %}
+ {% block header %}
+ <style type="text/css">     
+    #allmap {width: 100%; height:760px; overflow: hidden;}    
+    #result {width:100%;font-size:12px;}    
+    dl,dt,dd,ul,li{    
+        margin:0;    
+        padding:0;    
+        list-style:none;    
+    }    
+    p{font-size:12px;}    
+    dt{    
+        font-size:14px;    
+        font-family:"微软雅黑";    
+        font-weight:bold;    
+        border-bottom:1px dotted #000;    
+        padding:5px 0 5px 5px;    
+        margin:5px 0;    
+    }    
+    dd{    
+        padding:5px 0 0 5px;    
+    }  
+      
+
+     
+    </style> 
+ {% endblock %}
+{% block content %}
+<section class="content-header AllTitle TopTitle">
+  <h1>
+    <span><a href="/agent/agent/">景区管理</a>><a href="javascript:location.reload();">景区地图</a></span>
+  </h1>        
+</section>
+
+<section class="content" >
+  <div class="row" style="background:#fff;padding:20px;margin:20px;">
+    <div class="col-md-12">
+      <div class="box" style="border-top:none;">
+        <div class="box-header with-border">
+          <h3 class="box-title" style="border-left:4px solid #0073b7;">{{ obj.name }}</h3>
+        </div>
+        <div class="box-body ">
+          <div id="allmap" style="overflow:hidden;zoom:1;position:relative;">       
+            <div id="map" style="height:200%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>    
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+              
+  <div class="modal fade" id="myMod" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            景区删除
+          </h4>
+        </div>
+        <div class="modal-body"> 
+         <form class="form-horizontal" method="POST" action="/agent/{{ pk }}/scenic_d/"> {% csrf_token %}
+          <div class="box-body">
+            <div class="pdrow">
+                <span>*你确定要删除吗?</span>
+            </div>
+            </div>
+          <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="myMo" tabindex="-1" role="dialog" 
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:500px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" 
+              data-dismiss="modal" aria-hidden="true">
+                &times;
+          </button>
+          <h4 class="modal-title" id="myModalLabel">
+            退出绘制
+          </h4>
+        </div>
+        <div class="modal-body"> 
+          <div class="box-body">
+            <div class="pdrow">
+               <span>退出后,您绘制的景区将不会被保存到服务器,请确认？</span>
+              </div>
+            </div>
+            <div class="box-footer pdrow">
+                <div class="" style="width:40%; margin:auto;">
+                  <a href="/agent/agent/" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</a>
+                  <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                  </button>            
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+ {% endblock %}
+  {% block script %}
+     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=F0i6SrLmHquLVNLCqpExxPrj8mWVdFwx"></script>     
+    <script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>    
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />      
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>    
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />  
+    <script type="text/javascript">    
+    var dv = ''
+    var lis = []
+    var a = []
+    var b = []
+    var lngg = []
+    var latt = []
+    var c 
+    pos('/agent/{{ pk }}/scenic_map/',0)
+    function pos(tx,nu){ 
+      $.ajax({
+        url:tx,
+        data:{'lis':JSON.stringify(lis)},
+        type:'post',
+        dataType:'JSON',
+        async:false,
+        success:function(d,s,x){
+          c = d.latitude
+          for(var j=0;j<d.latitude.length;j++){  
+            latt.push(d.latitude[j].lat)
+            lngg.push(d.latitude[j].lng)
+            a.push(new BMap.Point(d.latitude[j].lng,d.latitude[j].lat))
+          }
+          if(nu==1){
+            toastr["success"]("保存成功!", "success");
+            window.location.reload();
+          }
+        },
+        error:function(x,s,e){
+          alert(e)
+        }
+      }) 
+    }
+    // 百度地图API功能    
+    var map = new BMap.Map('allmap',{ enableMapClick: false }); 
+    if(a.length==0){
+      var poi = new BMap.Point(121.370518,31.113398);
+    }else{
+      var lg = (Math.max.apply(Math,lngg)+Math.min.apply(Math,lngg))/2;
+      var lt =  (Math.max.apply(Math,latt)+Math.min.apply(Math,latt))/2;
+      var maxLng = Math.max.apply(Math,lngg) 
+      var minLng = Math.min.apply(Math,lngg) 
+      var maxLat = Math.max.apply(Math,latt)  
+      var minLat = Math.min.apply(Math,latt)      
+      var zoom = getZoom(maxLng, minLng, maxLat, minLat);  
+      map.centerAndZoom(new BMap.Point(lg,lt), zoom); 
+ // var poi =new BMap.Point(lg,lt);
+
+} 
+function getZoom (maxLng, minLng, maxLat, minLat) {  
+    var zoom = ["50","100","200","500","1000","2000","5000","10000","20000","25000","50000","100000","200000","500000","1000000","2000000"]//级别18到3。  
+    var pointA = new BMap.Point(maxLng,maxLat);  // 创建点坐标A  
+    var pointB = new BMap.Point(minLng,minLat);  // 创建点坐标B  
+    var distance = map.getDistance(pointA,pointB).toFixed(1);  //获取两点距离,保留小数点后两位  
+    for (var i = 0,zoomLen = zoom.length; i < zoomLen; i++) {  
+        if(zoom[i] - distance > 0){  
+            return 18-i+3;//之所以会多3，是因为地图范围常常是比例尺距离的10倍以上。所以级别会增加3。  
+        }  
+    };  
+}    
+    map.centerAndZoom(poi, 16);    
+    map.enableScrollWheelZoom();      
+    var overlays = [];    
+    var overlaycomplete = function(e){    
+        overlays.push(e.overlay);     
+    };    
+    var styleOptions = {    
+        strokeColor:"red",    //边线颜色。    
+        fillColor:"",      //填充颜色。当参数为空时，圆形将没有填充效果。    
+        strokeWeight: 3,       //边线的宽度，以像素为单位。    
+        strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。    
+        fillOpacity: 0.6,      //填充的透明度，取值范围0 - 1。    
+        strokeStyle: 'solid' //边线的样式，solid或dashed。    
+    }  
+
+    //实例化鼠标绘制工具     
+            
+    function draw(type){    
+        drawingManager.open();     
+        drawingManager.setDrawingMode(type);    
+    }       
+            
+    function clearAll() {    
+        for(var i = 0; i < overlays.length; i++){    
+            map.removeOverlay(overlays[i]);    
+        }    
+        overlays.length = 0       
+    }
+    function getPoint(){       
+        for(var i = 0; i < overlays.length; i++){    
+            var overlay=overlays[i].getPath();      
+            for(var j = 0; j < overlay.length; j++){    
+                var grid =overlay[j];
+                lis.push({"lng":grid.lng,"lat":grid.lat})
+            }    
+        }
+
+        pos('/agent/{{ pk }}/scenic_map/',1)
+    }    
+    function Editing(state){    
+        for(var i = 0; i < overlays.length; i++){    
+            state=='enable'?overlays[i].enableEditing():overlays[i].disableEditing();    
+        }    
+    }    
+ 
+
+     
+      var polygon = new BMap.Polygon(a, styleOptions);  //创建多边形    
+      map.addOverlay(polygon);
+    //drawingManager.open();     
+        //drawingManager.setDrawingMode("BMAP_DRAWING_POLYLINE");  
+    //增加多边形    
+       overlays.push(polygon); //是否把该图像加入到编辑和删除行列    
+       //btn.setAttribute('disabled','false');    
+      // showText();    
+        var menu = new BMap.ContextMenu(); //右键菜单 
+        if(a.length!=0){
+            var drawingManager = new BMapLib.DrawingManager(map, {
+              isOpen: false, //是否开启绘制模式
+              enableDrawingTool: false, //是否显示工具栏
+              drawingToolOptions: {
+                anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+                offset: new BMap.Size(7, 7), //偏离值
+                drawingModes:[BMAP_DRAWING_POLYGON],
+              },
+              circleOptions: styleOptions, //圆的样式
+              polylineOptions: styleOptions, //线的样式
+              polygonOptions: styleOptions, //多边形的样式
+              rectangleOptions: styleOptions //矩形的样式
+          });   
+          drawingManager.addEventListener('overlaycomplete', overlaycomplete); 
+          var txtMenuItem = [  //右键菜单项目  
+              {  
+                  text:'编辑区域',  
+                  callback:function(){Editing('enable')}  
+              },   
+              {  
+                  text:'保存区域',  
+                  callback:function(){getPoint()}  
+              }, 
+    
+              {  
+                text:'删除区域',  
+                callback:function(){
+                  $('#myMod').modal(
+                  {
+                    keyboard: true
+                  })
+                }  
+            },
+            {  
+                text:'退出绘制',  
+                callback:function(){
+                  $('#myMo').modal(
+                  {
+                    keyboard: true
+                  })
+                }  
+            },
+          ];  
+        }else{
+          var drawingManager = new BMapLib.DrawingManager(map, {
+            isOpen: false, //是否开启绘制模式
+            enableDrawingTool: true, //是否显示工具栏
+            drawingToolOptions: {
+              anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+              offset: new BMap.Size(7, 7), //偏离值
+            drawingModes:[BMAP_DRAWING_POLYGON],
+            },
+            circleOptions: styleOptions, //圆的样式
+            polylineOptions: styleOptions, //线的样式
+            polygonOptions: styleOptions, //多边形的样式
+            rectangleOptions: styleOptions //矩形的样式
+          });  
+         drawingManager.addEventListener('overlaycomplete', overlaycomplete);
+            var txtMenuItem = [  //右键菜单项目    
+              {  
+                  text:'编辑区域',  
+                  callback:function(){   
+                    Editing('enable')
+                  }  
+              },   
+              {  
+                  text:'保存区域',  
+                  callback:function(){getPoint()}  
+              }, 
+              {  
+                text:'退出绘制',  
+                callback:function(){
+                  $('#myMo').modal(
+                  {
+                    keyboard: true
+                  })
+                }  
+            },
+          ]; 
+        }
+  
+        for(var i=0; i < txtMenuItem.length; i++){  
+            menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100)); //菜单添加项目  
+            if(i==1 || i==3) {  
+                menu.addSeparator();  //添加右键菜单的分割线  
+            }  
+        }  
+           
+        map.addContextMenu(menu);  
+ 
+
+  var size = new BMap.Size(10, 20);
+  map.addControl(new BMap.CityListControl({
+    anchor: BMAP_ANCHOR_TOP_LEFT,
+    offset: size,
+  }));
+   
+</script>    
+ {% endblock %}

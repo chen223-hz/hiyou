@@ -1,0 +1,32 @@
+@media screen and (min-device-width:568px) and (max-device-width:736px){
+	body{
+		background:url(../img/Bg-blan.jpg) no-repeat 0 0;
+	}
+	.ApproveBtn .BtnWrap{
+		top:50%;
+	}
+	.ApproveModel img{
+		width:30%;
+		margin-left: -147px;
+	}
+	.ApproveBtn .BtnWrap .WifiBtn a{
+		width: 350px;
+    	height: 60px;
+   		line-height: 60px;
+    	font-size:30px;
+    	border-radius: 20px;
+	}
+	.ApproveBtn .BtnWrap .WifiBtn .BtnEntry{
+		width:350px;
+	}
+	.ApproveBtn .BtnWrap .WifiBtn a span i{
+		top:15px;
+		left:60px;
+		background:url(../img/Wf-ipbl.png) no-repeat 0 0;
+	}
+	.BtnSlogan{
+		height:140px;
+		background-size:180px;
+		width:180px;
+	}
+}

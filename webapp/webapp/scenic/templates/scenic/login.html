@@ -1,0 +1,32 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <title>跳转中</title>
+    <script type="text/javascript">  
+        // borwserRedirect  
+        (function browserRedirect(){  
+            var sUserAgent = navigator.userAgent.toLowerCase();  
+            var bIsIpad = sUserAgent.match(/ipad/i) == 'ipad';  
+            var bIsIphone = sUserAgent.match(/iphone os/i) == 'iphone os';
+			var bIsAnd = sUserAgent.match(/android/i) == 'android';			
+            var bIsMidp = sUserAgent.match(/midp/i) == 'midp';  
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == 'rv:1.2.3.4';  
+            var bIsUc = sUserAgent.match(/ucweb/i) == 'web';  
+            var bIsCE = sUserAgent.match(/windows ce/i) == 'windows ce';  
+            var bIsWM = sUserAgent.match(/windows mobile/i) == 'windows mobile';  
+  
+            if(bIsIpad || bIsIphone || bIsMidp || bIsUc7 || bIsUc || bIsCE || bIsWM || bIsAnd){
+				window.location.href = '$(link-login-only)?target=phone';
+            }else{
+				window.location.href = '$(link-login-only)?target=pc';
+			}  
+        })();
+    </script>  
+</head>  
+<body>  
+</body>  
+</html> 
+
+

@@ -1,0 +1,201 @@
+.TopTitle{
+    border-left:1px solid #d3d4d4;
+}
+.main-sidebar{
+    padding-top:50px;
+    background:#fff!important;
+}
+.content-wrapper{
+    padding-top:50px;
+}
+.main-header{
+    position:fixed;
+    width:100%;
+}
+.main-header .logo{
+    height:50px!important;
+    background:#fff!important;
+    border-bottom:1px solid #d3d4d4!important;
+}
+.main-header .navbar{
+    height:50px!important;
+    background:#fff!important;
+    border-bottom:1px solid #d3d4d4!important;
+}
+.content-wrapper{
+    background:#efefef!important;
+    border:0px!important;
+}
+.content-header{
+    background:#fff!important;
+    
+}
+.content-header span{
+    font-size:17px;
+    margin:20px;
+}
+.CommodityTab{
+    background:#fff!important;
+    padding-top:5px!important;
+}
+.CommodityTab .nav-tabs{
+    border-bottom:1px solid #d3d4d4;
+}
+.CommodityTab ul{
+    padding-left:25px;
+    margin-bottom: 0px!important;
+}
+.box{
+    background:none;
+    box-shadow: initial;
+}
+.box-body{
+    padding:0px!important;
+}
+.content{
+    padding:0px!important;
+
+}
+.bootstrap-table{
+    margin: 15px 0 0 15px;
+    background: #fff;
+    padding: 20px;
+}
+.FormBlock{
+    background:#fff!important;
+    padding:20px;
+    border-bottom:0px!important;
+    border-left:1px solid #d3d4d4;
+}
+.input-group-sm{
+    width:15%;
+}
+.input-group-sm input{
+    width:100%!important;
+}
+.ButtonSearch button{
+    background: #72beff!important;
+    color: #fff;
+    border: 1px solid #64b2f7;
+}
+.ButtonSelect button {
+    background:#5adc9c;
+    color: #fff;
+    border: 1px solid #57d497;
+}
+.ButtonSelect{
+    margin-left:10px;
+}
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover{
+    background-color: #c5d0d7;
+    border-color:#c5d0d7;
+}
+.btn-group.open .dropdown-toggle{
+    box-shadow: none;
+    -webkit-box-shadow:none;
+}
+/*index*/
+.create{
+    background:#72beff;
+    color:#fff;
+    
+}
+.jarviswidget-ctrls a{
+    background: #5adc9c!important;
+    color: #fff!important;
+}
+.jarviswidget-ctrls a span{
+    color:#fff;
+}
+.SetMan{
+    background: #fff;
+    padding-top: 20px;
+}
+/*add_sales*/
+.form .form-actions{
+    border-top: none;
+    background:none;
+}
+.add-content{
+    margin: 15px 0 0 15px;
+    background: #fff;
+    padding: 20px;
+}
+.form-wizard .steps>li.done>a.step .number {
+    background-color: #ffd75c;
+}
+.form-wizard .steps>li.active>a.step .number {
+    background-color: #5adc9c;
+}
+.form-wizard .steps>li>a.step>.number {
+    background-color: #f0f5f7;
+}
+.progress-bar-green, .progress-bar-success{
+    background-color:#5adc9c;
+}
+.btn.btn-outline.green {
+    border-color: #72beff;
+    color:#72beff;
+    background: 0 0;
+}
+.btn.btn-outline.green.active, .btn.btn-outline.green:active, .btn.btn-outline.green:active:focus, .btn.btn-outline.green:active:hover, .btn.btn-outline.green:focus, .btn.btn-outline.green:hover {
+    border-color: #72beff;
+    color: #FFF;
+    background-color: #72beff;
+}
+.btn.green:not(.btn-outline) {
+    color: #FFF;
+    background-color: #72beff;
+    border-color: #72beff;
+}
+/*all*/
+html, body {
+    height: 100%;
+}
+.wrapper{
+    height:100%;
+}
+.content-wrapper{
+    height: 100%;
+}
+.skin-blue-light .wrapper{
+    background:#f7f7f7;
+}
+.nav-tabs>li.active>a,.nav-tabs>li.active>a:focus,.nav-tabs>li.active>a:hover{
+        color:#0893e4;
+        cursor:default;
+        border:0px;
+        border-bottom:3px solid #2d8ff6;
+        background:none;
+}
+.nav-tabs>li>a:hover{
+        border-bottom:2px solid #72beff;
+        background:none;
+        color:rgba(8,147,288,0.6);
+}
+.new-search{
+    background: #72beff!important;
+    color: #fff;
+    border: 1px solid #64b2f7;
+}
+.new-export,.new-add{
+    background: #e7505a!important;
+    color: #fff;
+    border: 1px solid #ef414c;
+}
+.new-plus{
+    background: #ffd75c!important;
+    color: #fff;
+    border: 1px solid #ffd75c;
+}
+.new-into{
+    background: #5adc9c!important;
+    color: #fff;
+    border: 1px solid #5adc9c;
+}
+.bg-yellow{
+    background:#ffd75c!important;
+}
+.bg-green{
+    background:#5adc9c!important;
+}

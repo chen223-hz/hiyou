@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+{% block sidebar %}
+{% include "scenic/widgets/sidebar.html" %} 
+{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="/static/css/jarvis-widgets.css?v=1">
+<style type="text/css">
+      #container{
+        height:718px;
+        width:100%;
+      }
+      #r-result{width:100%;}
+      .small-box>.inner {
+        padding: 17px;
+        }
+      ul{
+        list-style: none;
+        margin-bottom: 0px;
+        }
+      .TrafficAtatistics{
+        background:#fff;
+        margin-right:3%; 
+        margin-left:2%;
+        padding-top:15px;
+        padding-bottom:20px;
+        height:100%;
+        overflow: hidden;
+      }
+      .TrafficAtatistics h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+      }
+      .TrafficAtatistics .box-body{
+        padding:0px 10px 0 10px;
+      }
+      .NumberGarden .box-body .small-box{
+          box-shadow: none;
+        }
+      .NumberGarden .box-body .small-box .icon{
+          color:rgba(255,255,255,0.2); 
+          top:-38px;
+        }
+      .NumberGarden .box-body .small-box .inner{
+          padding:0;
+        }
+      .NumberGarden .box-body .small-box .inner span{
+          font-size:40px;
+        }
+      .NumberGarden .Popular{
+          margin-top:15px;
+        }
+      
+      .HeatMap{
+          background: #fff;
+          padding-top:5px;
+          padding-bottom:15px;
+          height:100%;
+      }
+      .HeatMap h3{
+        font-size:15px; 
+        border-left:4px solid #0073b7; 
+        margin-top: 0px;
+        padding-left: 2px;
+        color:#777;
+      }
+      .HeatMap .Set{
+        float: right;
+      }
+      .HeatMap .Set button{
+        margin-left:10px; 
+        padding:4px 15px 2px 15px;
+      }
+      .HeatMap .jvectormap-container{
+        width: 100%; 
+        height: 100%; 
+        position: relative; 
+        overflow: hidden; 
+        background-color: transparent;
+      }
+     
+      #barChart{
+         height:515px;
+        }
+      #myModal .SetBounced{
+        width:500px;
+      }
+      #myModal.SetBounced.pdrow div{
+        width:40%; 
+        margin:auto;
+      }  
+       #myModal.SetBounced.pdrow div .btn-default{
+        background-color:#dd4b39; 
+        border:#dd4b39;color:#fff;
+      }
+      #myModal.SetBounced.pdrow div .pull-right{
+        background-color: #0073b7; 
+        border:#0073b7; 
+        margin-right: 2%;
+      }
+      .Popular{
+        margin-top: 10px
+      }
+      .jarviswidget > div{
+        border:0px;
+      }
+      @media screen and (max-width: 1024px){
+       
+        #container{
+        height:530px;
+        width:100%;
+        }
+        .HeatMap .pad{
+          height: 500px;
+          overflow:hidden;
+        }
+        .TrafficAtatistics{
+          height:100%;
+        }
+        .TrafficAtatistics label{
+          margin-bottom:0px;
+        }
+        .NumberGarden{
+          height:85px;
+        }
+        .NumberGarden .box-body h4{
+          font-size: 14px;
+        }
+        .NumberGarden .box-body .small-box .inner span{
+          font-size:30px;
+        }
+        .NumberGarden .box-body .small-box .icon{
+          color:rgba(255,255,255,0.2);
+          top: -25px;
+          right: -15px;/* width: 20%; */
+          font-size:60px;
+        }
+        .Popular{
+          height:79%;
+          margin-top: 10px
+        }
+         #barChart{
+          height:300px;
+        }
+        .AllMap{
+          padding:10px;
+        }
+      }
+      .BMap_cpyCtrl  
+    {  
+        display:none;   
+    }  
+    .anchorBL{  
+        display:none;   
+    } 
+     .secondmenu a {
+            font-size: 10px;
+            color: #4A515B;
+            padding:0.5vw 1.5vw!important;
+  }
+  .secondmenu a i {
+    padding-right:0.2vw;
+  }
+  .create{
+    background: #72beff!important;
+    color: #fff;
+    border: 1px solid #64b2f7;
+  }
+</style> 
+{% endblock %}
+{% block content %}
+<section class="content-header AllTitle TopTitle" >
+  <h1>
+      <span><a href="javascript:location.reload();">首页管理</a></span>
+  </h1>        
+</section>
+<section class="content AllMap" id="widget-grid" style=" margin-top:20px;
+    margin-left: 20px; height:92%;">
+          <div class="row" style="height:100%;" >
+            <!-- /.box-body -->
+            <div class="col-md-3 col-sm-2 TrafficAtatistics" >
+               <label>
+                <h3>客流统计</h3>
+                </label>
+                <div class=" NumberGarden pad box-pane-right bg-blue" >
+                  <div class="box-body">
+                  <h4>在园人数</h4>   
+                    <div class="small-box">
+                      <div class="inner">
+                        <span id='account'>{{ account }}</span>
+                      </div>
+                      <div class="icon" >
+                        <i class="ion ion-ios-people-outline"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="Popular pad box-pane-right bg-blue" style="height:79%;">
+                  <div class="box-body">   
+                    <h4>人气景点</h4>
+                    <div class="chart">
+                      <canvas id="barChart" width="100%" height="160" ></canvas>
+                    </div>
+                  </div>
+                </div> 
+            </div><!-- /.col -->
+            <div class="col-md-8 col-sm-7 HeatMap jarviswidget">
+                <div class="pad" style="height:100%;"> 
+                  <label style="margin-bottom: 0px;">
+                    <h3>热力图</h3>
+                  </label>                
+                  <label class="Set">
+                  <a>  
+                    <button class="btn btn-sm btn-default create"><i class="glyphicon glyphicon-cog" ></i></button></a>
+                  </label>   
+                  <div id="container" class="allmap" style="height:98%;">
+                      <div class="jvectormap-container" id="allmap">
+                     </div>
+                  </div>
+                </div><!-- /.row -->
+            </div>
+          </div>
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+            aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm SetBounced">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" 
+                      data-dismiss="modal" aria-hidden="true">
+                        &times;
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel">
+                    人数设置
+                  </h4>
+                </div>
+                <div class="modal-body"> 
+                 <form class="form-horizontal" method="POST" action="/scenic/{{ obj.pk }}/num/"> {% csrf_token %}
+                  <div class="box-body">
+                    <div class="pdrow">
+                      <div class="form-group">
+                        <div class="col-sm-4 control-label"><label for="id_name">设置最大人数:</label></div>
+                        <div class="col-sm-7"><input class="form-control" id="id_name" name="num" placeholder="请输入人数" {% if obj.num %}value="{{ obj.num }}"{% else %}value='100'{% endif %} type="number"> </div>
+                      </div>
+                      </div>
+                  </div>
+                <div class="box-footer pdrow">
+                  <div class="" style="width:40%; margin:auto;">
+                    <button type="submit" class="btn btn-info " style="background-color: #0073b7; border:#0073b7; margin-right: 2%;">确认</button>
+                    <button type="button" class="btn btn-info btn-default pull-right" data-dismiss="modal" style="background-color:#dd4b39; border:#dd4b39;color:#fff;">取消
+                    </button>            
+                  </div>
+                </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+</section>
+ {% endblock %}
+
+ {% block script %}
+<script type="text/javascript" src="http://cdn.doublecom.net/adminlte2/plugins/chartjs/Chart.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=F0i6SrLmHquLVNLCqpExxPrj8mWVdFwx"></script>     
+<script type="text/javascript" src="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.js"></script>    
+<link rel="stylesheet" href="http://api.map.baidu.com/library/DrawingManager/1.4/src/DrawingManager_min.css" />      
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>   
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
+<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>  
+<script src="/static/js/jquery-ui.min.js"></script>
+<script src="/static/js/jquery.accordion.min.js"></script>
+<script type="text/javascript" src="/static/js/config.js"></script> 
+<script type="text/javascript" src="/static/js/jarvis.widget.min.js"></script> 
+<script type="text/javascript">
+var points =[]
+var dic = {}
+var blist = [] 
+var lngg = []
+var latt = []    
+var areaChartData = {
+  labels: [],
+  datasets: [
+    {
+      label: "Digital Goods",
+      fillColor: "rgba(60,141,188,0.9)",
+      strokeColor: "rgba(60,141,188,0.8)",
+      pointColor: "#3b8bba",
+      pointStrokeColor: "rgba(60,141,188,1)",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(60,141,188,1)",
+      data: []
+   }
+ ]
+};
+
+var barChartOptions = {
+  scaleBeginAtZero: true,
+  scaleShowGridLines: true,
+  scaleGridLineColor: "rgba(255,255,255,0.01)",
+  scaleGridLineWidth: 1,
+  scaleShowHorizontalLines: true,
+  scaleShowVerticalLines: true,
+  scaleFontColor:"#fff",
+  scaleLineColor:"rgba(255,255,255,0.5)",
+  scaleSteps: 3, 
+  barShowStroke: true,
+  barStrokeWidth: 1,
+  barValueSpacing:20,
+  barDatasetSpacing: 1,
+  responsive: true,
+  maintainAspectRatio: true
+};   
+$.ajax({
+  url:'/scenic/{{ obj.pk }}/',
+  data:{},
+  type:'post',
+  dataType:'JSON',
+  async:false,
+  success:function(d,s,x){
+    var tt = {}
+    var la = ''
+    for(var j=0;j<d.tt.length;j++){  
+      la = la+ d.tt[j].lng+','+d.tt[j].lat+';'
+      latt.push(d.tt[j].lat)
+      lngg.push(d.tt[j].lng)
+    }
+    if(d.tt.length!=0){
+      tt['points']=la.substring(0,la.length-1)
+      blist.push(tt)
+    }
+  },
+  error:function(x,s,e){
+    //alert()
+  }
+})
+var map = new BMap.Map('container',{ enableMapClick: false }); 
+if(blist.length==0){
+  var poi = new BMap.Point(121.370518,31.113398);
+}else{
+  var lg = (Math.max.apply(Math,lngg)+Math.min.apply(Math,lngg))/2;
+  var lt =  (Math.max.apply(Math,latt)+Math.min.apply(Math,latt))/2;
+  var maxLng = Math.max.apply(Math,lngg) 
+  var minLng = Math.min.apply(Math,lngg) 
+  var maxLat = Math.max.apply(Math,latt)  
+  var minLat = Math.min.apply(Math,latt)      
+  var zoom = getZoom(maxLng, minLng, maxLat, minLat)+1;  
+  map.centerAndZoom(new BMap.Point(lg,lt), zoom); 
+
+} 
+function getZoom (maxLng, minLng, maxLat, minLat) {  
+    var zoom = ["50","100","200","500","1000","2000","5000","10000","20000","25000","50000","100000","200000","500000","1000000","2000000"]//级别18到3。  
+    var pointA = new BMap.Point(maxLng,maxLat);  // 创建点坐标A  
+    var pointB = new BMap.Point(minLng,minLat);  // 创建点坐标B  
+    var distance = map.getDistance(pointA,pointB).toFixed(1);  //获取两点距离,保留小数点后两位  
+    for (var i = 0,zoomLen = zoom.length; i < zoomLen; i++) {  
+        if(zoom[i] - distance > 0){  
+            return 18-i+3;//之所以会多3，是因为地图范围常常是比例尺距离的10倍以上。所以级别会增加3。  
+        }  
+    };  
+}
+
+map.centerAndZoom(poi, 16);    
+drawBoundary();
+  
+
+function drawBoundary() {
+  var pointArray = [];
+  var pArray = [];
+  for (var i = 0; i < blist.length; i++) {
+    var styleOptions = {    
+      strokeColor:"#FFFFFF",    //边线颜色。    
+      fillColor:"#FFFFFF",      //填充颜色。当参数为空时，圆形将没有填充效果。    
+      strokeWeight: 3,       //边线的宽度，以像素为单位。    
+      strokeOpacity: 0.8,    //边线透明度，取值范围0 - 1。    
+      fillOpacity: 0.1,
+      background: '#ffb7b7',      //填充的透明度，取值范围0 - 1。    
+      strokeStyle: 'dashed' //边线的样式，solid或dashed。    
+    }
+      var ply = new BMap.Polygon(blist[i].points,styleOptions); //建立多边形覆盖物
+      map.addOverlay(ply);
+  }
+}
+
+var  mapStyle ={ 
+  features: ["road", "building","water","land"],//隐藏地图上的poi
+  style : "dark"  //设置地图风格为高端黑
+}
+map.setMapStyle(mapStyle);
+map.enableScrollWheelZoom();
+account()
+function account(){
+  $.ajax({
+    url:'/api/{{ obj.pk }}/scenic/',
+    data:{},
+    type:'post',
+    dataType:'JSON',
+    async:false,
+    success:function(d,s,x){
+      $("#barChart").empty()
+      var data = d.data
+      $('#account').html(d.account)
+      points=[]
+      if(!data){
+        data = []
+      }
+      for(var i=0;i<data.length;i++){
+        dic['lng']=data[i]['lng']
+        dic['lat']=data[i]['lat']
+        dic['count']=data[i]['count']
+        points.push(dic)
+        dic ={}
+      }
+      map.clearOverlays();
+      heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+      map.addOverlay(heatmapOverlay);
+     
+      if('{{ obj.num}}'=='' || '{{obj.num}}'=='None'){
+        heatmapOverlay.setDataSet({data:points,max:100});
+      }else{
+        heatmapOverlay.setDataSet({data:points,max:{{obj.num|default:100}} });
+      }
+      function setGradient(){
+             var gradient = {};
+             var colors = document.querySelectorAll("input[type='color']");
+             colors = [].slice.call(colors,0);
+             colors.forEach(function(ele){
+                        gradient[ele.getAttribute("data-key")] = ele.value; 
+             });
+        heatmapOverlay.setOptions({"gradient":gradient});
+      }
+      areaChartData.labels = []
+      areaChartData.datasets[0].data=[]
+      for (var j=0;j<d.num.length; j++){
+        areaChartData.labels.push(d.num[j]['name'])
+        areaChartData.datasets[0].data.push(d.num[j]['num'])
+      }
+      var barChartCanvas = $("#barChart").get(0).getContext("2d");
+      var barChartData = areaChartData;
+      barChartData.datasets[0].fillColor = "#fff";
+      barChartData.datasets[0].strokeColor = "#fff";
+      barChartData.datasets[0].pointColor = "#fff";
+      barChartOptions.datasetFill = true;
+      bar = new Chart(barChartCanvas).Bar(barChartData, barChartOptions);
+      bar.update();
+    },
+    error:function(x,s,e){
+      //alert()
+    }
+  })
+}
+setInterval(function () {
+  account()
+},30000);
+
+$(function(){
+  $(".create").click(function(){
+    $('#myModal').modal(
+    {
+      keyboard: true
+    })
+  })
+})
+
+</script>
+{% endblock %}

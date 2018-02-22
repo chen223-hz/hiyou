@@ -1,0 +1,41 @@
+{% extends "agent/base.html" %}
+
+{% block header %}
+<style>
+  ul.name{float:right;display:inline-block;list-style:none;margin:0;margin-left:20px;padding:0;font-size:80%;color:red}
+  ul.usernamename{float:right;display:inline-block;list-style:none;margin:0;margin-left:20px;padding:0;font-size:80%;color:red}
+  .helptext{text-size:10px;font-style:italic;color:#999}
+  .pdrow{padding:10px 30px}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="content-header" style="padding:0 0 0 20px; ">
+  <h1 style="height:45px; border-bottom:1px solid #d2d6de;">
+    <small style="padding-top: 13px;color:#999;"><i class="glyphicon glyphicon-home" style="font-size:13px;">设备管理>增加景区</i></small> 
+  </h1>        
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="box" style="border-top:0px solid #fff;">
+        <div class="box-header with-border"><h3 class="box-title" style="border-left:4px solid #0073b7;">用户信息</h3></div><!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal" method="POST"> {% csrf_token %}
+            <div class="box-body">
+              <div class="pdrow">
+              {{ form.as_cameo  }}
+              </div>
+            </div><!-- /.box-body -->
+            <div class="box-footer pdrow">
+              <button type="submit" class="btn btn-info pull-right">保存</button>
+            </div><!-- /.box-footer -->
+          </form>
+        </div><!-- /.box -->
+        <!-- general form elements disabled -->
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
